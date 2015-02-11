@@ -1,0 +1,10 @@
+{
+"name": "bbq",
+"version": "0.0.1",
+"description": "test angular with a bbq app",
+"dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "mongoose": "*"
+    }
+}
