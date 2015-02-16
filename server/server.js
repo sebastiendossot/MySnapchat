@@ -33,21 +33,39 @@ var db = mongoose.connect('mongodb://localhost/bbq');
 //Schemas
 var Schema = mongoose.Schema;
 
-var RecipeSchema = new Schema({
+/*var Ami = new Schema({
     name:  String,
     description: String
-},{collection: 'Recipe'});
+});*/
+
+var Utilisateur = new Schema({
+    nom:  String,
+    description: String,
+    Amis : [idAmi : Number]  //liste d'amis
+});
+
+var Message = new Schema({
+    type:  String,
+    donnes: String,
+    destinataires : [idDestinataires : Number,
+                    lu : Boolean]
+});
+
+var Appli = new Schema({
+    utilisateurs : [Utilisateur],
+    messages: [Message]
+});
 
 
 //Models
-var RecipeModel = mongoose.model('RecipeModel', RecipeSchema);
+var MySnapchatModel = mongoose.model('MySnapchatModel', MySnapchatSchema);
 
 
 
 //Get all recipes
 app.get('/api/recipes', function (req, resp , next) {
     'use strict';
-    RecipeModel.find(function (err, coll) {
+    MySnapchatModel.find(function (err, coll) {
         if (!err) {
             return resp.send(coll);
         } else {
@@ -59,8 +77,8 @@ app.get('/api/recipes', function (req, resp , next) {
     
 //add a new element in the collection
 app.post('/api/recipes', function(req, res, next) {
-    var newRecipe = new RecipeModel(req.body);
-    newRecipe.save(function(e, results){
+    var newSnap = new MySnapchatModel(req.body);
+    newSnap.save(function(e, results){
         if (e) return next(e);
         res.send(results);
     })
@@ -69,7 +87,7 @@ app.post('/api/recipes', function(req, res, next) {
 //get a single element
 app.get('/api/recipes/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
-    RecipeModel.findById(req.params.id, function(e, result){
+    MySnapchatModel.findById(req.params.id, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
