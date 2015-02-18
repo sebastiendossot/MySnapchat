@@ -33,27 +33,35 @@ var db = mongoose.connect('mongodb://localhost/bbq');
 //Schemas
 var Schema = mongoose.Schema;
 
-/*var Ami = new Schema({
-    name:  String,
-    description: String
-});*/
+var Ami = new Schema({
+    idAmi1: Number,
+    idAmi2: Number
+    pute
+});
 
 var Utilisateur = new Schema({
     nom:  String,
     description: String,
-    Amis : [idAmi : Number]  //liste d'amis
+    mail: String,
+    mdp : String
+});
+
+var Destinataire = new Schema({
+    idDestinataires : Number,
+    lu : Boolean
 });
 
 var Message = new Schema({
     type:  String,
     donnes: String,
-    destinataires : [idDestinataires : Number,
-                    lu : Boolean]
+    idEnvoyeur : Number,
+    destinataires : [Destinataire]
 });
 
-var Appli = new Schema({
+var MySnapchatSchema = new Schema({
     utilisateurs : [Utilisateur],
-    messages: [Message]
+    messages: [Message],
+    amis : [Ami]
 });
 
 
