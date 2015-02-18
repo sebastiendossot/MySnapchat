@@ -34,9 +34,9 @@ var db = mongoose.connect('mongodb://localhost/bbq');
 var Schema = mongoose.Schema;
 
 var Ami = new Schema({
-    idAmi1: Number,
-    idAmi2: Number
-    pute
+    idAmi1: Schema.ObjectId,
+    idAmi2: Schema.ObjectId,
+    accepte : Boolean
 });
 
 var Utilisateur = new Schema({
@@ -47,33 +47,37 @@ var Utilisateur = new Schema({
 });
 
 var Destinataire = new Schema({
-    idDestinataires : Number,
+    idDestinataires : Schema.ObjectId,
     lu : Boolean
 });
 
 var Message = new Schema({
     type:  String,
     donnes: String,
-    idEnvoyeur : Number,
+    idEnvoyeur : Schema.ObjectId,
     destinataires : [Destinataire]
 });
 
+/*
 var MySnapchatSchema = new Schema({
     utilisateurs : [Utilisateur],
     messages: [Message],
     amis : [Ami]
 });
-
+*/
 
 //Models
-var MySnapchatModel = mongoose.model('MySnapchatModel', MySnapchatSchema);
+var UtilisateurModel = mongoose.model('UtilisateurModel', Utilisateur);
+var MessageModel = mongoose.model('MessageModel', Message);
+var AmiModel = mongoose.model('AmiModel', Ami);
 
+/*var MySnapchatModel = mongoose.model('MySnapchatModel', MySnapchatSchema);*/
 
 
 //Get all recipes
 app.get('/api/recipes', function (req, resp , next) {
     'use strict';
-    MySnapchatModel.find(function (err, coll) {
+    RecipeModel.find(function (err, coll) {
         if (!err) {
             return resp.send(coll);
         } else {
@@ -82,22 +86,73 @@ app.get('/api/recipes', function (req, resp , next) {
 		}
 	});
 });
-    
-//add a new element in the collection
-app.post('/api/recipes', function(req, res, next) {
-    var newSnap = new MySnapchatModel(req.body);
-    newSnap.save(function(e, results){
+  
+//Requetes POST
+
+//Ajouter un utilisateur
+app.post('/api/utilisateur', function(req, res, next) {
+    var newUtilisateur = new UtilisateurModel(req.body);
+    newUtilisateur.save(function(e, results){
         if (e) return next(e);
         res.send(results);
     })
 });
 
-//get a single element
-app.get('/api/recipes/:id', function(req, res, next) {
+//Envoyer un message
+app.post('/api/message', function(req, res, next) {
+    var newMessage = new MessageModel(req.body);
+    newMessage.save(function(e, results){
+        if (e) return next(e);
+        res.send(results);
+    })
+});
+
+//Demande d'ami
+app.post('/api/ami', function(req, res, next) {
+    var newAmi = new AmiModel(req.body);
+    newAmi.save(function(e, results){
+        if (e) return next(e);
+        res.send(results);
+    })
+});
+
+//GET
+
+//get les messages qui nous sont addressés
+app.get('/api/message/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
-    MySnapchatModel.findById(req.params.id, function(e, result){
+    MessageModel.find({destinataire : req.params.id }, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
 })
 
+//recupération de toutes les demandes d'ami concernant l'utilisateur
+app.get('/api/ami/:id', function(req, res, next) {
+    console.log("id = "+req.params.id);
+    AmiModel.find({idAmi2 : req.params.id, accepte : false }, function(e, result){
+        if (e) return next(e);
+        res.send(result)
+    })
+})
+
+
+
+//recupération des amis
+app.get('/api/ami/:id', function(req, res, next) {
+    console.log("id = "+req.params.id);
+    AmiModel.find({idAmi2 : req.params.id, accepte : true }, function(e, result){
+        if (e) return next(e);
+        res.send(result)
+    })
+})
+
+
+//recupération des informations d'un utilisateur
+app.get('/api/utilisateur/:id', function(req, res, next) {
+    console.log("id = "+req.params.id);
+    UtilisateurModel.findById(req.params.id, function(e, result){
+        if (e) return next(e);
+        res.send(result)
+    })
+})
