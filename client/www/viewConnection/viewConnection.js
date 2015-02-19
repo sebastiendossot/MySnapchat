@@ -38,11 +38,11 @@ angular.module('myApp.viewConnection', ['ngRoute'])
     .factory('User', function() {
 	return {
 
-	    connected : false
-	    id : ""
-	    name : ""
-	    mail : ""
-	    description : ""
+	    connected : false,
+	    id : "",
+	    name : "",
+	    mail : "",
+	    description : "",
 
 	    connection : function(doc) {
 		connected = true
@@ -50,7 +50,7 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 		name = doc.nom
 		mail = doc.mail
 		description = doc.description
-	    }
+	    },
 
 	    deconnection : function() {
 		connected : false

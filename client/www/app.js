@@ -4,6 +4,7 @@ var onDeviceReady = function() {
 	angular.module('myApp', [
 		'ngRoute',
 		'myApp.viewConnection',
+		'myApp.viewNavBar',
 		'myApp.view1',
 		'myApp.view2',
 		'myApp.version'
