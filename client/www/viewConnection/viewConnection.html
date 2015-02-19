@@ -1,0 +1,37 @@
+<div class="container">
+
+  <div class="page-header">
+    <h1>MySnapChat</h1>
+  </div>
+
+  <div class="col-xs-12">
+
+    <div class="container" ng-if="error">
+      <label style="color:red">Le nom ou le mot de passe entrés ne correspondent pas. Veuillez réessayez.</label>
+    </div>
+
+    <form name="connection">
+      <p>
+	<label> Nom : </label>
+	<input type="text" placeholder="pseudo"
+	     ng-required="true" ng-model="pseudo">
+      </p>
+      <p>
+	<label> Mot de passe : </label>
+	<input type="password" placeholder="mot de passe"
+	       ng-required="true" ng-model="password">
+      </p>
+      <input type="button" value="Connection" class="btn btn-primary"
+	     ng-disabled="connection.$invalid" ng-click="connect()">
+    </form>
+
+    <br>
+
+    <div class="jumbotron">
+      <a href="">Pas encore inscrit ? Faites le maintenant.</a>
+    </div>
+
+   
+  </div>
+  
+</div>
