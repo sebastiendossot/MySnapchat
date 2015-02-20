@@ -1,0 +1,52 @@
+<h3>Paramètres</h3>
+<div class="list-group row">
+	<div class="list-group-item">
+		<strong>Nom d'utilisateur</strong> : {{User.name}}
+	</div>
+	<div class="list-group-item">
+		<strong>Email</strong> : {{User.mail}}
+	</div>
+	<a href="" ng-click="pressLogout()" class="list-group-item"><strong>Me déconnecter</strong></a>
+	<a href="" ng-click="" data-toggle="modal" data-target="#removeConfirmation" class="list-group-item"><strong>Supprimer mon compte</strong></a>
+
+</div>
+
+<!-- Ask confirmation of deletion-->
+<div class="modal fade" id="removeConfirmation" tabindex="-1" role="dialog" aria-labelledby="removeConfirmationLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Vous nous quittez ?</h4>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer définitivement votre compte ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" ng-click='pressRemoveAccount()'>Oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Ask confirmation of deletion-->
+
+
+<!-- Callback dialog-->
+<div class="modal fade" id="callbackDialog" tabindex="-1" role="dialog" aria-labelledby="callbackDialogLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{callback.title}}</h4>
+      </div>
+      <div class="modal-body">
+        {{callback.content}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Callback dialog-->

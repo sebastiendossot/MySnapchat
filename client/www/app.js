@@ -5,9 +5,9 @@ var onDeviceReady = function() {
 		'ngRoute',
 		'myApp.viewConnection',
 		'myApp.viewNavBar',
-		'myApp.view1',
-		'myApp.view2',
-		'myApp.version'
+		'myApp.settings',
+		'myApp.api',
+		'myApp.webService',
 		])
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.otherwise({redirectTo: '/connection'});

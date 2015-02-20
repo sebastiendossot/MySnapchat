@@ -2,63 +2,38 @@
 
 angular.module('myApp.viewConnection', ['ngRoute'])
 
-    .config(['$routeProvider', function($routeProvider) {
+.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/connection', {
-	    templateUrl: 'viewConnection/viewConnection.html',
-	    controller: 'connectionCtrl'
+		templateUrl: 'viewConnection/viewConnection.html',
+		controller: 'connectionCtrl'
 	})
-    }])
+}])
 
-    .controller('connectionCtrl', ['$scope', '$http', 'User', 
-	function($scope, $http, User) {
+.controller('connectionCtrl', ['$scope', 'userWebService', 'User', 
+	function($scope, userWebService, User) {
 
-	    $scope.pseudo = ""
-	    $scope.password = ""
-	    $scope.error = false
-	    
-	    $scope.connect = function() {
-		$http.get('/api/connection/'+$scope.pseudo+'/'+$scope.password)
-		    .success(function(data) {
-			if (!data) {
-			    console.log('nop....')
-			    $scope.error = true
-			}
-			else {
-			    User.connection(data)
+		$scope.pseudo = ""
+		$scope.password = ""
+		$scope.error = false
+
+		$scope.connect = function() {
+			var success = function(data) {
+				if (!data) {
+					console.log('nop....')
+					$scope.error = true
+				}
+				else {
+					User.login(data)
 			    //window.location.assign('#/home')
 			}
-		    }).error(function(data) {
-			$scope.error = true
-			// differenciate the type of error ?
-		    })
-	    }
-	    
-	}])
+			var error = function(data) {
+				$scope.error = true
+				// differenciate the type of error ?
+			}
 
-    .factory('User', function() {
-	return {
-
-	    connected : false,
-	    id : "",
-	    name : "",
-	    mail : "",
-	    description : "",
-
-	    connection : function(doc) {
-		connected = true
-		id = doc.id
-		name = doc.nom
-		mail = doc.mail
-		description = doc.description
-	    },
-
-	    deconnection : function() {
-		connected : false
-		id : ""
-		name : ""
-		mail : ""
-		description : ""
-	    }
-  
+		}
+		userWebService.login({username:$scope.pseudo, password:$scope.password}, success, error);
 	}
-    })
+
+}])
+
