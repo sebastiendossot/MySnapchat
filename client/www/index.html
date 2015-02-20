@@ -4,50 +4,47 @@
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" href="app.css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>My AngularJS App</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="app.css">
 </head>
 <body>
-  
-<div ng-include="'viewNavBar/viewNavBar.html'"></div>
 
-  <!--[if lt IE 7]>
+	<div ng-include="'viewNavBar/viewNavBar.html'"></div>
+
+  	<!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
       <![endif]-->
 
       <div ng-view class="container"></div>
 
-      <div>Angular seed app: v<span app-version></span></div>
+  	<!-- In production use:
+  	<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script>
+  	var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+  	if(app) {
+  		var script = document.createElement('script');
+  		script.type = 'text/javascript';
+  		script.src = 'cordova.js';    
 
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
--->
-<script>
-  var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
-  if(app) {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'cordova.js';    
-
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-</script>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="app.js"></script>
-<script src="viewConnection/connection.js"></script>
-<script src="viewNavBar/navBar.js"></script>
-<script src="view1/view1.js"></script>
-<script src="view2/view2.js"></script>
-<script src="components/version/version.js"></script>
-<script src="components/version/version-directive.js"></script>
-<script src="components/version/interpolate-filter.js"></script>
+  		document.getElementsByTagName('head')[0].appendChild(script);
+  	}
+  </script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="components/api/api.js"></script>
+  <script src="components/webService/webService.js"></script>
+  <script src="app.js"></script>
+  <script src="viewSettings/settings.js"></script>
+  <script src="viewConnection/connection.js"></script>
+  <script src="viewNavBar/navBar.js"></script>
 </body>
 </html>
