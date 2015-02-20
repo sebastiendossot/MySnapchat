@@ -4,7 +4,7 @@ var application_root = __dirname,
     path = require('path'), //Utilities for dealing with file paths
     bodyParser  = require('body-parser'),
     mongoose = require('mongoose'), //MongoDB integration
-    bcrypt = require('bcrypt'); //to crypt passwords
+    crypto = require('crypto'); //to hash passwords
 
 
 //Create server
@@ -87,14 +87,18 @@ app.get('/api/recipes', function (req, resp , next) {
 		}
 	});
 });
-  
+ 
+
+// create the hash for inscription and connection 
+var hash = crypto.createHash('sha256')
+
+
 //Requetes POST
 
 //Ajouter un utilisateur
 app.post('/api/utilisateur', function(req, res, next) {
-    bcrypt.hash(req.body.mdp, 8, function(err, hash) {
-	req.body.mdp = hash
-    })
+    hash.update(req.body.mdp)
+    req.body.mdp = hash.digest('hex')
     var newUtilisateur = new UtilisateurModel(req.body);
     newUtilisateur.save(function(e, results){
         if (e) return next(e);
@@ -109,16 +113,15 @@ app.post('/api/connection/', function(req, res, next) {
     console.log("name = "+ name +" , pass = "+ password)
     UtilisateurModel.findOne({'nom': name}, function(e, result) {
 	if (e) return next(e)
-	if (!result) {
+	if (!result) 
 	    res.send(null)
-	}
 	else {
-	    brcrypt.compare(password, result.mdp, function (err, res) {
-		if (res)
-		    res.send(result)
-		else
-		    res.send(null)
-	    })
+	    hash.update(password)
+	    password = hash.digest('hex')
+	    if (password == result.mdp)
+		res.send(result)
+	    else
+		res.send(null)
 	}	    
     })
 })

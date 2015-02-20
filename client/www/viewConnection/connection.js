@@ -16,7 +16,7 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 	    $scope.password = ""
 	    $scope.error = false
 
-	    $scope.connect = function() {
+	    $scope.login = function() {
 		var success = function(data) {
 		    if (!data) {
 			$scope.error = true
@@ -32,6 +32,7 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 
 		}
 		userWebService.login({nom:$scope.pseudo, mdp:$scope.password}, success, error)
+		// what ?
 	    }
 
 	}])
