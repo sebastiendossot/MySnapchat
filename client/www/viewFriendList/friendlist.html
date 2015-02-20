@@ -1,0 +1,33 @@
+<h3>Liste de vos amis</h3>
+
+<div id="friendList" style="display : none;">
+
+	Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
+
+	<div class="list-group row" style="width : 100%; max-width : 400px;">
+		
+		<div class="list-group-item" ng-repeat="friend in friendList">
+			<strong>{{friend.nom}}</strong>
+			<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
+		</div>
+
+	</div><br />
+
+	<h3>Vos demandes en attente</h3>
+
+	Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
+
+	<div class="list-group row" style="width : 100%; max-width : 400px;">
+		
+		<div class="list-group-item" ng-repeat="friend in requestList">
+			<strong>{{friend.nom}}</strong>
+			<a ng-click="deleteRequest(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
+		</div>
+
+	</div>
+	
+</div>
+
+<div id="errorFriendList" style="display : none;">
+	Vous devez être connecté pour voir la liste de vos amis.
+</div>

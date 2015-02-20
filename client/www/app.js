@@ -6,6 +6,7 @@ var onDeviceReady = function() {
 		'myApp.viewConnection',
 		'myApp.viewNavBar',
 		'myApp.settings',
+		'myApp.viewFriendList',
 		'myApp.api',
 		'myApp.webService',
 		])
