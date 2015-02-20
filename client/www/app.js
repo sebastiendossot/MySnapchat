@@ -4,7 +4,8 @@ var onDeviceReady = function() {
 	angular.module('myApp', [
 		'ngRoute',
 		'myApp.viewConnection',
-		'myApp.viewNavBar',
+		'myApp.viewNavBar',		
+		'myApp.register',
 		'myApp.settings',
 		'myApp.viewFriendList',
 		'myApp.api',
@@ -13,6 +14,7 @@ var onDeviceReady = function() {
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.otherwise({redirectTo: '/connection'});
 	}]);
+	
 	// Manually launch bootstrap
 	angular.element(document).ready(function() {
 		angular.bootstrap(document, ['myApp']);
