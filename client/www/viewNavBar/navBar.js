@@ -8,5 +8,9 @@ angular.module('myApp.viewNavBar', [])
 	    $scope.connected = User.connected
 	    $scope.name = User.name
 
-	    $scope.deconnect = User.deconnection()
+	    $scope.logout = function() {
+		User.logout()
+		$scope.connected = User.connected
+	    	$scope.name = User.name
+		}
 	}])

@@ -1,19 +1,32 @@
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" ng-controller="navBarCtrl">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="">MySnapChat</a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<<<<<<< HEAD
         <li><a href="#/view1">View1</a></li>
 	      <!--<li><a href="#/view2">View2</a></li>-->
         <li><a href="#/register">Enregistrer</a></li>
+=======
+        <li><a href="#/connection">Connexion</a></li>
+        <li><a href="#/settings">Settings</a></li>
+>>>>>>> 012afdce4ad5bde81d77ea2c770b684fb07d29ab
       </ul> 
 
+	
       <ul class="nav navbar-nav navbar-right" ng-if="connected">
-        <li class="active"><a href="#/" ng-click="deconnect()">Deconnexion {{name}}</a></li>
+	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{name}} <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+	    <li><a href="#" ng-click="">Paramètres</a></li>	
+            <li><a href="#" ng-click="logout()">Deconnexion</a></li>
+          </ul>
+	</li>
       </ul>
+
+
     </div>
   </div>
 </nav>
