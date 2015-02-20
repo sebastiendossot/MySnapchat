@@ -17,14 +17,13 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 	    $scope.error = false
 	    
 	    $scope.connect = function() {
-		$http.get('/api/connection/'+$scope.pseudo+'/'+$scope.password)
+		$http.post('/api/connection/', {'nom' : $scope.pseudo, 'mdp' : $scope.password})
 		    .success(function(data) {
 			if (!data) {
-			    console.log('nop....')
 			    $scope.error = true
 			}
 			else {
-			    User.connection(data)
+			    User.login(data)
 			    //window.location.assign('#/home')
 			}
 		    }).error(function(data) {
@@ -44,7 +43,7 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 	    mail : "",
 	    description : "",
 
-	    connection : function(doc) {
+	    login : function(doc) {
 		connected = true
 		id = doc.id
 		name = doc.nom
@@ -52,7 +51,7 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 		description = doc.description
 	    },
 
-	    deconnection : function() {
+	    logout : function() {
 		connected : false
 		id : ""
 		name : ""
