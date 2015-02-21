@@ -31,8 +31,9 @@ angular.module('myApp.register', ['ngRoute'])
     	req.body.mdp=$scope.pwd;    	
      }
        // to reset 
-    	$scope.username = '';
-        $scope.password = '';
+    	$scope.pseudo = '';
+        $scope.pwd = '';
+        $scope.pwd1 = '';
         $scope.email = '';
     
      var jdata = 'mydata='+JSON.stringify(formData);
