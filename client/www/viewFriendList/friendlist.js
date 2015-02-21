@@ -9,38 +9,63 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 	});
 }])
 
-.controller('friendListCtrl', ['$scope', 'userWebService', 'User', '$location',
-	function($scope, userWebService, User, $location)  {
+.controller('friendListCtrl', ['$scope', '$http', 'userWebService', 'User', '$location',
+	function($scope, $http, userWebService, User, $location)  {
 		
-		// Enlever le "|| true" quand le système  de connexion sera terminé !
-		if(User.connected || true) 
-		{
-			$("#friendList").show();
+		function getList(listName, $http, User)  {
+			
+			var tempfriendlist = [];
 		
-			// REMPLACER PAR REQUETE PERMETTENT D'OBTENIR LA LISTE DES AMIS
-			$scope.friendList = [
+			User.id = "507f191e810c19729de860ea"; // A supprimer
+			$http.get('/api/'+listName+'/'+User.id)
+			.success(function(data) {
+			   data.forEach(function(entry) {
+					
+					$http.get('/api/utilisateur/'+entry._id)
+					.success(function(friend) {
+					   tempfriendlist.push(friend);
+					})
+					.error(function(data) {
+						alert("erreur lors de la récupération du nom d'un des amis");
+					})
+					
+				});
+			})
+			.error(function(data) {
+				alert("erreur lors de la récupération de la liste d'amis");
+			})
+			
+			tempfriendlist = [
 			  {nom:'John'},
 			  {nom:'Jessie'},
 			  {nom:'Johanna'},
 			  {nom:'Roger'}
 			]
 			
-			// REMPLACER PAR REQUETE PERMETTENT D'OBTENIR LA LISTE DES DEMANDES D'AMIS
-			$scope.requestList = [
-			  {nom:'Rihana'},
-			  {nom:'Mickael'},
-			  {nom:'Marc'},
-			  {nom:'Simon'}
-			]
+			return tempfriendlist;
+		}
+		
+		// Enlever le "|| true" quand le système  de connexion sera terminé !
+		if(User.connected || true) 
+		{
+			$("#friendList").show();
+
+			$scope.friendList = getList("friends", $http, User);
+			$scope.requestList = getList("requests", $http, User);
 			
 			$scope.deleteFriend = function (friend) {
 				$scope.friendList.splice($scope.friendList.indexOf(friend), 1);
 				// AJOUTER ICI REQUETE POUR SUPPRIMER UN AMI
 			}
 			
-			$scope.deleteRequest = function (friendRequest) {
+			$scope.acceptRequest = function (friendRequest) {
 				$scope.requestList.splice($scope.requestList.indexOf(friendRequest), 1);
-				// AJOUTER ICI REQUETE POUR SUPPRIMER UNE DEMANDE D'AMIS
+				// AJOUTER ICI REQUETE POUR REFUSER DEMANDE D'AMIS
+			}
+			
+			$scope.refuseRequest = function (friendRequest) {
+				$scope.requestList.splice($scope.requestList.indexOf(friendRequest), 1);
+				// AJOUTER ICI REQUETE POUR ACCEPTER DEMANDE D'AMIS
 			}
 		}
 		else

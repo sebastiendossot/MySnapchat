@@ -37,6 +37,8 @@ var Schema = mongoose.Schema;
 var Ami = new Schema({
     idAmi1: Schema.ObjectId,
     idAmi2: Schema.ObjectId,
+	// Ajout d'un booléen de traitement pour différencier une requête non traitée d'un refus d'amis
+	traitement : Boolean, 
     accepte : Boolean
 });
 
@@ -155,21 +157,20 @@ app.get('/api/message/:id', function(req, res, next) {
     })
 })
 
-//recupération de toutes les demandes d'ami concernant l'utilisateur
-app.get('/api/ami/:id', function(req, res, next) {
+//recupération de toutes les demandes d'ami reçues et non traitées par un utilisateur
+app.get('/api/requests/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
-    AmiModel.find({idAmi2 : req.params.id, accepte : false }, function(e, result){
+    AmiModel.find({idAmi2 : req.params.id, traitement : false }, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
 })
 
-
-
 //recupération des amis
-app.get('/api/ami/:id', function(req, res, next) {
+// (David) A CORRIGER : idAmi1 : req.params.id OU idAmi2 : req.params.id, sinon ça retournera pas tous les amis.
+app.get('/api/friends/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
-    AmiModel.find({idAmi2 : req.params.id, accepte : true }, function(e, result){
+    AmiModel.find({idAmi1 : req.params.id, accepte : true }, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
@@ -177,13 +178,13 @@ app.get('/api/ami/:id', function(req, res, next) {
 
 
 //recupération des informations d'un utilisateur
-/*app.get('/api/utilisateur/:id', function(req, res, next) {
+app.get('/api/utilisateur/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
     UtilisateurModel.findById(req.params.id, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
-})*/
-// a supprimer ?
+})
+// a supprimer ? ---> Non j'en ai besoin (David)
 
 

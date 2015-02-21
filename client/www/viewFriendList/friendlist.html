@@ -1,7 +1,21 @@
-<h3>Liste de vos amis</h3>
+
 
 <div id="friendList" style="display : none;">
 
+	<h3>Vos demandes en attente</h3>
+	Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
+
+	<div class="list-group row" style="width : 100%; max-width : 400px;">
+		
+		<div class="list-group-item" ng-repeat="friend in requestList">
+			<strong>{{friend.nom}}</strong>
+			<a ng-click="refuseRequest(friend)" style="margin: -5px -10px 0px 5px; float : right;" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Refuser</a>
+			<a ng-click="acceptRequest(friend)" style="margin: -5px 0px 0px 0px; float : right;" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Accepter</a>
+			</div>
+
+	</div><br />
+
+	<h3>Liste de vos amis</h3>
 	Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
 
 	<div class="list-group row" style="width : 100%; max-width : 400px;">
@@ -11,23 +25,11 @@
 			<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
 		</div>
 
-	</div><br />
-
-	<h3>Vos demandes en attente</h3>
-
-	Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
-
-	<div class="list-group row" style="width : 100%; max-width : 400px;">
-		
-		<div class="list-group-item" ng-repeat="friend in requestList">
-			<strong>{{friend.nom}}</strong>
-			<a ng-click="deleteRequest(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
-		</div>
-
 	</div>
-	
+
 </div>
 
 <div id="errorFriendList" style="display : none;">
+	<h3>Liste de vos amis</h3>
 	Vous devez être connecté pour voir la liste de vos amis.
 </div>
