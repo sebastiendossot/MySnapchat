@@ -21,18 +21,22 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 			.success(function(data) {
 			   data.forEach(function(entry) {
 					
-					$http.get('/api/utilisateur/'+entry._id)
+					var friendId = entry.idAmi1;
+					if(friendId == User.id)
+						friendId = entry.idAmi2;
+					
+					$http.get('/api/utilisateur/'+friendId)
 					.success(function(friend) {
 					   tempfriendlist.push(friend);
 					})
 					.error(function(data) {
-						alert("erreur lors de la récupération du nom d'un des amis");
+						console.log("erreur lors de la récupération du nom d'un des amis");
 					})
 					
 				});
 			})
 			.error(function(data) {
-				alert("erreur lors de la récupération de la liste d'amis");
+				console.log("erreur lors de la récupération de la liste d'amis");
 			})
 			
 			tempfriendlist = [
@@ -46,31 +50,37 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 		}
 		
 		// Enlever le "|| true" quand le système  de connexion sera terminé !
-		if(User.connected || true) 
+		$scope.userConnected = User.connected || true;
+		
+		if($scope.userConnected) 
 		{
-			$("#friendList").show();
-
 			$scope.friendList = getList("friends", $http, User);
 			$scope.requestList = getList("requests", $http, User);
 			
 			$scope.deleteFriend = function (friend) {
-				$scope.friendList.splice($scope.friendList.indexOf(friend), 1);
-				// AJOUTER ICI REQUETE POUR SUPPRIMER UN AMI
+				
+				$http.post('/api/deleteRequest', {idToDelete:friend._id})
+				.success(function() {
+				   $scope.friendList = getList("friends", $http, User);
+				})
+				.error(function() {
+					console.log("erreur lors de la suppression d'un des amis");
+				})
+				
 			}
 			
 			$scope.acceptRequest = function (friendRequest) {
-				$scope.requestList.splice($scope.requestList.indexOf(friendRequest), 1);
-				// AJOUTER ICI REQUETE POUR REFUSER DEMANDE D'AMIS
-			}
 			
-			$scope.refuseRequest = function (friendRequest) {
-				$scope.requestList.splice($scope.requestList.indexOf(friendRequest), 1);
-				// AJOUTER ICI REQUETE POUR ACCEPTER DEMANDE D'AMIS
+				$http.post('/api/acceptRequest', {idToUpdate:friendRequest._id})
+				.success(function() {
+					$scope.requestList = getList("requests", $http, User);
+					$scope.friendList = getList("friends", $http, User);
+				})
+				.error(function() {
+					console.log("erreur lors de l'acceptation d'un des amis");
+				})
+				
 			}
-		}
-		else
-		{
-			$("#errorFriendList").show();
 		}
 	
 	}]);

@@ -37,8 +37,6 @@ var Schema = mongoose.Schema;
 var Ami = new Schema({
     idAmi1: Schema.ObjectId,
     idAmi2: Schema.ObjectId,
-	// Ajout d'un booléen de traitement pour différencier une requête non traitée d'un refus d'amis
-	traitement : Boolean, 
     accepte : Boolean
 });
 
@@ -146,6 +144,19 @@ app.post('/api/ami', function(req, res, next) {
     })
 });
 
+// TODO : Suppression ou refus d'un amis
+app.post('/api/deleteRequest', function(req, res, next) {
+	// A coder : DELETE FROM Ami WHERE _id = req.body.idToDelete
+	console.log("Delete friend - ID line = "+req.body.idToDelete);
+});
+
+// TODO : Acceptation d'une demande d'amis
+app.post('/api/acceptRequest', function(req, res, next) {
+	// A coder : UPDATE Ami SET accepte = true WHERE _id = req.body.idToUpdate
+	console.log("Accept friend - ID line = "+req.body.idToUpdate);
+});
+
+
 //GET
 
 //get les messages qui nous sont addressés
@@ -160,7 +171,7 @@ app.get('/api/message/:id', function(req, res, next) {
 //recupération de toutes les demandes d'ami reçues et non traitées par un utilisateur
 app.get('/api/requests/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
-    AmiModel.find({idAmi2 : req.params.id, traitement : false }, function(e, result){
+    AmiModel.find({idAmi2 : req.params.id, accepte : false }, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
@@ -175,7 +186,6 @@ app.get('/api/friends/:id', function(req, res, next) {
         res.send(result)
     })
 })
-
 
 //recupération des informations d'un utilisateur
 app.get('/api/utilisateur/:id', function(req, res, next) {
