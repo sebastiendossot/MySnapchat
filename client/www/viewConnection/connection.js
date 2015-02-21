@@ -23,16 +23,17 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 				}
 				else {
 					User.login(data)
-				//window.location.assign('#/home')
+				}//window.location.assign('#/home')
+
 			}
 			var error = function(data) {
 				$scope.error = true
 				// differenciate the type of error ?
 			}
-
+			userWebService.login({username:$scope.pseudo, password:$scope.password}, success, error)
 		}
 		// what ?
-	}
+	}])
 
-}])
+
 

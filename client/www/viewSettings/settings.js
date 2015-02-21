@@ -20,21 +20,7 @@ angular.module('myApp.settings', ['ngRoute'])
 			$scope.callback.title = "Erreur";
 			$scope.callback.content = "Un problème inattendu est survenu, veuillez réessayer plus tard";
 		}
-
-		$scope.pressLogout = function() {
-			console.log("Logout button just pressed")
-			var success = function() {
-				User.deconnection();
-				$location.assign('#/connection')
-			}
-			var error = function() {
-				$scope.setErrorCallback()
-				$('#callbackDialog').modal('show')
-			}
-
-			userWebService.logout({}, success, error);
-		}
-
+		
 		$scope.pressRemoveAccount = function() {
 			console.log("User confirmed the removal of his account");
 			$('#removeConfirmation').modal('hide')
