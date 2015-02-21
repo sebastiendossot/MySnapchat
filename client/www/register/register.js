@@ -8,46 +8,34 @@ angular.module('myApp.register', ['ngRoute'])
     controller: 'Register2Ctrl'
   });
 }])
-
-.controller('Register2Ctrl', ['$scope', function($scope){
-    
+.controller('Register2Ctrl',['$scope', '$http', function($scope,$http) {
 	$scope.registerUser = function() {
-        $http.post('/api/utilisateur', $scope.register)
-            .success(function(data) {
+        $http.post('/api/utilisateur', jdata)
+
+    .success(function(data) {
                if (!data) {
-			    console.log('ca marche pas ')
+			    console.log('Warning')
 			    $scope.error = true;
 			}
-			else {
-			     console.log('je suis laaaa')
+			else {                                                      
+			     console.log('saving...')
 			}
             })
             .error(function(data) {
                 $scope.error = true;
             })
-    }
-	    
-	}])
 
+            function formData( req, res, next){
+    	req.body.mail=$scope.email;   
+    	req.body.nom=$scope.pseudo;
+    	req.body.mdp=$scope.pwd;    	
+     }
+       // to reset 
+    	$scope.username = '';
+        $scope.password = '';
+        $scope.email = '';
+    
+     var jdata = 'mydata='+JSON.stringify(formData);
+ }	    
+}])
 
-
-
-
-/* $scope.connect = function() {
-		$http.get('/api/connection/'+$scope.pseudo+'/'+$scope.password)
-		    .success(function(data) {
-			if (!data) {
-			    console.log('nop....')
-			    $scope.error = true
-			}
-			else {
-			    User.connection(data)
-			    //window.location.assign('#/home')
-			}
-		    }).error(function(data) {
-			$scope.error = true
-			// differenciate the type of error ?
-		    })
-	    }
-	    
-	}])*/
