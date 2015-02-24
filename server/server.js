@@ -89,14 +89,12 @@ app.get('/api/recipes', function (req, resp , next) {
 });
  
 
-// create the hash for inscription and connection 
-var hash = crypto.createHash('sha256')
-
-
 //Requetes POST
 
 //Ajouter un utilisateur
 app.post('/api/utilisateur', function(req, res, next) {
+console.log(req.body);
+var hash = crypto.createHash('sha256')
     hash.update(req.body.mdp)
     req.body.mdp = hash.digest('hex')
     var newUtilisateur = new UtilisateurModel(req.body);
@@ -108,18 +106,22 @@ app.post('/api/utilisateur', function(req, res, next) {
 
 // Connection
 app.post('/api/connection/', function(req, res, next) {
-    var name = req.body.nom
-    var password = req.body.mdp
+    var name = req.body.name;
+    var password = req.body.password;
     console.log("name = "+ name +" , pass = "+ password)
     UtilisateurModel.findOne({'nom': name}, function(e, result) {
+      
 	if (e) return next(e)
 	if (!result) 
 	    res.send(null)
 	else {
+	
+	    var hash = crypto.createHash('sha256')
 	    hash.update(password)
 	    password = hash.digest('hex')
-	    if (password == result.mdp)
+	    if (password == result.mdp) {
 		res.send(result)
+}
 	    else
 		res.send(null)
 	}	    

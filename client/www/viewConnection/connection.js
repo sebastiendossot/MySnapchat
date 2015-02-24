@@ -9,28 +9,29 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 	})
 }])
 
-.controller('connectionCtrl', ['$scope', 'userWebService', 'User', 
-	function($scope, userWebService, User) {
+.controller('connectionCtrl', ['$scope', /*'userWebService'*/'$http', 'User', 
+	function($scope, /*userWebService*/$http, User) {
 
 		$scope.pseudo = ""
 		$scope.password = ""
 		$scope.error = false
 
 		$scope.login = function() {
-			var success = function(data) {
+		$http.post('api/connection', {name:$scope.pseudo, password:$scope.password}).success(function(data) {
 				if (!data) {
 					$scope.error = true
 				}
 				else {
 					User.login(data)
-				}//window.location.assign('#/home')
+					window.location.assign('#/friendlist')	
+				}
 
-			}
-			var error = function(data) {
+			})
+			.error(function(data) {
 				$scope.error = true
 				// differenciate the type of error ?
-			}
-			userWebService.login({username:$scope.pseudo, password:$scope.password}, success, error)
+			})
+			//userWebService.login({name:$scope.pseudo, password:$scope.password}, success, error)
 		}
 		// what ?
 	}])

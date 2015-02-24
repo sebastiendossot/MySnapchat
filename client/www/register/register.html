@@ -5,7 +5,7 @@
 <span class="text-danger" ng-show="register.pwd1.$error.minlength">
    Minimum 5 caractères
 </span>
-  <form name="register">
+  <form name="register" ng-submit ="registerUser()" >
 
     <div class="form-group" ng-class="{'has-error': register.$dirty && register.email.$invalid, 'has-success': register.email.$valid}">
       <label for="email">Email:</label>
@@ -29,6 +29,7 @@
      <p class="text-danger col-sm-offset-3" ng-show="!register.pwd1.$error.required && register.pwd1.$error.equalsTo">Les deux passes doivent etre identiques !
     </p>
     
-    <button type="submit" class="btn btn-primary"  ng-disabled="register.$invalid" ng-click="registerUser()">S'enregistrer</button>
+    <button type="submit" class="btn btn-primary"  ng-disabled="register.$invalid" >S'enregistrer</button>
+
   </form>
-</div>
+
