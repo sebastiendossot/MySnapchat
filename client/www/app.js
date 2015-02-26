@@ -8,6 +8,7 @@ var onDeviceReady = function() {
 		'myApp.register',
 		'myApp.settings',
 		'myApp.viewFriendList',
+		'myApp.viewChat',
 		'myApp.api',
 		'myApp.webService',
 		])
