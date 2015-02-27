@@ -128,6 +128,17 @@ app.post('/api/connection/', function(req, res, next) {
     })
 })
 
+//getBy Pseudo
+app.get('/api/utilisateur/:name', function(req, res, next) {
+    console.log("id = "+req.params.name);
+   UtilisateurModel.find({nom:req.params.name}, function(e, result){
+        if (e) return next(e);
+        res.send(result)
+    })
+})
+
+
+
 //Envoyer un message
 app.post('/api/message', function(req, res, next) {
     var newMessage = new MessageModel(req.body);

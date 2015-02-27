@@ -9,27 +9,30 @@ angular.module('myApp.addfriend', ['ngRoute'])
   });
 }])
 
-.controller('addfriendCtrl', ['$scope','$http', 'User',function($scope,$http,User) {
-
-  //alert("test ");
-  console.log(User.login.id);
+.controller('addfriendCtrl', ['$scope','$http', 'User',function($scope,$http,User) {  
    
    $scope.addfriend = function(){
-   	/*console.log("1");
-   	$http.post('api/ami').
-   	succes(function(data){
-   		   	console.log("2");
-           alert("test ok");               
+   var name = $scope.searchInfo;
+   	$http.get('/api/utilisateur/:'+name)
+    .succes(function(data){   	
+    //alert($scope.searchInfo);
+    var idAmi = data.id;
+    var iduser = User.id;
+     $http.post('/api/ami', {'idAmi1': iduser,
+                              'idAmi2' : idAmi,
+                               'accepte' : false   })
+          .success(function(friend) {
+             //pas trop utile
+          })
+               
    	}).error(function(data){
-   			console.log("3");
-   		alert("ERRRRRRRRRRRRRRRRRRRRRReur");
-   	});console.log(User.login.id);
-*/
-//alert(User.id); ok
-alert($scope.searchInfo)
-   }
+   		alert("erreur")
+   	});
 
+//alert(User.id); ok
+
+   
+}
 
 }]);
 
-// $scope.searchInfo.idAmi1
