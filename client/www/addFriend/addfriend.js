@@ -12,18 +12,21 @@ angular.module('myApp.addfriend', ['ngRoute'])
 .controller('addfriendCtrl', ['$scope','$http', 'User',function($scope,$http,User) {  
    
    $scope.addfriend = function(){
-   var name = $scope.searchInfo;
-   	$http.get('/api/utilisateur/:'+name)
-    .succes(function(data){   	
-    //alert($scope.searchInfo);
-    var idAmi = data.id;
-    var iduser = User.id;
+   var nom = $scope.searchInfo;
+ 
+   	$http.get('/api/utilisateur/'+nom)
+    .success(function(data){   	
+    //alert($scope.searchInfo);   
+     
+      var idAmi = result.id;
+      var iduser = User.id;
+   
      $http.post('/api/ami', {'idAmi1': iduser,
                               'idAmi2' : idAmi,
-                               'accepte' : false   })
+                              'accepte' : false })
           .success(function(friend) {
-             //pas trop utile
-          })
+             console.log("Insertion ok")
+          })               
                
    	}).error(function(data){
    		alert("erreur")
