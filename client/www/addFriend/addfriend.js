@@ -13,11 +13,10 @@ angular.module('myApp.addfriend', ['ngRoute'])
    
    $scope.addfriend = function(){
    var nom = $scope.searchInfo;
- 
-   	$http.get('/api/utilisateur/'+nom)
+       	$http.get('/api/utilisateur/'+nom)
     .success(function(data){   	
     //alert($scope.searchInfo);   
-     
+
       var idAmi = data.id;
       var iduser = User.id;
    
@@ -31,6 +30,7 @@ angular.module('myApp.addfriend', ['ngRoute'])
    	}).error(function(data){
    		alert("erreur")
    	});
+  $scope.searchInfo ="";
 
 //alert(User.id); ok
 
