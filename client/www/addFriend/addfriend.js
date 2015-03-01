@@ -18,7 +18,7 @@ angular.module('myApp.addfriend', ['ngRoute'])
     .success(function(data){   	
     //alert($scope.searchInfo);   
      
-      var idAmi = result.id;
+      var idAmi = data.id;
       var iduser = User.id;
    
      $http.post('/api/ami', {'idAmi1': iduser,
