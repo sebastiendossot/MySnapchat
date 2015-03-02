@@ -130,10 +130,11 @@ app.post('/api/connection/', function(req, res, next) {
 
 //getBy Pseudo
 app.get('/api/utilisateur/:nom', function(req, res, next) {   
-   UtilisateurModel.find({'nom':req.params.nom}, function(e, result){  
+   UtilisateurModel.findOne({'nom':req.params.nom}, function(e, result){  
            console.log("Nom du recepteur 123456");
         if (e)      
-         return next(e);            
+         return next(e);    
+         console.log(result.nom)        
         res.send(result)
     })
 })
