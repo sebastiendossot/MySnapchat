@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <ul class="dropdown-menu slidedown">
+                            <li><a><span class="glyphicon glyphicon-refresh"></span>Option</a></li>
+                        </ul>
+					</div>
+                </div>
+                <div class="panel-body">
+                    <ul class="chat" ng-repeat="message in messageList">
+					
+                        <li ng-if="message.receiver === 0" class="left clearfix" style="padding-right : 80px;">
+							<span class="chat-img pull-left">
+								<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+							</span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">{{message.sender}}</strong> 
+									<small class="text-muted"><span class="glyphicon glyphicon-time"></span>10 mins ago</small>
+                                </div>
+                                <p>{{message.text}}</p>
+                            </div>
+                        </li>
+						
+                        <li ng-if="message.receiver === 1" class="right clearfix" style="padding-left : 80px;">
+							<span class="chat-img pull-right">
+								<img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+							</span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>10 mins ago</small>
+									<strong class="pull-right primary-font">{{message.sender}}</strong><br />
+                                </div>
+                                <p class="pull-right">{{message.text}}</p>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input ng-model="newMessage.text" id="btn-input" type="text" class="form-control input-sm" placeholder="Ecrivez votre message ici..." />
+                        <span class="input-group-btn">
+                            <button ng-click="sendMessage(newMessage)" class="btn btn-warning btn-sm" id="btn-chat">Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
