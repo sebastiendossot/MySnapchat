@@ -8,6 +8,7 @@
   "dependencies": {
     "angular": "*",
     "angular-route": "*",
+    "angular-resource": "*",
     "angular-loader": "*",
     "angular-mocks": "*",
     "bootstrap": "3.3.x"

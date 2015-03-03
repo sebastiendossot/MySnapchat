@@ -1,10 +1,11 @@
 {
-"name": "bbq",
-"version": "0.0.1",
-"description": "test angular with a bbq app",
-"dependencies": {
-    "express": "*",
+  "name": "server",
+  "version": "0.0.1",
+  "description": "server for MySnapChat",
+  "dependencies": {
     "body-parser": "*",
+    "crypto": "0.0.3",
+    "express": "*",
     "mongoose": "*"
-    }
+  }
 }
