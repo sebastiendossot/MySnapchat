@@ -12,7 +12,7 @@ angular.module('myApp.viewNavBar', [])
 		    window.location.assign('#/connection')
 		}
 
-/*function() {
+		/*function() {
 			console.log("Logout button just pressed")
 			var success = function() {
 				User.logout();
@@ -27,15 +27,17 @@ angular.module('myApp.viewNavBar', [])
 		}*/
 		 // logout n'a pas de requete sur la bd ?
 		
+		
 		// Permet d'afficher une notification en cas de nouvelle demande d'amis
-		
-	    /*User.id = "507f191e810c19729de860ea"; // A supprimer
-		$http.get('/api/requests/'+User.id)
-		.success(function(data) {
-		   $scope.notifications = data.length;
-		})
-		.error(function(data) {
-			console.log("erreur lors de la récupération du nombre de demande d'amis");
-		})*/
-		
+		if(User.id != "")
+		{
+			$http.get('/api/requests/'+User.id)
+			.success(function(data) {
+				alert(data)
+			   $scope.notifications = data.length;
+			})
+			.error(function(data) {
+				console.log("erreur lors de la récupération du nombre de demande d'amis");
+			})
+		}
 	}])

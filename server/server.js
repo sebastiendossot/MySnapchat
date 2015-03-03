@@ -93,7 +93,6 @@ app.get('/api/recipes', function (req, resp , next) {
 
 //Ajouter un utilisateur
 app.post('/api/utilisateur', function(req, res, next) {
-console.log(req.body);
 var hash = crypto.createHash('sha256')
     hash.update(req.body.mdp)
     req.body.mdp = hash.digest('hex')
@@ -133,8 +132,7 @@ app.get('/api/utilisateur/:nom', function(req, res, next) {
    UtilisateurModel.findOne({'nom':req.params.nom}, function(e, result){  
            console.log("Nom du recepteur 123456");
         if (e)      
-         return next(e);    
-         console.log(result.nom)        
+        return next(e);          
         res.send(result)
     })
 })
@@ -185,7 +183,7 @@ app.get('/api/message/:id', function(req, res, next) {
 
 //recupération de toutes les demandes d'ami reçues et non traitées par un utilisateur
 app.get('/api/requests/:id', function(req, res, next) {
-    console.log("id = "+req.params.id);
+    console.log("id requests = "+req.params.id);
     AmiModel.find({idAmi2 : req.params.id, accepte : false }, function(e, result){
         if (e) return next(e);
         res.send(result)
@@ -195,7 +193,7 @@ app.get('/api/requests/:id', function(req, res, next) {
 //recupération des amis
 // (David) A CORRIGER : idAmi1 : req.params.id OU idAmi2 : req.params.id, sinon ça retournera pas tous les amis.
 app.get('/api/friends/:id', function(req, res, next) {
-    console.log("id = "+req.params.id);
+    console.log("id friend = "+req.params.id);
     AmiModel.find({idAmi1 : req.params.id, accepte : true }, function(e, result){
         if (e) return next(e);
         res.send(result)
@@ -203,13 +201,12 @@ app.get('/api/friends/:id', function(req, res, next) {
 })
 
 //recupération des informations d'un utilisateur
-app.get('/api/utilisateur/:id', function(req, res, next) {
-    console.log("id = "+req.params.id);
+app.get('/api/user/:id', function(req, res, next) {
+    console.log("id user = "+req.params.id);
     UtilisateurModel.findById(req.params.id, function(e, result){
         if (e) return next(e);
         res.send(result)
     })
 })
-// a supprimer ? ---> Non j'en ai besoin (David)
 
 

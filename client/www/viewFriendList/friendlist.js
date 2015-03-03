@@ -16,7 +16,6 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 			
 			var tempfriendlist = [];
 		
-			User.id = "507f191e810c19729de860ea"; // A supprimer
 			$http.get('/api/'+listName+'/'+User.id)
 			.success(function(data) {
 			   data.forEach(function(entry) {
@@ -24,8 +23,8 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 					var friendId = entry.idAmi1;
 					if(friendId == User.id)
 						friendId = entry.idAmi2;
-					
-					$http.get('/api/utilisateur/'+friendId)
+						
+					$http.get('/api/user/'+friendId)
 					.success(function(friend) {
 					   tempfriendlist.push(friend);
 					})
@@ -38,13 +37,6 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 			.error(function(data) {
 				console.log("erreur lors de la récupération de la liste d'amis");
 			})
-			
-			tempfriendlist = [
-			  {nom:'John'},
-			  {nom:'Jessie'},
-			  {nom:'Johanna'},
-			  {nom:'Roger'}
-			]
 			
 			return tempfriendlist;
 		}

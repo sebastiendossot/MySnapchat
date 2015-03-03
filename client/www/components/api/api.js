@@ -8,7 +8,7 @@ angular.module('myApp.api', []).service('User', function() {
 
     this.login = function(doc) {
 			this.connected = true
-			this.id = doc.id
+			this.id = doc._id
 			this.name = doc.nom
 			this.mail = doc.mail
 			this.description = doc.description
