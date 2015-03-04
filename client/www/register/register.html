@@ -2,7 +2,7 @@
 <div class="container">
   <h2>Inscription</h2>
   
-<span class="text-danger" ng-show="register.pwd1.$error.minlength">
+<span class="text-danger" ng-show="register.pwd.$error.minlength">
    Le mot de passe de contenir au minimum 5 caractères.
 </span>
 
@@ -28,7 +28,7 @@
 
     <div class="form-group" ng-class="{'has-error': register.$dirty && register.pwd.$invalid, 'has-success': register.pwd.$valid}">
       <label for="pwd">Mot de Passe:</label>
-      <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Mot de Passe" ng-required="true" ng-model="pwd">
+      <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Mot de Passe" ng-required="true" ng-model="pwd" ng-minlength="5">
     </div>
 
     <div class="form-group" ng-class="{'has-error': register.$dirty && register.pwd1.$invalid, 'has-success': register.pwd1.$valid}">

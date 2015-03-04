@@ -43,7 +43,7 @@ var Ami = new Schema({
 });
 
 var Utilisateur = new Schema({
-    nom:  String,
+    nom: {type: String, unique: true},
     description: String,
     mail: String,
     mdp : String
@@ -101,10 +101,13 @@ app.post('/api/utilisateur', function(req, res, next) {
     var hash = crypto.createHash('sha256')
     hash.update(req.body.mdp)
     req.body.mdp = hash.digest('hex')
-    var newUtilisateur = new UtilisateurModel(req.body);
+    var newUtilisateur = new UtilisateurModel(req.body)
     newUtilisateur.save(function(e, results){
-        if (e) return next(e);
-        res.send(results);
+        if (e) {
+	    res.send(null)
+	    return next(e)
+	}
+        res.send(results)
     })
 });
 
