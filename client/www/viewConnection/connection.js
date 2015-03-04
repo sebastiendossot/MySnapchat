@@ -17,7 +17,7 @@ angular.module('myApp.viewConnection', ['ngRoute'])
 		$scope.error = false
 
 		$scope.login = function() {
-		$http.post('api/connection', {name:$scope.pseudo, password:$scope.password}).success(function(data) {
+			$http.post('api/connection', {name:$scope.pseudo, password:$scope.password}).success(function(data) {
 				if (!data) {
 					$scope.error = true
 				}

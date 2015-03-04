@@ -8,8 +8,8 @@ angular.module('myApp.viewNavBar', [])
 		$scope.user = User
 
 		$scope.logout = function() {
-		    User.logout()
-		    window.location.assign('#/connection')
+			User.logout()
+			window.location.assign('#/connection')
 		}
 
 		/*function() {
@@ -26,15 +26,14 @@ angular.module('myApp.viewNavBar', [])
 			userWebService.logout({}, success, error);
 		}*/
 		 // logout n'a pas de requete sur la bd ?
-		
-		
+
+
 		// Permet d'afficher une notification en cas de nouvelle demande d'amis
 		if(User.id != "")
 		{
 			$http.get('/api/requests/'+User.id)
 			.success(function(data) {
-				alert(data)
-			   $scope.notifications = data.length;
+				$scope.notifications = data.length;
 			})
 			.error(function(data) {
 				console.log("erreur lors de la récupération du nombre de demande d'amis");

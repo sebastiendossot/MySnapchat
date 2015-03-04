@@ -3,6 +3,7 @@
 var onDeviceReady = function() {
 	angular.module('myApp', [
 		'ngRoute',
+		'ngStorage',
 		'myApp.viewConnection',
 		'myApp.viewNavBar',		
 		'myApp.register',  
@@ -13,8 +14,21 @@ var onDeviceReady = function() {
 		'myApp.api',
 		'myApp.webService',
 		])
-	.config(['$routeProvider', function($routeProvider) {
+
+	.factory('sessionInjector', ['$localStorage', function($localStorage) {  
+		var sessionInjector = {
+			request: function(config) {
+				if ($localStorage.token) {
+					config.headers['x-session-token'] = $localStorage.token;
+				}
+				return config;
+			}
+		};
+		return sessionInjector;
+	}])
+	.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 		$routeProvider.otherwise({redirectTo: '/connection'});
+		$httpProvider.interceptors.push('sessionInjector');
 	}]);
 	
 	// Manually launch bootstrap
