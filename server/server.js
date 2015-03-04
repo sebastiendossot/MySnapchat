@@ -116,7 +116,7 @@ app.post('/api/connection/', function(req, res, next) {
     UtilisateurModel.findOne({'nom': name}, function(e, result) {
         if (e) return next(e)
             if (!result) 
-                res.send(401)
+                res.sendStatus(401)
             else {
                 var hash = crypto.createHash('sha256')
                 hash.update(password)
@@ -148,10 +148,11 @@ app.get('/api/utilisateur/:nom', function(req, res, next) {
  UtilisateurModel.findOne({'nom':req.params.nom}, function(e, result){  
      console.log("Nom du recepteur 123456");
      if (e)      
-       return next(e);    
-   console.log(result.nom)        
+       return next(e); 
+     if (result)
+	 console.log(result.nom)
    res.send(result)
-})
+ })
 })
 
 
@@ -226,7 +227,6 @@ app.get('/api/user/:id', function(req, res, next) {
         res.send(result)
     })
 })
-// a supprimer ? ---> Non j'en ai besoin (David)
 
 /*************************************************************/
 /********************* DELETE REQUESTS ***********************/

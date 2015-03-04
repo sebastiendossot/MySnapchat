@@ -28,27 +28,35 @@ angular.module('myApp.register', ['ngRoute'])
     };
 }])
 .controller('Register2Ctrl',['$scope', '$http', function($scope,$http) {
-	$scope.registerUser = function() {    
-
-      	  $http.post('/api/utilisateur',  {
-		'nom' : $scope.pseudo,
-    		'mail': $scope.email,    	
-    		'mdp': $scope.pwd    	
-    		 })
-    		.success(function(data) {
-              window.location.assign('#/connection')	
-            })
-            .error(function(data) {
-                $scope.error = true;
-            })
-      
-    	$scope.pseudo = '';
-        $scope.pwd = '';
-        $scope.pwd1 = '';
-        $scope.email = '';     
-    
-    
- }	    
+  
+    $scope.pseudo = ''
+    $scope.pwd = ''
+    $scope.pwd1 = ''
+    $scope.email = ''     
+    $scope.error = 0
 	    
+    $scope.registerUser = function() {    
+	$http.get('/api/utilisateur/'+$scope.pseudo)
+	    .success(function(data) {
+		if (data)
+		    $scope.error = 2
+		else
+		    $http.post('/api/utilisateur',  {
+			'nom' : $scope.pseudo,
+    			'mail': $scope.email,    	
+    			'mdp': $scope.pwd
+		    })
+    		    .success(function(data) {
+			window.location.assign('#/connection')	
+		    })
+		    .error(function(data) {
+			$scope.error = 1
+		    })
+	    })
+	    .error(function(data) {
+                $scope.error = 1
+	    })
+    }
+  
 }])
 
