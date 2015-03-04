@@ -200,7 +200,7 @@ app.get('/api/message/:id', function(req, res, next) {
 })
 
 //recupération de toutes les demandes d'ami reçues et non traitées par un utilisateur
-app.get('/api/requests/:id', function(req, res, next) {
+app.get('/api/receivedRequests/:id', function(req, res, next) {
     authenticateSender(req.headers);
     console.log("id = "+req.params.id);
     AmiModel.find({idAmi2 : req.params.id, accepte : false }, function(e, result){
@@ -209,8 +209,18 @@ app.get('/api/requests/:id', function(req, res, next) {
     })
 })
 
+//recupération de toutes les demandes d'ami reçues et non traitées par un utilisateur
+app.get('/api/sentRequests/:id', function(req, res, next) {
+    authenticateSender(req.headers);
+    console.log("id = "+req.params.id);
+    AmiModel.find({idAmi1 : req.params.id, accepte : false }, function(e, result){
+        if (e) return next(e);
+        res.send(result)
+    })
+})
+
 //recupération des amis
-// (David) A CORRIGER : idAmi1 : req.params.id OU idAmi2 : req.params.id, sinon ça retournera pas tous les amis.
+// A CORRIGER : idAmi1 : req.params.id OU idAmi2 : req.params.id, sinon ça retournera pas tous les amis.
 app.get('/api/friends/:id', function(req, res, next) {
     console.log("id = "+req.params.id);
     AmiModel.find({idAmi1 : req.params.id, accepte : true }, function(e, result){

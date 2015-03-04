@@ -42,12 +42,13 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 		}
 		
 		// Enlever le "|| true" quand le système  de connexion sera terminé !
-		$scope.userConnected = User.connected || true;
+		$scope.userConnected = User.connected;
 		
 		if($scope.userConnected) 
 		{
 			$scope.friendList = getList("friends", $http, User);
-			$scope.requestList = getList("requests", $http, User);
+			$scope.receivedRequestList = getList("receivedRequests", $http, User);
+			$scope.sentRequestList = getList("sentRequests", $http, User);
 			
 			$scope.deleteFriend = function (friend) {
 				

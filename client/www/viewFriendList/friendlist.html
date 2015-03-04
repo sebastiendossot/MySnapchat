@@ -1,25 +1,20 @@
 <div ng-if="userConnected">
 
-	<div ng-if="requestList.length>0">
-		<h3>Vous avez {{requestList.length}} nouvelle<span ng-if="requestList.length>1">s</span> demande<span ng-if="requestList.length>1">s</span> en attente</h3>
-		Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
-
+	<div ng-if="receivedRequestList.length>0">
+		<h3>Vous avez {{receivedRequestList.length}} nouvelle<span ng-if="receivedRequestList.length>1">s</span> demande<span ng-if="receivedRequestList.length>1">s</span> en attente :</h3>
 		<div class="list-group row" style="width : 100%; max-width : 400px;">
 			
-			<div class="list-group-item" ng-repeat="friend in requestList">
-				<strong>{{friend.nom}}</strong>
-				<a ng-click="deleteFriend(friend)" style="margin: -5px -10px 0px 5px; float : right;" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Refuser</a>
-				<a ng-click="acceptRequest(friend)" style="margin: -5px 0px 0px 0px; float : right;" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Accepter</a>
+			<div class="list-group-item" ng-repeat="request in receivedRequestList">
+				<strong>{{request.nom}}</strong>
+				<a ng-click="deleteFriend(request)" style="margin: -5px -10px 0px 5px; float : right;" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Refuser</a>
+				<a ng-click="acceptRequest(request)" style="margin: -5px 0px 0px 0px; float : right;" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Accepter</a>
 				</div>
 
 		</div><br />
 	</div>
 
-	<h3>Liste de vos amis</h3>
-	
+	<h3>Liste de vos amis :</h3>
 	<div ng-if="friendList.length>0">
-		Attention : Pour le moment la liste est bidon et ne provient pas de la BDD.<br /><br />
-
 		<div class="list-group row" style="width : 100%; max-width : 400px;">
 			
 			<div class="list-group-item" ng-repeat="friend in friendList">
@@ -27,13 +22,24 @@
 				<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
 			</div>
 
-		</div>
+		</div><br /><br />
 	</div>
-	
 	<div ng-if="friendList.length===0">
 		Vous n'avez aucun ami dans votre liste pour le moment.<br />
-		Retrouvez dés à présent vos amis grâce au <a href="#">formulaire de recherche d'amis</a>.
+		Retrouvez dés à présent vos amis grâce au <a href="#/addfriend">formulaire de recherche d'amis</a>.<br /><br />
 	</div>
+	
+	<div ng-if="sentRequestList.length>0">
+		<h3>Demandes que vous avez effectué :</h3>
+		<div class="list-group row" style="width : 100%; max-width : 400px;">
+			
+			<div class="list-group-item" ng-repeat="request in sentRequestList">
+				<strong>{{request.nom}}</strong>
+			</div>
+
+		</div><br />
+	</div>
+	
 </div>
 
 <div ng-if="!userConnected">
