@@ -233,3 +233,10 @@ app.get('/api/user/:id', function(req, res, next) {
 /*************************************************************/
 
 
+app.delete('api/unsubscribe/:id', function(req,res, next) {
+    UtilisateurModel.findByIdAndRemove(req.params.id,  function(e, result){
+        if (e) 
+	    return next(e)
+        res.send(result)
+    })
+})
