@@ -10,21 +10,33 @@ angular.module('myApp.viewChat', ['ngRoute'])
 	});
 }])
 
-.controller('chatCtrl', ['$scope', '$http', 'userWebService', 'User', '$location',
-	function($scope, $http, userWebService, User, $location)  {
+.controller('chatCtrl', ['$scope', '$http', 'messageWebService', 'User', '$location',
+	function($scope, $http, messageWebService, User, $location)  {
 		
-		var tempMessageList = [
-		{sender:"David Cheminade", receiver:0, text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor eu fugiat nulla pariatur.'},
-		{sender:"Roger Rabbit", receiver:1, text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor eu fugiat nulla pariatur.'},
-		{sender:"Roger Rabbit", receiver:1, text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor eu fugiat nulla pariatur.'},
-		{sender:"David Cheminade", receiver:0, text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor eu fugiat nulla pariatur.'},
-		{sender:"Roger Rabbit", receiver:1, text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor eu fugiat nulla pariatur.'},
-		]
+		var populateMessageList = function(data) {
+			$scope.messageList = data.list;
+		}	
+
+		var error = function() {
+			console.log("erreur lors de la recupération des messages");
+		}
+		messageWebService.receivedMessages(null, populateMessageList, error);
 		
-		$scope.messageList = tempMessageList;
 		
 		$scope.sendMessage = function (message) {
 			alert("Message à envoyer : " + message.text);
+			
+			
+			var success = function(data) {
+				alert("message ok !")
+			}
+			var error = function(data, status) {
+				alert("Erreur envoi message")
+			}
+			
+			var array_receivers = [];
+			array_receivers.push({'idEnvoyeur':User.id, 'lu':false});
+			messageWebService.newMessage({'type':"message", 'donnes':message.text, 'idEnvoyeur':User.id, 'destinataires':array_receivers}, success, error);
 		}
 		
 	}]);

@@ -8,7 +8,7 @@ angular.module('myApp.webService', ['ngResource'])
 			byPseudo: {method: 'GET', params: {urlOption: "byPseudo"}},
 			byId: {method: 'GET', params: {urlOption: "byId"}},
 			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}}
-		});
+		})
 	})
 .factory('socialWebService',
 	function($resource) {
@@ -19,5 +19,12 @@ angular.module('myApp.webService', ['ngResource'])
 			newFriend: {method: 'POST', params: {urlOption: "friend"}},
 			declineRequest: {method: 'DELETE', params: {urlOption: "friend"}},
 			acceptRequest: {method: 'PUT', params: {urlOption: "request"}}
-		});
-	});
+		})
+	})
+.factory('messageWebService',
+	function($resource) {
+		return $resource('/api/:urlOption/:data', {data:'@data'}, {
+			newMessage: {method: 'POST', params: {urlOption: "message"}},
+			receivedMessages: {method: 'GET', params: {urlOption: "message"}},
+		})
+	})

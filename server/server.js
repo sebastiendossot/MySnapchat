@@ -228,11 +228,13 @@ app.get('/api/user/byId/:id', function(req, res, next) {
 
 //get les messages qui nous sont addressés
 app.get('/api/message/', function(req, res, next) {
-    var id = authenticateSender(req.headers);
-    if (!id) return res.sendStatus(403);
-    MessageModel.find({destinataire : id }, function(e, result){
+    //MessageModel.find({destinataires : {idDestinataires:id, lu:'false'} }, function(e, result){
+	
+	// A faire : recupérer les message seulement si on est le destinataire
+	MessageModel.find({type : "message" }, function(e, result){
         if (e) return next(e);
-        res.send(result)
+		console.log("messages = "+result)
+        res.send({list:result})
     })
 })
 
