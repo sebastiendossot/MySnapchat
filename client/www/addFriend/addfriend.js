@@ -16,7 +16,6 @@ angular.module('myApp.addfriend', ['ngRoute'])
     var pseudo = $scope.searchInfo;
 
     var success = function(friend) {
-      alert("Demande d'ajout envoyée");
       window.location.assign('#/friendlist')  
     }
     var error = function(data, status, headers){

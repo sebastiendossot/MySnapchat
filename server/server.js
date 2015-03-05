@@ -294,7 +294,6 @@ app.get('/api/sentRequests', function(req, res, next) {
 })
 
 //recupération des amis
-// A CORRIGER : idAmi1 : req.params.id OU idAmi2 : req.params.id, sinon ça retournera pas tous les amis. Normalement fait par Nicolas !
 app.get('/api/friends', function(req, res, next) {
     var id = authenticateSender(req.headers);
     if (!id) return res.sendStatus(403);
@@ -303,39 +302,35 @@ app.get('/api/friends', function(req, res, next) {
         console.log(res);
         console.log(id)
     })
-    FriendModel.find({idAmi1 : id, accepted : true }, function(e, result){
-        if (e) return next(e);
-        if (result) tmpFriends = result;
 
-        FriendModel.find({idAmi2 : id, accepted : true }, function(e, result){
-            if (e) return next(e);
-            if (result) tmpFriends = tmpFriends.concat(result);
-            if (tmpFriends.length === 0) {
-                return res.send({list:[]})
-            } else {
-                var friends = []
-                //For each requester, we get its pseudo and store it in a list we'll send
-                var asyncLoop = function(i, callback) {
-                    if( i < result.length ) {
-                        var friendshipId = tmpFriends[i]._id
-                        var requestSenderId = tmpFriends[i].idAmi1;
-                        if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
+	FriendModel.find({ $or: [ {idAmi1 : id, accepted : true }, {idAmi2 : id, accepted : true } ] }, function(e, result){
+		if (e) return next(e);
+		if (result) tmpFriends = tmpFriends.concat(result);
+		if (tmpFriends.length === 0) {
+			return res.send({list:[]})
+		} else {
+			var friends = []
+			//For each requester, we get its pseudo and store it in a list we'll send
+			var asyncLoop = function(i, callback) {
+				if( i < result.length ) {
+					var friendshipId = tmpFriends[i]._id
+					var requestSenderId = tmpFriends[i].idAmi1;
+					if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
 
-                        UserModel.findById(requestSenderId, 'pseudo', function(e, user){
-                            if (e) return next(e);
-                            friends.push({user: user, friendshipId: friendshipId});
-                            asyncLoop( i+1, callback );
-                        })
-                    } else {
-                        callback();
-                    }
-                }
-                asyncLoop( 0, function() {
-                    res.send({list:friends})
-                });
-            }
-        });
-})
+					UserModel.findById(requestSenderId, 'pseudo', function(e, user){
+						if (e) return next(e);
+						friends.push({user: user, friendshipId: friendshipId});
+						asyncLoop( i+1, callback );
+					})
+				} else {
+					callback();
+				}
+			}
+			asyncLoop( 0, function() {
+				res.send({list:friends})
+			});
+		}
+	});
 })
 
 /*************************************************************/
@@ -357,7 +352,6 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
 
 // TODO : Suppression ou refus d'un ami
 app.delete('/api/friend/:id', function(req, res, next) {
-    // A coder : DELETE FROM Ami WHERE _id = req.body.idToDelete
     var reqId = req.params.id;
     console.log("Delete friend - ID line = "+req.params.id);
     var id = authenticateSender(req.headers);
@@ -366,12 +360,10 @@ app.delete('/api/friend/:id', function(req, res, next) {
     FriendModel.findById(reqId, function(e, result) {
         if (e) return next(e);
         if (!result) res.sendStatus(404);
-        if (result.idAmi2.equals(id)) {
             result.remove(function (err, req) {
                 if (err) return next(err);
                 res.sendStatus(200)
             })
-        }
     })
 
 
