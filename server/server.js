@@ -50,15 +50,17 @@ var User = new Schema({
 });
 
 var Destinataire = new Schema({
-    idDestinataires : Schema.ObjectId,
+    idDestinataire : Schema.ObjectId,
     lu : Boolean
 });
 
 var Message = new Schema({
     type:  String,
     donnes: String,
+    temps: Number,
     idEnvoyeur : Schema.ObjectId,
-    destinataires : [Destinataire]
+    destinataires : [Destinataire],
+    dateEnvoi : Date
 });
 
 /*

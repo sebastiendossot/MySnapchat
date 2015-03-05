@@ -13,13 +13,13 @@
 
       <ul class="nav navbar-nav" ng-if="user.connected">
         <li><a href="#/friendlist">Liste d'amis <span ng-if="notifications>0">(<b style="color : red;">{{notifications}}</b>)</span></a></li>
-        <li><a href="#/settings" ng-click="">Paramètres</a></li>
-        <li><a href="#/addfriend" ng-click="">Ajouter</a></li>
+        <li><a href="#/addfriend" ng-click="">Ajouter un ami</a></li>
+	<li><a href="#/settings" ng-click="">Paramètres</a></li>
       </ul> 
 
 
       <ul class="nav navbar-nav navbar-right" ng-if="user.connected">
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user.name}} <span class="caret"></span></a>
+        <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user.name}} <span class="caret"></span></a>
           <ul class="dropdown-menu">	
            <li><a href="" ng-click="logout()">Deconnexion</a></li>
          </ul>

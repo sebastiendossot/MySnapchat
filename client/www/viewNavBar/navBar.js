@@ -12,22 +12,8 @@ angular.module('myApp.viewNavBar', ['ngRoute'])
 			window.location.assign('#/connection')
 		}
 
-		/*function() {
-			console.log("Logout button just pressed")
-			var success = function() {
-				User.logout();
-				$location.assign('#/login')
-			}
-			var error = function() {
-				$scope.setErrorCallback()
-				$('#callbackDialog').modal('show')
-			}
-
-			userWebService.logout({}, success, error);
-		}*/
-		 // logout n'a pas de requete sur la bd ?
-
-		// Permet d'afficher une notification en cas de nouvelle demande d'amis
+		
+	    // Permet d'afficher une notification en cas de nouvelle demande d'amis
 		$scope.reload_notifications = function () {
 			if(User.id != "")
 			{
