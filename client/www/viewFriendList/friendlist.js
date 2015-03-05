@@ -29,20 +29,21 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 			$scope.sentRequestList = data.list;
 		}
 
-		$scope.declineRequest = function (friend) {
+		$scope.declineRequest = function (friendRequest) {
 			var success = function(data) {
 				socialWebService.receivedRequests(null, populateReceivedRequestList, error);
 				socialWebService.friends(null, populateFriendList, error);
 			}
 			var error = function(data) {
-				console.error("erreur lors de la suppression d'un des amis");
+				console.error("erreur lors du refus d'une demande d'ami");
 			}
-			socialWebService.declineRequest({data:friend.reqId}, success, error)
-
+		
+			socialWebService.declineRequest({data:friendRequest.reqId}, success, error)
 		}
 
 		$scope.acceptRequest = function (friendRequest) {
 			var success = function() {
+				socialWebService.receivedRequests(null, populateReceivedRequestList, error);
 				socialWebService.sentRequests(null, populateSentRequestList, error);
 				socialWebService.friends(null, populateFriendList, error);
 			}
@@ -52,10 +53,19 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 			socialWebService.acceptRequest({data:friendRequest.reqId}, success, error);
 
 		}
-
-		// Enlever le "|| true" quand le système  de connexion sera terminé !
-		$scope.userConnected = User.connected;
 		
+		$scope.deleteFriend = function (friend) {
+			var success = function(data) {
+				socialWebService.receivedRequests(null, populateReceivedRequestList, error);
+				socialWebService.friends(null, populateFriendList, error);
+			}
+			var error = function(data) {
+				console.error("erreur lors de la suppression d'un des amis");
+			}
+			socialWebService.declineRequest({data:friend.friendshipId}, success, error)
+		}
+
+		$scope.userConnected = User.connected;
 		if($scope.userConnected) 
 		{
 			socialWebService.friends(null, populateFriendList, error);
