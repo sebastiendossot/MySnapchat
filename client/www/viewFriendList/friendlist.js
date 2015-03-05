@@ -10,8 +10,8 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 	});
 }])
 
-.controller('friendListCtrl', ['$scope', '$http', 'userWebService', 'User', '$location', 'socialWebService',
-	function($scope, $http, userWebService, User, $location, socialWebService)  {
+.controller('friendListCtrl', ['$scope', '$http', 'userWebService', 'User', 'Messaging', '$location', 'socialWebService',
+	function($scope, $http, userWebService, User, Messaging, $location, socialWebService)  {
 		$scope.friendList = [];
 		$scope.receivedRequestList = []
 		$scope.sentRequestList = []
@@ -64,6 +64,23 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 			}
 			socialWebService.declineRequest({data:friend.friendshipId}, success, error)
 		}
+		
+		$scope.openDiscussion = function (friend) {
+			Messaging.addReceiver(friend)
+			window.location.assign('#/chat') 
+		}
+		
+		$scope.sendImage = function (friend) {
+			Messaging.addReceiver(friend)
+			window.location.assign('#/imageCapture') 
+		}
+		
+		$scope.sendVideo = function (friend) {
+			Messaging.addReceiver(friend)
+			window.location.assign('#/videoCapture') 
+		}
+		
+
 
 		$scope.userConnected = User.connected;
 		if($scope.userConnected) 

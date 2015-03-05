@@ -10,8 +10,13 @@ angular.module('myApp.viewChat', ['ngRoute'])
 	});
 }])
 
-.controller('chatCtrl', ['$scope', '$http', 'messageWebService', 'User', '$location',
-	function($scope, $http, messageWebService, User, $location)  {
+.controller('chatCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, $http, messageWebService, User, Messaging, $location)  {
+		
+		var receivers = Messaging.receivers
+		Messaging.resetReceivers()
+		
+		$scope.labelReceiver = receivers[0].pseudo
 		
 		var populateMessageList = function(data) {
 			$scope.messageList = data.list;

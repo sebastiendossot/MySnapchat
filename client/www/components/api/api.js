@@ -30,4 +30,16 @@ angular.module('myApp.api', ['ngStorage'])
 		this.description = ""
 	}
 
+})
+.service('Messaging', function($localStorage) {
+	
+	this.receivers = []
+	
+	this.addReceiver = function(user) {
+		this.receivers.push(user)
+	}
+	
+	this.resetReceivers = function() {
+		this.receivers = []
+	}
 });
