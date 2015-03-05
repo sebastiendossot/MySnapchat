@@ -32,7 +32,7 @@ angular.module('myApp.settings', ['ngRoute'])
 				$('#callbackDialog').modal('show')
 				$('#callbackDialog').on('hidden.bs.modal', function (e) {
 					User.logout();
-					window.location.assign('/login') 
+					window.location.assign('#/login') 
 				})
 			}
 			var error = function() {
