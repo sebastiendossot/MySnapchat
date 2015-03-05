@@ -5,12 +5,12 @@ angular.module('myApp.viewChat', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/chat', {
 		templateUrl: 'viewChat/chat.html',
-		controller: 'chatCtrl',
+		controller: 'affichageCtrl',
 		isPrivate: true
 	});
 }])
 
-.controller('chatCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
+.controller('affichageCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
 	function($scope, $http, messageWebService, User, Messaging, $location)  {
 		
 		var receivers = Messaging.receivers
@@ -26,11 +26,13 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			console.log("erreur lors de la recupération des messages");
 		}
 		messageWebService.receivedMessages(null, populateMessageList, error);
-		
+}])
+
+.controller('messageCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, $http, messageWebService, User, Messaging, $location)  {
 		
 		$scope.sendMessage = function (message) {
 			alert("Message à envoyer : " + message.text);
-			
 			
 			var success = function(data) {
 				alert("message ok !")
@@ -44,4 +46,14 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			messageWebService.newMessage({'type':"message", 'donnes':message.text, 'idEnvoyeur':User.id, 'destinataires':array_receivers}, success, error);
 		}
 		
-	}]);
+}])
+
+.controller('imageCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, $http, messageWebService, User, Messaging, $location)  {
+		
+}])
+
+.controller('videoCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, $http, messageWebService, User, Messaging, $location)  {
+		
+}]);
