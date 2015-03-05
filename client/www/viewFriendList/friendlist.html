@@ -5,10 +5,10 @@
 		<div class="list-group row" style="width : 100%; max-width : 400px;">
 			
 			<div class="list-group-item" ng-repeat="request in receivedRequestList">
-				<strong>{{request.nom}}</strong>
-				<a ng-click="deleteFriend(request)" style="margin: -5px -10px 0px 5px; float : right;" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Refuser</a>
+				<strong>{{request.user.pseudo}}</strong>
+				<a ng-click="declineRequest(request)" style="margin: -5px -10px 0px 5px; float : right;" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Refuser</a>
 				<a ng-click="acceptRequest(request)" style="margin: -5px 0px 0px 0px; float : right;" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Accepter</a>
-				</div>
+			</div>
 
 		</div><br />
 	</div>
@@ -18,7 +18,7 @@
 		<div class="list-group row" style="width : 100%; max-width : 400px;">
 			
 			<div class="list-group-item" ng-repeat="friend in friendList">
-				<strong>{{friend.nom}}</strong>
+				<strong>{{friend.user.pseudo}}</strong>
 				<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
 			</div>
 
@@ -34,7 +34,7 @@
 		<div class="list-group row" style="width : 100%; max-width : 400px;">
 			
 			<div class="list-group-item" ng-repeat="request in sentRequestList">
-				<strong>{{request.nom}}</strong>
+				<strong>{{request.user.pseudo}}</strong>
 			</div>
 
 		</div><br />

@@ -4,8 +4,8 @@ angular.module('myApp.api', ['ngStorage'])
 	
 	this.connected = undefined !== $localStorage.token
 	this.id = $localStorage.user ? $localStorage.user._id : ""
-	this.name = $localStorage.user ? $localStorage.user.nom : ""
-	this.mail = $localStorage.user ? $localStorage.user.mail : ""
+	this.name = $localStorage.user ? $localStorage.user.pseudo : ""
+	this.mail = $localStorage.user ? $localStorage.user.email : ""
 	this.description = $localStorage.user ? $localStorage.user.description : ""
 
 	this.login = function(data) {
@@ -14,8 +14,8 @@ angular.module('myApp.api', ['ngStorage'])
 
 		this.connected = true
 		this.id = data.user._id
-		this.name = data.user.nom
-		this.mail = data.user.mail
+		this.name = data.user.pseudo
+		this.mail = data.user.email
 		this.description = data.user.description
 	}
 

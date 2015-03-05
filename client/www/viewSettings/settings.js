@@ -5,7 +5,8 @@ angular.module('myApp.settings', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/settings', {
 		templateUrl: 'viewSettings/settings.html',
-		controller: 'SettingsCtrl'
+		controller: 'SettingsCtrl',
+		isPrivate: true
 	});
 }])
 
@@ -16,6 +17,7 @@ angular.module('myApp.settings', ['ngRoute'])
 			title:'',
 			content:''
 		}
+
 		$scope.setErrorCallback = function() {
 			$scope.callback.title = "Erreur";
 			$scope.callback.content = "Un problème inattendu est survenu, veuillez réessayer plus tard";
@@ -29,15 +31,15 @@ angular.module('myApp.settings', ['ngRoute'])
 				$scope.callback.content = "Votre compte a bien été supprimé. Merci d'avoir utilisé MySnapchat";
 				$('#callbackDialog').modal('show')
 				$('#callbackDialog').on('hidden.bs.modal', function (e) {
-					alert("Redirection vers #/connection") // A supprimer plus tard
-					$location.assign('#/connection')
+					User.logout();
+					window.location.assign('/login') 
 				})
 			}
 			var error = function() {
 				$scope.setErrorCallback()
 				$('#callbackDialog').modal('show')
 			}
-			userWebService.delete({}, success, error);
+			userWebService.unsubscribe({}, success, error);
 		}
 
 	}]);
