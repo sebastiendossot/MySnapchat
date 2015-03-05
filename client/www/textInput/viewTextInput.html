@@ -1,0 +1,18 @@
+
+<div class="row container-fluid" ng-controller="textInputCtrl">
+  <form name="input">
+
+    <div  class="col-sm-10">
+      <textarea class="form-control" rows="2" ng-model="text"
+		ng-required="true"></textarea>
+    </div>
+ 
+    <div class="col-sm-2">
+      <input type="button" value="Envoi" class="btn btn-success"
+	     ng-disabled="input.$invalid" ng-click="send()"></input>
+      
+      <label style="color:red" ng-if="error">Echec de l'envoi</label>
+    </div>
+
+  </form>
+</div>

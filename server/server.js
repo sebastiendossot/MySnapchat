@@ -50,15 +50,17 @@ var User = new Schema({
 });
 
 var Destinataire = new Schema({
-    idDestinataires : Schema.ObjectId,
+    idDestinataire : Schema.ObjectId,
     lu : Boolean
 });
 
 var Message = new Schema({
     type:  String,
     donnes: String,
+    temps: Number,
     idEnvoyeur : Schema.ObjectId,
-    destinataires : [Destinataire]
+    destinataires : [Destinataire],
+    dateEnvoi : Date
 });
 
 /*
@@ -348,8 +350,14 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
         if(result) {
             console.log("Account "+result.pseudo+" removed")
         }
-        res.sendStatus(200)
     })
+    FriendModel.findByIdAndRemove(id, function(e, result) {
+	if (e) return res.sendStatus(404);
+        if(result) {
+            console.log("friendlist of "+result.pseudo+" removed")
+        }
+    })
+    res.sendStatus(200)
 })
 
 // TODO : Suppression ou refus d'un ami
