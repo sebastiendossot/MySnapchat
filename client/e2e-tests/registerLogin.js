@@ -15,7 +15,12 @@ describe('register/login', function () {
     })
 
     it('should logout this user', function() {
-	//TODO
+	connection()
+	expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/friendlist')
+
+	element(by.linkText('user1')).click()
+	element(by.linkText('Deconnexion')).click()
+	expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
     })
 
     it('should unregister this user', function() {
