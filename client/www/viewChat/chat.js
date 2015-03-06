@@ -14,8 +14,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 	function($scope, messageWebService, User, Messaging, $location)  {
 		
 		var receivers = Messaging.receivers
-		Messaging.resetReceivers()
-		
+	
 		$scope.labelReceiver = receivers[0].pseudo
 		
 		var populateMessageList = function(data) {

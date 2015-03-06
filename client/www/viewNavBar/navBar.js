@@ -9,7 +9,7 @@ angular.module('myApp.viewNavBar', ['ngRoute'])
 
 		$scope.logout = function() {
 			User.logout()
-			window.location.assign('#/connection')
+			window.location.assign('#/login')
 		}
 
 		
