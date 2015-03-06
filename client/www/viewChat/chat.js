@@ -10,8 +10,8 @@ angular.module('myApp.viewChat', ['ngRoute'])
 	});
 }])
 
-.controller('affichageCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, $http, messageWebService, User, Messaging, $location)  {
+.controller('affichageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, messageWebService, User, Messaging, $location)  {
 		
 		var receivers = Messaging.receivers
 		Messaging.resetReceivers()
@@ -28,32 +28,13 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		messageWebService.receivedMessages(null, populateMessageList, error);
 }])
 
-.controller('messageCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, $http, messageWebService, User, Messaging, $location)  {
-		
-		$scope.sendMessage = function (message) {
-			alert("Message à envoyer : " + message.text);
-			
-			var success = function(data) {
-				alert("message ok !")
-			}
-			var error = function(data, status) {
-				alert("Erreur envoi message")
-			}
-			
-			var array_receivers = [];
-			array_receivers.push({'idEnvoyeur':User.id, 'lu':false});
-			messageWebService.newMessage({'type':"message", 'donnes':message.text, 'idEnvoyeur':User.id, 'destinataires':array_receivers}, success, error);
-		}
+
+.controller('imageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, messageWebService, User, Messaging, $location)  {
 		
 }])
 
-.controller('imageCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, $http, messageWebService, User, Messaging, $location)  {
-		
-}])
-
-.controller('videoCtrl', ['$scope', '$http', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, $http, messageWebService, User, Messaging, $location)  {
+.controller('videoCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
+	function($scope, messageWebService, User, Messaging, $location)  {
 		
 }]);

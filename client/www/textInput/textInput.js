@@ -2,26 +2,33 @@
 
 angular.module('myApp.textInput', ['ngRoute'])
 
-.controller('textInputCtrl', ['$scope', '$http', 'User', 
-	function($scope, $http, User) {
+.controller('textInputCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', 
+	function($scope, messageWebService, User, Messaging) {
 
 	    $scope.text=""
 	    $scope.error = false
+	    $scope.receivers = Messaging.receivers
 
 	    $scope.send = function() {
-		$http.post('/api/message', {
-		    type: "text", donnes: $scope.text, temps: 60,
-		    idEnvoyeur: User.id,
-		    destinataires:[{idDestinataire:"", lu: false}],
-		    dateEnvoi: new Date()
-		})
-		.success(function(data){
+
+		var success = function(data){
 		    $scope.text=""
-		    windows.location.assign("#/chat")
-		})
-		.error(function(data){
+		    window.location.assign("#/chat")
+		}
+
+		var error = function(data){
 		    $scope.error = true
-		})
+		}
+
+		messageWebService.newMessage(
+		    {type: "text", donnes: $scope.text, temps: 60,
+		     idEnvoyeur: User.id,
+		     destinataires: $scope.receivers.map(function(receiver){
+			 return {idDestinataire: receiver, lu: false}
+		     }),
+		     dateEnvoi: new Date()}
+		    , success, error)
+
 	    }
 
 	}])

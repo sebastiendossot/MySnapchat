@@ -58,11 +58,7 @@
                 </div>
                 <div class="panel-footer">
 				
-                    <div ng-if="true" ng-controller="messageCtrl" class="input-group">
-                        <input ng-model="newMessage.text" id="btn-input" type="text" class="form-control input-sm" placeholder="Ecrivez votre message ici..." />
-                        <span class="input-group-btn">
-                            <button ng-click="sendMessage(newMessage)" class="btn btn-warning btn-sm" id="btn-chat">Send</button>
-                        </span>
+                    <div ng-if="true" ng-include="'textInput/viewTextInput.html'">
                     </div>
 					
 					<div ng-if="false" ng-controller="imageCtrl" class="input-group">
