@@ -11,17 +11,11 @@ angular.module('myApp.viewChat', ['ngRoute'])
 }])
 .controller('affichageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
 	function($scope, messageWebService, User, Messaging, $location)  {
-<<<<<<< HEAD
 		var receivers = Messaging.receivers;
 		$scope.messageList = []
 
 		Messaging.resetReceivers();
-		
-=======
-		
-		var receivers = Messaging.receivers
 	
->>>>>>> 52c1390747d92fcbe99becef23dd19bb0bb07c69
 		$scope.labelReceiver = receivers[0].pseudo
 		
 		$scope.dateNow = new Date();
@@ -41,7 +35,6 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			console.log(message.temps)	
 			setTimeout(function(){
 				console.log("fin")
-				$scope.stop
 				$scope.deleteMessage(message);
 			}, 6000);
 		}

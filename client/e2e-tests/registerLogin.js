@@ -12,6 +12,12 @@ describe('register/login', function () {
 
     it('should register and connect an user', function() {
 	//TODO
+		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/register')
+		element(by.model('email')).sendKeys('user1@gmail.com');
+		element(by.model('pseudo')).sendKeys('user1');
+		element(by.model('pwd')).sendKeys('user1');
+		element(by.model('pwd1')).sendKeys('user1');
+		element(by.buttonText("S'enregistrer")).click();
     })
 
     it('should logout this user', function() {
