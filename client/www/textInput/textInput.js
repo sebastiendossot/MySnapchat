@@ -25,7 +25,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 		    {type: "text", donnes: $scope.text, temps: 60,
 		     idEnvoyeur: User.id,
 		     destinataires: $scope.receivers.map(function(receiver){
-			 return {idDestinataire: receiver, lu: false}
+			 return {idDestinataire: receiver._id, lu: false}
 		     }),
 		     dateEnvoi: new Date()}
 		    , success, error)

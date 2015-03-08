@@ -10,8 +10,8 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 	});
 }])
 
-.controller('friendListCtrl', ['$scope', '$http', 'userWebService', 'User', 'Messaging', '$location', 'socialWebService',
-	function($scope, $http, userWebService, User, Messaging, $location, socialWebService)  {
+.controller('friendListCtrl', ['$scope', 'userWebService', 'User', 'Messaging', '$location', 'socialWebService',
+	function($scope, userWebService, User, Messaging, $location, socialWebService)  {
 		$scope.friendList = [];
 		$scope.receivedRequestList = []
 		$scope.sentRequestList = []
@@ -66,16 +66,19 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 		}
 		
 		$scope.openDiscussion = function (friend) {
+		        Messaging.resetReceivers()
 			Messaging.addReceiver(friend)
 			window.location.assign('#/chat') 
 		}
 		
 		$scope.sendImage = function (friend) {
+		        Messaging.resetReceivers()
 			Messaging.addReceiver(friend)
 			window.location.assign('#/imageCapture') 
 		}
 		
 		$scope.sendVideo = function (friend) {
+		        Messaging.resetReceivers()
 			Messaging.addReceiver(friend)
 			window.location.assign('#/videoCapture') 
 		}
