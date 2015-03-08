@@ -16,43 +16,15 @@
                 <div class="panel-body">
                     <ul class="chat" ng-repeat="message in messageList">
 					
-						<!-- Changer le chemin pour inclure la vue pour les messages -->
-						<span ng-if="message.type==='message'" ng-include src="'Chemin/vers/viewMessage.html'"></span>
+						<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
+						<span ng-if="true" ng-include="'textOutput/viewTextOutput.html'"></span>
 						
 						<!-- Changer le chemin pour inclure la vue pour les images -->
-						<span ng-if="message.type==='image'" ng-include src="'Chemin/vers/viewImage.html'"></span>
+						<span ng-if="message.type==='image'" ng-include="'Chemin/vers/viewImage.html'"></span>
 						
 						<!-- Changer le chemin pour inclure la vue pour les vidéos -->
-						<span ng-if="message.type==='video'" ng-include src="'Chemin/vers/viewVideo.html'"></span>
-						
-						<!--
-						Mettre ce bloc dans la vue pour les messages
-						<li ng-if="message.receiver === 0" class="left clearfix" style="padding-right : 80px;">
-							<span class="chat-img pull-left">
-								<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-							</span>
-							<div class="chat-body clearfix">
-								<div class="header">
-									<strong class="primary-font">{{message.sender}}</strong> 
-									<small class="text-muted"><span class="glyphicon glyphicon-time"></span>10 mins ago</small>
-								</div>
-								<p>{{message.text}}</p>
-							</div>
-						</li>
-						
-						<li ng-if="message.receiver === 1" class="right clearfix" style="padding-left : 80px;">
-							<span class="chat-img pull-right">
-								<img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-							</span>
-							<div class="chat-body clearfix">
-								<div class="header">
-									<small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>10 mins ago</small>
-									<strong class="pull-right primary-font">{{message.sender}}</strong><br />
-								</div>
-								<p class="pull-right">{{message.text}}</p>
-							</div>
-						</li>
-						-->
+						<span ng-if="message.type==='video'" ng-include="'Chemin/vers/viewVideo.html'"></span>
+
 						
                     </ul>
                 </div>

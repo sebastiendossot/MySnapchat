@@ -26,5 +26,6 @@ angular.module('myApp.webService', ['ngResource'])
 		return $resource('/api/:urlOption/:data', {data:'@data'}, {
 			newMessage: {method: 'POST', params: {urlOption: "message"}},
 			receivedMessages: {method: 'GET', params: {urlOption: "message"}},
+			deleteMessage:{method: 'DELETE', params: {urlOption: "message"}}
 		})
 	})

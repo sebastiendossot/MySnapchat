@@ -10,10 +10,11 @@ angular.module('myApp.textInput', ['ngRoute'])
 	    $scope.receivers = Messaging.receivers
 
 	    $scope.send = function() {
-
 		var success = function(data){
+		    
 		    $scope.text=""
-		    window.location.assign("#/chat")
+		    window.location.assign("#/chat");
+		    //messageWebService.receivedMessages(null, populateMessageList, error);
 		}
 
 		var error = function(data){

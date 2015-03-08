@@ -233,9 +233,9 @@ app.get('/api/message/', function(req, res, next) {
     //MessageModel.find({destinataires : {idDestinataires:id, lu:'false'} }, function(e, result){
 	
 	// A faire : recupérer les message seulement si on est le destinataire
-	MessageModel.find({type : "message" }, function(e, result){
+	MessageModel.find({type : "text" }, function(e, result){
         if (e) return next(e);
-		console.log("messages = "+result)
+		//console.log("messages = "+result)
         res.send({list:result})
     })
 })
@@ -374,6 +374,30 @@ app.delete('/api/friend/:id', function(req, res, next) {
                 if (err) return next(err);
                 res.sendStatus(200)
             })
+    })
+
+
+});
+
+
+//suppression du message
+app.delete('/api/message/:id', function(req, res, next) {
+    var reqId = req.params.id;
+    console.log("Delete message - ID line = "+req.params.id);
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
+    //If the user asking to delete is the one who received the request, Okay
+    MessageModel.findById(reqId, function(e, result) {
+        if (e) return next(e);
+        if (!result) {
+             console.log("Message supprimé")
+            //res.sendStatus(404);
+        }else{
+            result.remove(function (err, req) {
+                if (err) return next(err);
+                res.sendStatus(200)
+            })
+        }
     })
 
 
