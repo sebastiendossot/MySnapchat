@@ -1,11 +1,12 @@
 {
-  "name": "server",
-  "version": "0.0.1",
-  "description": "server for MySnapChat",
-  "dependencies": {
-    "body-parser": "*",
-    "crypto": "0.0.3",
-    "express": "*",
-    "mongoose": "*"
-  }
+	"name": "server",
+	"version": "0.0.1",
+	"description": "server for MySnapChat",
+	"dependencies": {
+		"body-parser": "*",
+		"crypto": "0.0.3",
+		"express": "*",
+		"mongoose": "*",
+		"jwt-simple": "*"
+	}
 }

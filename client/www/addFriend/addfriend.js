@@ -5,37 +5,32 @@ angular.module('myApp.addfriend', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/addfriend', {
     templateUrl: 'addFriend/addfriend.html',
-    controller: 'addfriendCtrl'
+    controller: 'addfriendCtrl',
+    isPrivate: true
   });
 }])
 
-.controller('addfriendCtrl', ['$scope','$http', 'User',function($scope,$http,User) {  
-   
-   $scope.addfriend = function(){
-   var nom = $scope.searchInfo;
-       	$http.get('/api/utilisateur/'+nom)
-    .success(function(data){   	
-    //alert($scope.searchInfo);   
+.controller('addfriendCtrl', ['$scope', 'socialWebService', 'User', function($scope, socialWebService, User) {  
 
-      var idAmi = data.id;
-      var iduser = User.id;
-   
-     $http.post('/api/ami', {'idAmi1': iduser,
-                              'idAmi2' : idAmi,
-                              'accepte' : false })
-          .success(function(friend) {
-             console.log("Insertion ok")
-          })               
-               
-   	}).error(function(data){
-   		alert("erreur")
-   	});
-  $scope.searchInfo ="";
+  $scope.addfriend = function() {
+    var pseudo = $scope.searchInfo;
 
-//alert(User.id); ok
+    var success = function(friend) {
+      window.location.assign('#/friendlist')  
+    }
+    var error = function(data, status, headers){
+      if(data.status === 404) {
+        alert("Utilisateur inconnu");
+      }
+      console.error(data);
+    }
 
-   
-}
+    /*Directly launch the new friendship to server. Server will return error 404 if the
+    pseudo the user entered is invalid*/
+    socialWebService.newFriend({'pseudo' : pseudo}, success, error)
+
+    $scope.searchInfo ="";
+  }
 
 }]);
 

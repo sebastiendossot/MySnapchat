@@ -1,25 +1,45 @@
-angular.module('myApp.api', []).service('User', function() {
-    
-    this.connected = false
-    this.id = ""
-    this.name = ""
-    this.mail = ""
-    this.description = ""
+angular.module('myApp.api', ['ngStorage'])
 
-    this.login = function(doc) {
-			this.connected = true
-			this.id = doc.id
-			this.name = doc.nom
-			this.mail = doc.mail
-			this.description = doc.description
-		}
+.service('User', function($localStorage) {
+	
+	this.connected = undefined !== $localStorage.token
+	this.id = $localStorage.user ? $localStorage.user._id : ""
+	this.name = $localStorage.user ? $localStorage.user.pseudo : ""
+	this.mail = $localStorage.user ? $localStorage.user.email : ""
+	this.description = $localStorage.user ? $localStorage.user.description : ""
 
-    this.logout = function() {
-			this.connected = false
-			this.id = ""
-			this.name = ""
-			this.mail = ""
-			this.description = ""
-		}
+	this.login = function(data) {
+		$localStorage.token = data.token
+		$localStorage.user = data.user
 
-	})
+		this.connected = true
+		this.id = data.user._id
+		this.name = data.user.pseudo
+		this.mail = data.user.email
+		this.description = data.user.description
+	}
+
+	this.logout = function() {
+		delete $localStorage.token;
+		delete $localStorage.user;
+		
+		this.connected = false
+		this.id = ""
+		this.name = ""
+		this.mail = ""
+		this.description = ""
+	}
+
+})
+.service('Messaging', function($localStorage) {
+	
+	this.receivers = []
+	
+	this.addReceiver = function(user) {
+		this.receivers.push(user)
+	}
+	
+	this.resetReceivers = function() {
+		this.receivers = []
+	}
+});

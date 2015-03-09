@@ -1,8 +1,11 @@
 <div>
-<form name="search" ng-submit ="addfriend()">
-	<label>Utilisateur à ajouter</label>
-	<input type = "text" name="searchInfo" ng-model ="searchInfo"/>
-	<button name="searchButton">Ajouter</button>
+<form name="search" ng-submit ="addfriend()">		
+
+ <div class="form-group" ng-class="{'has-error': search.$dirty && search.searchInfo.$invalid, 'has-success': search.searchInfo.$valid}">
+      </font></i></label><input type="text" class="form-control" id="searchInfo"placeholder="Ajouter un utilisateur" ng-required="true" ng-model="searchInfo" name="searchInfo">
+ </div>
+	<button name="searchButton" class="btn btn-primary btn-large">Ajouter</button> 
 </form>
 
 </div>
+

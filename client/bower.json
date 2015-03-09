@@ -11,6 +11,7 @@
     "angular-resource": "*",
     "angular-loader": "*",
     "angular-mocks": "*",
+    "ngstorage": "*",
     "bootstrap": "3.3.x"
 
   }

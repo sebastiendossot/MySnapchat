@@ -1,41 +1,44 @@
 'use strict';
 
-angular.module('myApp.viewNavBar', [])
+angular.module('myApp.viewNavBar', ['ngRoute'])
 
-.controller('navBarCtrl', ['$scope', '$http', 'User', 
-	function($scope, $http, User) {
+.controller('navBarCtrl', ['$scope', 'User', 'socialWebService', '$location', 'mainPageUrl', '$route',
+	function($scope, User, socialWebService, $location, mainPageUrl, $route) {
 
 		$scope.user = User
 
 		$scope.logout = function() {
-		    User.logout()
-		    window.location.assign('#/connection')
+			User.logout()
+			window.location.assign('#/login')
 		}
 
-/*function() {
-			console.log("Logout button just pressed")
-			var success = function() {
-				User.logout();
-				$location.assign('#/connection')
+		
+	    // Permet d'afficher une notification en cas de nouvelle demande d'amis
+	    $scope.reload_notifications = function () {
+	    	if(User.id != "")
+	    	{
+	    		var success = function(data) {
+	    			$scope.notifications = data.list.length;
+	    		}
+	    		var error = function(data) {
+	    			console.error("erreur lors de la récupération du nombre de demande d'amis");
+	    		}
+	    		socialWebService.receivedRequests(null, success, error)
+	    	}
+	    }
+		//When the user is on the main page and he clicks on the brand button, 
+		//Forces the browser to reload the page
+		$scope.brandButtonPressed = function() {
+			if ($location.url() === mainPageUrl) {
+				$route.reload()
+			} else {
+				if(User.connected) {
+					$location.url(mainPageUrl)
+				} else {
+					$location.url('/login')
+				}
 			}
-			var error = function() {
-				$scope.setErrorCallback()
-				$('#callbackDialog').modal('show')
-			}
+		}
 
-			userWebService.logout({}, success, error);
-		}*/
-		 // logout n'a pas de requete sur la bd ?
-		
-		// Permet d'afficher une notification en cas de nouvelle demande d'amis
-		
-	    /*User.id = "507f191e810c19729de860ea"; // A supprimer
-		$http.get('/api/requests/'+User.id)
-		.success(function(data) {
-		   $scope.notifications = data.length;
-		})
-		.error(function(data) {
-			console.log("erreur lors de la récupération du nombre de demande d'amis");
-		})*/
 		
 	}])

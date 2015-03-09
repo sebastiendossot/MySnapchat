@@ -5,82 +5,92 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/friendlist', {
 		templateUrl: 'viewFriendList/friendlist.html',
-		controller: 'friendListCtrl'
+		controller: 'friendListCtrl',
+		isPrivate: true
 	});
 }])
 
-.controller('friendListCtrl', ['$scope', '$http', 'userWebService', 'User', '$location',
-	function($scope, $http, userWebService, User, $location)  {
+.controller('friendListCtrl', ['$scope', 'userWebService', 'User', 'Messaging', '$location', 'socialWebService',
+	function($scope, userWebService, User, Messaging, $location, socialWebService)  {
+		$scope.friendList = [];
+		$scope.receivedRequestList = []
+		$scope.sentRequestList = []
+		var error = function(data) {
+			console.error("erreur lors de la récupération du nom d'un des amis");
+		}
+
+		var populateFriendList = function(data) {
+			$scope.friendList = data.list;
+		}
+		var populateReceivedRequestList = function(data) {
+			$scope.receivedRequestList = data.list;
+		}
+		var populateSentRequestList = function(data) {
+			$scope.sentRequestList = data.list;
+		}
+
+		$scope.declineRequest = function (friendRequest) {
+			var success = function(data) {
+				socialWebService.receivedRequests(null, populateReceivedRequestList, error);
+				socialWebService.friends(null, populateFriendList, error);
+			}
+			var error = function(data) {
+				console.error("erreur lors du refus d'une demande d'ami");
+			}
 		
-		function getList(listName, $http, User)  {
-			
-			var tempfriendlist = [];
-		
-			User.id = "507f191e810c19729de860ea"; // A supprimer
-			$http.get('/api/'+listName+'/'+User.id)
-			.success(function(data) {
-			   data.forEach(function(entry) {
-					
-					var friendId = entry.idAmi1;
-					if(friendId == User.id)
-						friendId = entry.idAmi2;
-					
-					$http.get('/api/utilisateur/'+friendId)
-					.success(function(friend) {
-					   tempfriendlist.push(friend);
-					})
-					.error(function(data) {
-						console.log("erreur lors de la récupération du nom d'un des amis");
-					})
-					
-				});
-			})
-			.error(function(data) {
-				console.log("erreur lors de la récupération de la liste d'amis");
-			})
-			
-			tempfriendlist = [
-			  {nom:'John'},
-			  {nom:'Jessie'},
-			  {nom:'Johanna'},
-			  {nom:'Roger'}
-			]
-			
-			return tempfriendlist;
+			socialWebService.declineRequest({data:friendRequest.reqId}, success, error)
+		}
+
+		$scope.acceptRequest = function (friendRequest) {
+			var success = function() {
+				socialWebService.receivedRequests(null, populateReceivedRequestList, error);
+				socialWebService.sentRequests(null, populateSentRequestList, error);
+				socialWebService.friends(null, populateFriendList, error);
+			}
+			var error = function() {
+				console.log("erreur lors de l'acceptation d'un des amis");
+			}
+			socialWebService.acceptRequest({data:friendRequest.reqId}, success, error);
+
 		}
 		
-		// Enlever le "|| true" quand le système  de connexion sera terminé !
-		$scope.userConnected = User.connected || true;
+		$scope.deleteFriend = function (friend) {
+			var success = function(data) {
+				socialWebService.receivedRequests(null, populateReceivedRequestList, error);
+				socialWebService.friends(null, populateFriendList, error);
+			}
+			var error = function(data) {
+				console.error("erreur lors de la suppression d'un des amis");
+			}
+			socialWebService.declineRequest({data:friend.friendshipId}, success, error)
+		}
 		
+		$scope.openDiscussion = function (friend) {
+		        Messaging.resetReceivers()
+			Messaging.addReceiver(friend)
+			window.location.assign('#/chat') 
+		}
+		
+		$scope.sendImage = function (friend) {
+		        Messaging.resetReceivers()
+			Messaging.addReceiver(friend)
+			window.location.assign('#/imageCapture') 
+		}
+		
+		$scope.sendVideo = function (friend) {
+		        Messaging.resetReceivers()
+			Messaging.addReceiver(friend)
+			window.location.assign('#/videoCapture') 
+		}
+		
+
+
+		$scope.userConnected = User.connected;
 		if($scope.userConnected) 
 		{
-			$scope.friendList = getList("friends", $http, User);
-			$scope.requestList = getList("requests", $http, User);
-			
-			$scope.deleteFriend = function (friend) {
-				
-				$http.post('/api/deleteRequest', {idToDelete:friend._id})
-				.success(function() {
-				   $scope.friendList = getList("friends", $http, User);
-				})
-				.error(function() {
-					console.log("erreur lors de la suppression d'un des amis");
-				})
-				
-			}
-			
-			$scope.acceptRequest = function (friendRequest) {
-			
-				$http.post('/api/acceptRequest', {idToUpdate:friendRequest._id})
-				.success(function() {
-					$scope.requestList = getList("requests", $http, User);
-					$scope.friendList = getList("friends", $http, User);
-				})
-				.error(function() {
-					console.log("erreur lors de l'acceptation d'un des amis");
-				})
-				
-			}
+			socialWebService.friends(null, populateFriendList, error);
+			socialWebService.receivedRequests(null, populateReceivedRequestList, error);
+			socialWebService.sentRequests(null, populateSentRequestList, error);
 		}
-	
+
 	}]);

@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <span class="glyphicon glyphicon-comment"></span> Chat avec {{labelReceiver}}
                     <div class="btn-group pull-right">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-chevron-down"></span>
@@ -16,41 +16,31 @@
                 <div class="panel-body">
                     <ul class="chat" ng-repeat="message in messageList">
 					
-                        <li ng-if="message.receiver === 0" class="left clearfix" style="padding-right : 80px;">
-							<span class="chat-img pull-left">
-								<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-							</span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">{{message.sender}}</strong> 
-									<small class="text-muted"><span class="glyphicon glyphicon-time"></span>10 mins ago</small>
-                                </div>
-                                <p>{{message.text}}</p>
-                            </div>
-                        </li>
+						<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
+						<span ng-if="true" ng-include="'textOutput/viewTextOutput.html'"></span>
 						
-                        <li ng-if="message.receiver === 1" class="right clearfix" style="padding-left : 80px;">
-							<span class="chat-img pull-right">
-								<img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-							</span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>10 mins ago</small>
-									<strong class="pull-right primary-font">{{message.sender}}</strong><br />
-                                </div>
-                                <p class="pull-right">{{message.text}}</p>
-                            </div>
-                        </li>
-                        
+						<!-- Changer le chemin pour inclure la vue pour les images -->
+						<span ng-if="message.type==='image'" ng-include="'Chemin/vers/viewImage.html'"></span>
+						
+						<!-- Changer le chemin pour inclure la vue pour les vidéos -->
+						<span ng-if="message.type==='video'" ng-include="'Chemin/vers/viewVideo.html'"></span>
+
+						
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <div class="input-group">
-                        <input ng-model="newMessage.text" id="btn-input" type="text" class="form-control input-sm" placeholder="Ecrivez votre message ici..." />
-                        <span class="input-group-btn">
-                            <button ng-click="sendMessage(newMessage)" class="btn btn-warning btn-sm" id="btn-chat">Send</button>
-                        </span>
+				
+                    <div ng-if="true" ng-include="'textInput/viewTextInput.html'">
                     </div>
+					
+					<div ng-if="false" ng-controller="imageCtrl" class="input-group">
+                        Insérer le système d'envoi d'image ici !
+                    </div>
+					
+					<div ng-if="false" ng-controller="videoCtrl" class="input-group">
+                        Insérer le système d'envoi de vidéo ici !
+                    </div>
+					
                 </div>
             </div>
         </div>
