@@ -1,0 +1,18 @@
+<div class="row container-fluid" ng-controller="imageCtrl">
+	<form name="input">
+
+		<div class="col-sm-2">
+			<a ng-click="showPhotoView()" class="btn btn-lg btn-primary"><span style="float : left; margin : 5px; font-size : 40px;" class="glyphicon glyphicon-camera"></span></a>
+		</div>
+		
+		<div class="col-sm-3">
+			<div id="PJ">
+				<b style="position : relative; top : -10px;">Pièce jointe : </b><canvas id='canvas' width="30" height="30"></canvas><br />
+				<input type="button" value="Envoyer" class="btn btn-info" ng-disabled="input.$invalid" ng-click="send()"></input>
+			</div>
+			
+			<label style="color:red" ng-if="error">Echec de l'envoi</label>
+		</div>
+
+	</form>
+</div>

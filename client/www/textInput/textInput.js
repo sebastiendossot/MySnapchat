@@ -7,33 +7,32 @@ angular.module('myApp.textInput', ['ngRoute'])
 
 	    $scope.text=""
 	    $scope.error = false
-	    
+		
 		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
 		// LE PSEUDO DU DESTINATAIRE EST PASSE DANS L'URL
 		// $scope.receivers = Messaging.receivers
 		$scope.receivers = [];
 
 	    $scope.send = function() {
-		var success = function(data){
-		    
-		    $scope.text=""
-		    window.location.assign("#/chat");
-		    //messageWebService.receivedMessages(null, populateMessageList, error);
-		}
+			var success = function(data){
+				
+				$scope.text=""
+				window.location.assign("#/chat");
+				//messageWebService.receivedMessages(null, populateMessageList, error);
+			}
 
-		var error = function(data){
-		    $scope.error = true
-		}
+			var error = function(data){
+				$scope.error = true
+			}
 
-		messageWebService.newMessage(
-		    {type: "text", donnes: $scope.text, temps: 60,
-		     idEnvoyeur: User.id,
-		     destinataires: $scope.receivers.map(function(receiver){
-			 return {idDestinataire: receiver._id, lu: false}
-		     }),
-		     dateEnvoi: new Date()}
-		    , success, error)
-
+			messageWebService.newMessage(
+				{type: "text", donnes: $scope.text, temps: 60,
+				 idEnvoyeur: User.id,
+				 destinataires: $scope.receivers.map(function(receiver){
+				 return {idDestinataire: receiver._id, lu: false}
+				 }),
+				 dateEnvoi: new Date()}
+				, success, error)
 	    }
-
+		
 	}])

@@ -15,6 +15,7 @@ var onDeviceReady = function() {
 		'myApp.viewChat',
         'myApp.textInput',
         'myApp.textOutput',
+		'myApp.imageInput',
 		])
 
 	.factory('sessionInjector', ['$localStorage', function($localStorage) {  
