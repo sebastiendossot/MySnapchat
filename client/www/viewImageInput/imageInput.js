@@ -6,8 +6,9 @@ angular.module('myApp.imageInput', ['ngRoute'])
 	function($scope, messageWebService, User, $location)  {
 	
 	$("#PJ").hide();
+	$("#PJ_mobile").hide();
 	
-	$scope.showPhotoView = function() 
+	$scope.showNavPhotoView = function() 
 	{
 		var onFail = function(e) { 
 			console.log('failed',e); 
@@ -33,6 +34,42 @@ angular.module('myApp.imageInput', ['ngRoute'])
 
 		$("#chatView").hide();
 		$("#photoView").show();
+	}
+	
+	$scope.showMobilePhotoView = function() 
+	{
+		var pictureSource;   // picture source
+		var destinationType; // sets the format of returned value
+
+		// Wait for device API libraries to load
+		document.addEventListener("deviceready",onDeviceReady,false);
+
+		// device APIs are available
+		function onDeviceReady() {
+			pictureSource=navigator.camera.PictureSourceType;
+			destinationType=navigator.camera.DestinationType;
+			capturePhotoEdit()
+			$("#PJ_mobile").show();
+		}
+
+		// Called when a photo is successfully retrieved
+		function onPhotoDataSuccess(imageData) {
+			// Uncomment to view the base64-encoded image data
+			// console.log(imageData);
+
+			var smallImage = document.getElementById('smallImage');
+			smallImage.style.display = 'block';
+			smallImage.src = "data:image/jpeg;base64," + imageData;
+		}
+
+		function capturePhotoEdit() {
+			// Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+			navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true, destinationType: destinationType.DATA_URL });
+		}
+
+		function onFail(message) {
+			alert('Failed because: ' + message);
+		}
 	}
 	
 	$scope.send = function() 
