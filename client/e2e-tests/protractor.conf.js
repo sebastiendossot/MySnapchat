@@ -2,7 +2,7 @@ exports.config = {
   allScriptsTimeout: 30000,
 
   specs: [
-    '*.js'
+  'chatting.js'
   ],
 
   capabilities: {

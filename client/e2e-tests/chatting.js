@@ -1,5 +1,5 @@
 var helper = require("./helper")
-describe('add/delete', function () {
+describe('send and receive text', function () {
 
 	beforeEach(function() {
 		browser.get('http://localhost:4711/#/login')
@@ -21,28 +21,7 @@ describe('add/delete', function () {
 		sub('user2');
 	})
 
-	it('user1 should add user2 as a friend', function() {
-		helper.login('user1')
-		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/friendlist')
-
-		helper.sendRequest('user2')
-		helper.logout('user1')
-		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
-	})
-
-	it('user2 should refuse user1 as a friend', function() {
-		helper.login('user2')
-		var row = element.all(by.repeater('request in receivedRequestList')).get(0)
-
-		expect(row.getText()).toContain('user1')
-		row.element(by.partialLinkText('Refuser')).click()
-		expect(element.all(by.repeater('friend in friendList')).count()).toBe(0)
-		helper.logout('user2')
-		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
-	})
-
 	it('user2 should accept user1 as a friend', function() {
-		//renvoi demande d'ami
 		helper.login('user1')
 		helper.sendRequest('user2')
 		helper.logout('user1')
@@ -53,18 +32,31 @@ describe('add/delete', function () {
 
 		row.element(by.partialLinkText('Accepter')).click()
 		expect(element.all(by.repeater('friend in friendList')).get(0).getText()).toContain('user1')
-		helper.logout('user2')
+	})
+
+	it("user2 should send some text to his new friend user1", function(){
+		element(by.id('text-user1')).click();
+		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
+		element(by.model('text')).sendKeys("Hi Bob !");
+		element(by.css('[ng-click="send()"]')).click()
+		helper.logout('user2');
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
 	})
 
-	it('user1 delete user2 from his friends', function() {
+	it("user1 should login, begin chat with user2 and see a new message !", function(){
 		helper.login('user1')
-		var row = element.all(by.repeater('friend in friendList')).get(0)
-		expect(row.getText()).toContain('user2')
+		element(by.id('text-user2')).click();
+		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
+		var msg = element(by.css('.primary-font')).getText()
+		expect(msg).toBe("user2");
+		waits(20000);
+		browser.actions()
+		.mouseMove(element(by.id('text-user2')))
+		.perform();
+		waits(20000);
 
-		row.element(by.css('.btn.btn-xs.btn-danger')).click()
-		expect(element.all(by.repeater('friend in friendList')).count()).toBe(0)
-		helper.logout('user1')
+		expect(element(by.css('[ng-show="showInit&&showContinue"]')).getText()).toBe("Hi Bob !");
+		helper.logout('user1');
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
 	})
 
@@ -91,5 +83,4 @@ describe('add/delete', function () {
 		unsub('user2');
 
 	})
-
 })

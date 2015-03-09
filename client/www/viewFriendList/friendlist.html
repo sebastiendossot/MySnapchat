@@ -22,7 +22,7 @@
 				<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
 				<a ng-click="sendVideo(friend.user)" class="btn btn-xs btn-success" style="float : right; margin-right : 20px;"><span class="glyphicon glyphicon-film"></span>  </a>
 				<a ng-click="sendImage(friend.user)" class="btn btn-xs btn-warning" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-picture"></span>  </a>
-				<a ng-click="openDiscussion(friend.user)" class="btn btn-xs btn-info" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-envelope"></span>  </a>
+				<a ng-click="openDiscussion(friend.user)" id="text-{{friend.user.pseudo}}" class="btn btn-xs btn-info" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-envelope"></span>  </a>
 			</div>
 
 		</div><br /><br />
