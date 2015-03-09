@@ -2,12 +2,16 @@
 
 angular.module('myApp.textInput', ['ngRoute'])
 
-.controller('textInputCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', 
-	function($scope, messageWebService, User, Messaging) {
+.controller('textInputCtrl', ['$scope', 'messageWebService', 'User', 
+	function($scope, messageWebService, User) {
 
 	    $scope.text=""
 	    $scope.error = false
-	    $scope.receivers = Messaging.receivers
+	    
+		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
+		// LE PSEUDO DU DESTINATAIRE EST PASSE DANS L'URL
+		// $scope.receivers = Messaging.receivers
+		$scope.receivers = [];
 
 	    $scope.send = function() {
 		var success = function(data){

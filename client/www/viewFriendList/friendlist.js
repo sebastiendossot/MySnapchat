@@ -10,8 +10,8 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 	});
 }])
 
-.controller('friendListCtrl', ['$scope', 'userWebService', 'User', 'Messaging', '$location', 'socialWebService',
-	function($scope, userWebService, User, Messaging, $location, socialWebService)  {
+.controller('friendListCtrl', ['$scope', 'userWebService', 'User', '$location', 'socialWebService',
+	function($scope, userWebService, User, $location, socialWebService)  {
 		$scope.friendList = [];
 		$scope.receivedRequestList = []
 		$scope.sentRequestList = []

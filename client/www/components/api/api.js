@@ -30,7 +30,9 @@ angular.module('myApp.api', ['ngStorage'])
 		this.description = ""
 	}
 
-})
+});
+
+/*
 .service('Messaging', function($localStorage) {
 	
 	this.receivers = []
@@ -43,3 +45,4 @@ angular.module('myApp.api', ['ngStorage'])
 		this.receivers = []
 	}
 });
+*/
