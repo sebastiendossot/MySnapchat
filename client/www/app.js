@@ -12,9 +12,10 @@ var onDeviceReady = function() {
 		'myApp.settings',
 		'myApp.addfriend',
 		'myApp.viewFriendList',
-		'myApp.viewChat',
+		'myApp.viewChat',       
             'myApp.textInput',
             'myApp.textOutput',
+	    'myApp.imageInput',
 	    'myApp.viewTime'
 		])
 

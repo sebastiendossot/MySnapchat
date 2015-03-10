@@ -3,24 +3,25 @@
 angular.module('myApp.viewChat', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/chat', {
+	$routeProvider.when('/chat/:pseudoReceiver', {
 		templateUrl: 'viewChat/chat.html',
 		controller: 'affichageCtrl',
 		isPrivate: true
 	});
 }])
-.controller('affichageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, messageWebService, User, Messaging, $location)  {
-		var receivers = Messaging.receivers;
+.controller('affichageCtrl', ['$scope', '$routeParams', 'messageWebService', 'User', '$location',
+	function($scope, $routeParams, messageWebService, User, $location)  {
+		
+		$scope.mode = "text";
+		$("#photoView").hide();
+		
+		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
+		// LE PSEUDO DU DESTINATAIRE EST PASSE DANS L'URL
+		$scope.receiver = $routeParams.pseudoReceiver;
+		
 		$scope.messageList = []
-
-		Messaging.resetReceivers();
-	
-		$scope.labelReceiver = receivers[0].pseudo
 		
 		$scope.dateNow = new Date();
-
-		
 
 		var populateMessageList = function(data) {
 			$scope.messageList = data.list;
@@ -53,7 +54,12 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			}
 			messageWebService.deleteMessage({data:message._id}, success, error);
 		}
-
+		
+		$scope.changeMode = function(newMode) 
+		{
+			$scope.mode = newMode;
+		}
+		
 
 		/*var initDate = function(data) {
 			var dateNow = new Date();
@@ -68,12 +74,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 ])
 
 
-.controller('imageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, messageWebService, User, Messaging, $location)  {
-		
-}])
-
-.controller('videoCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, messageWebService, User, Messaging, $location)  {
+.controller('videoCtrl', ['$scope', 'messageWebService', 'User', '$location',
+	function($scope, messageWebService, User, $location)  {
 		
 }]);

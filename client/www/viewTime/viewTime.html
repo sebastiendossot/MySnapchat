@@ -1,0 +1,22 @@
+
+<strong>Temps de visualisation des médias :</strong>
+<div class="dropdown-header">Temps compris entre 10 et 600 secondes</div>
+
+<form name="time" ng-controller="timeCtrl">
+
+  <p><label for="text">Texte </label>
+    <input type="number" id="text" class="input-control" min="10" max="600"
+	   ng-model="textTime" ng-required="true"></input></p>
+
+  <p><label for="image">Image </label>
+    <input type="number" id="image" class="input-control" min="10" max="600"
+	   ng-model="imageTime" ng-required="true"></input></p>
+
+  <p><label for="video">Vidéo </label>
+    <input type="number" id="video" class="input-control" min="10" max="600"
+	   ng-model="videoTime" ng-required="true"></input></p>
+  
+  <input type="button" class="btn btn-primary" value="Enregistrer"
+	 ng-disabled="time.$invalid" ng-click="update()"></input>
+  
+</form>

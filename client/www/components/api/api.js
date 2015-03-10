@@ -7,7 +7,7 @@ angular.module('myApp.api', ['ngStorage'])
 	this.name = $localStorage.user ? $localStorage.user.pseudo : ""
 	this.mail = $localStorage.user ? $localStorage.user.email : ""
 	this.description = $localStorage.user ? $localStorage.user.description : ""
-    this.time = $localStorage.user ? $localStorage.user.temps : ""
+        this.time = $localStorage.user ? $localStorage.user.temps : ""
 
 	this.login = function(data) {
 		$localStorage.token = data.token
@@ -18,7 +18,7 @@ angular.module('myApp.api', ['ngStorage'])
 		this.name = data.user.pseudo
 		this.mail = data.user.email
 		this.description = data.user.description
-	    this.time = data.user.temps
+	        this.time = data.user.temps
 	}
 
 	this.logout = function() {
@@ -30,10 +30,13 @@ angular.module('myApp.api', ['ngStorage'])
 		this.name = ""
 		this.mail = ""
 		this.description = ""
-	    this.time = ""
+	        this.time = ""
 	}
+
 })
 
+
+/*
 .service('Messaging', function($localStorage) {
 	
 	this.receivers = []
@@ -46,3 +49,4 @@ angular.module('myApp.api', ['ngStorage'])
 		this.receivers = []
 	}
 });
+*/
