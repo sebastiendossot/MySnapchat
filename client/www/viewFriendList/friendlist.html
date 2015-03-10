@@ -20,9 +20,9 @@
 			<div class="list-group-item" ng-repeat="friend in friendList">
 				<strong>{{friend.user.pseudo}}</strong>
 				<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
-				<a href="#/chat/{{friend.user.pseudo}}" class="btn btn-xs btn-success" style="float : right; margin-right : 20px;"><span class="glyphicon glyphicon-film"></span>  </a>
-				<a href="#/chat/{{friend.user.pseudo}}" class="btn btn-xs btn-warning" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-picture"></span>  </a>
-				<a href="#/chat/{{friend.user.pseudo}}" id="text-{{friend.user.pseudo}}" class="btn btn-xs btn-info" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-envelope"></span>  </a>
+				<a href="#/chat/{{friend.user._id}}" class="btn btn-xs btn-success" style="float : right; margin-right : 20px;"><span class="glyphicon glyphicon-film"></span>  </a>
+				<a href="#/chat/{{friend.user._id}}" class="btn btn-xs btn-warning" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-picture"></span>  </a>
+				<a href="#/chat/{{friend.user._id}}" id="text-{{friend.user.pseudo}}" class="btn btn-xs btn-info" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-envelope"></span>  </a>
 			</div>
 
 		</div><br /><br />

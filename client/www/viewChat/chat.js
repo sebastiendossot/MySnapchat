@@ -3,7 +3,7 @@
 angular.module('myApp.viewChat', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/chat/:pseudoReceiver', {
+	$routeProvider.when('/chat/:idReceiver', {
 		templateUrl: 'viewChat/chat.html',
 		controller: 'affichageCtrl',
 		isPrivate: true
@@ -16,8 +16,8 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		$("#photoView").hide();
 		
 		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
-		// LE PSEUDO DU DESTINATAIRE EST PASSE DANS L'URL
-		$scope.receiver = $routeParams.pseudoReceiver;
+		// L'ID DU DESTINATAIRE EST PASSE DANS L'URL
+		$scope.receiver = $routeParams.idReceiver;
 		
 		$scope.messageList = []
 		

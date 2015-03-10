@@ -9,7 +9,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 	    $scope.error = false
 		
 		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
-		// LE PSEUDO DU DESTINATAIRE EST PASSE DANS L'URL
+		// L'ID DU DESTINATAIRE EST PASSE DANS L'URL
 		// $scope.receivers = Messaging.receivers
 		$scope.receivers = [];
 
