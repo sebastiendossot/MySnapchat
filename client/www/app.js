@@ -13,8 +13,9 @@ var onDeviceReady = function() {
 		'myApp.addfriend',
 		'myApp.viewFriendList',
 		'myApp.viewChat',
-        'myApp.textInput',
-        'myApp.textOutput',
+            'myApp.textInput',
+            'myApp.textOutput',
+	    'myApp.viewTime'
 		])
 
 	.factory('sessionInjector', ['$localStorage', function($localStorage) {  

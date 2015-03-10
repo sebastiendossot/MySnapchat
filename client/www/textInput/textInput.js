@@ -13,7 +13,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 		var success = function(data){
 		    
 		    $scope.text=""
-		    window.location.assign("#/chat");
+		    window.location.reload()
 		    //messageWebService.receivedMessages(null, populateMessageList, error);
 		}
 
@@ -22,7 +22,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 		}
 
 		messageWebService.newMessage(
-		    {type: "text", donnes: $scope.text, temps: 60,
+		    {type: "text", donnes: $scope.text, temps: User.time.texte,
 		     idEnvoyeur: User.id,
 		     destinataires: $scope.receivers.map(function(receiver){
 			 return {idDestinataire: receiver._id, lu: false}

@@ -7,7 +7,8 @@ angular.module('myApp.webService', ['ngResource'])
 			login: {method: 'POST', params: {urlOption: "login"}},
 			byPseudo: {method: 'GET', params: {urlOption: "byPseudo"}},
 			byId: {method: 'GET', params: {urlOption: "byId"}},
-			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}}
+			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}},
+		    putTimes: {method: 'PUT', params: {urlOption: "times"}}
 		})
 	})
 .factory('socialWebService',
@@ -29,3 +30,4 @@ angular.module('myApp.webService', ['ngResource'])
 			deleteMessage:{method: 'DELETE', params: {urlOption: "message"}}
 		})
 	})
+

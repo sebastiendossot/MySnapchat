@@ -46,7 +46,8 @@ var User = new Schema({
     pseudo: {type: String, unique: true},
     description: String,
     email: String,
-    pwd : String
+    pwd: String,
+    temps: {texte: Number, image: Number, video: Number}
 });
 
 var Destinataire = new Schema({
@@ -203,6 +204,24 @@ app.put('/api/request/:id', function(req, res, next) {
     })
 
 });
+
+app.put('/api/user/times', function(req, res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id)
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+	    return next(e)
+	if (!result)
+	    res.sendStatus(404)
+	result.temps = req.body.times
+	result.save(function (err, req) {
+            if (err) 
+		return next(err)
+            res.sendStatus(200)
+        })
+    })
+})
 
 
 
@@ -399,6 +418,5 @@ app.delete('/api/message/:id', function(req, res, next) {
             })
         }
     })
-
 
 });
