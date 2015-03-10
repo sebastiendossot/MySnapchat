@@ -14,12 +14,12 @@ angular.module('myApp.textInput', ['ngRoute'])
 		$scope.receivers = [];
 
 	    $scope.send = function() {
+
 		var success = function(data){
 		    $scope.text=""
 		    window.location.reload()
 		    //messageWebService.receivedMessages(null, populateMessageList, error);
 		}
-
 		var error = function(data){
 		    $scope.error = true
 		}
@@ -33,6 +33,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 		     }),
 		     dateEnvoi: new Date()}
 		    , success, error)
+
 	    }
 		
 	}])
