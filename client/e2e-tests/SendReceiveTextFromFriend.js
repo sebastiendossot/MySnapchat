@@ -23,6 +23,17 @@ describe('send and receive text', function () {
 		expect(element.all(by.repeater('friend in friendList')).get(0).getText()).toContain('user1')
 	})
 
+	it("Show message from!", function(){
+		helper.login('user1')
+		element(by.id('text-user2')).click();
+		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
+		var msg = element(by.css('.primary-font')).getText()
+		expect(msg).toBe("user2");
+		waits(10000);
+		browser.actions()
+		.mouseMove(element(by.id('text-user2')))
+		.perform();
+		})
 	it("user2 should send some text to his new friend user1", function(){
 		element(by.id('text-user1')).click();
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
