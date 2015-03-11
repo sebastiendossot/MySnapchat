@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('myApp.viewPictureReader', ['ngRoute'])
+angular.module('myApp.CtrlPictureReader', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/viewPictureReader', {
-    templateUrl: 'PictureReader/viewPictureReader.html',
-    controller: 'viewPictureReader2Ctrl'
-});
-}]).controller('viewPictureReader2Ctrl',['$scope', 'userWebService', function($scope, userWebService) {}])
+.controller('viewPictureReader2Ctrl',['$scope', 'userWebService', function($scope, userWebService) {	
+}])
+
+
+
+
+<!-- -->
