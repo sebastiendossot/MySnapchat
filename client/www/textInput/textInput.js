@@ -2,16 +2,12 @@
 
 angular.module('myApp.textInput', ['ngRoute'])
 
-.controller('textInputCtrl', ['$scope', 'messageWebService', 'User', 
-	function($scope, messageWebService, User) {
+.controller('textInputCtrl', ['$scope', 'messageWebService', 'User', '$location', 
+	function($scope, messageWebService, User, $location) {
 
 	    $scope.text=""
 	    $scope.error = false
-		
-		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
-		// L'ID DU DESTINATAIRE EST PASSE DANS L'URL
-		// $scope.receivers = Messaging.receivers
-		$scope.receivers = [];
+	    $scope.receiver = ($location.path().split('/')[2])
 
 	    $scope.send = function() {
 
@@ -28,9 +24,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 		    {type: "text", donnes: $scope.text, 
 		     temps: User.time.texte,
 		     idEnvoyeur: User.id,
-		     destinataires: $scope.receivers.map(function(receiver){
-			 return {idDestinataire: receiver._id, lu: false}
-		     }),
+		     destinataires: [{idDestinataire: $scope.receiver, lu: false}],
 		     dateEnvoi: new Date()}
 		    , success, error)
 
