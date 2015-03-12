@@ -19,11 +19,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 if(isLocal) {
     app.use(express.static(path.join(application_root ,'../client/www')));
 }
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 app.set('jwtTokenSecret', 'PEDSnapSECRE7');
 //Show all errors in development
 //app.use(errorHandler({ dumpExceptions: true, showStack: true }));
@@ -216,19 +211,19 @@ app.put('/api/request/:id', function(req, res, next) {
 app.put('/api/user/times', function(req, res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-       res.sendStatus(403)
-   UserModel.findById(id, function(e, result) {
-       if (e)
-           return next(e)
-       if (!result)
-           res.sendStatus(404)
-       result.temps = req.body.times
-       result.save(function (err, req) {
+     res.sendStatus(403)
+ UserModel.findById(id, function(e, result) {
+     if (e)
+         return next(e)
+     if (!result)
+         res.sendStatus(404)
+     result.temps = req.body.times
+     result.save(function (err, req) {
         if (err) 
           return next(err)
       res.sendStatus(200)
   })
-   })
+ })
 })
 
 
@@ -338,9 +333,9 @@ app.get('/api/friends', function(req, res, next) {
       if (e) return next(e);
       if (result) tmpFriends = tmpFriends.concat(result);
       if (tmpFriends.length === 0) {
-         return res.send({list:[]})
-     } else {
-         var friends = []
+       return res.send({list:[]})
+   } else {
+       var friends = []
 			//For each requester, we get its pseudo and store it in a list we'll send
 			var asyncLoop = function(i, callback) {
 				if( i < result.length ) {
@@ -379,8 +374,8 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
         }
     })
     FriendModel.findByIdAndRemove(id, function(e, result) {
-       if (e) return res.sendStatus(404);
-       if(result) {
+     if (e) return res.sendStatus(404);
+     if(result) {
         console.log("friendlist of "+result.pseudo+" removed")
     }
 })
@@ -417,7 +412,7 @@ app.delete('/api/message/:id', function(req, res, next) {
     MessageModel.findById(reqId, function(e, result) {
         if (e) return next(e);
         if (!result) {
-           console.log("Message supprimé")
+         console.log("Message supprimé")
             //res.sendStatus(404);
         }else{
             result.remove(function (err, req) {

@@ -1,5 +1,4 @@
 var SERVER_URL = isMobile ? "http://test2-44045.onmodulus.net/api" : "/api";
-console.log(SERVER_URL)
 angular.module('myApp.webService', ['ngResource'])
 
 .factory('userWebService',
@@ -15,7 +14,7 @@ angular.module('myApp.webService', ['ngResource'])
 	})
 .factory('socialWebService',
 	function($resource) {
-		return $resource('/api/:urlOption/:data', {data:'@data'}, {
+		return $resource(SERVER_URL+'/:urlOption/:data', {data:'@data'}, {
 			receivedRequests: {method: 'GET', params: {urlOption: "receivedRequests"}},
 			sentRequests: {method: 'GET', params: {urlOption: "sentRequests"}},
 			friends: {method: 'GET', params: {urlOption: "friends"}},
@@ -26,10 +25,10 @@ angular.module('myApp.webService', ['ngResource'])
 	})
 .factory('messageWebService',
 	function($resource) {
-		return $resource('/api/:urlOption/:data', {data:'@data'}, {
-			newMessage: {method: 'POST', params: {urlOption: "message"}},
-			receivedMessages: {method: 'GET', params: {urlOption: "message"}},
-			deleteMessage:{method: 'DELETE', params: {urlOption: "message"}}
+		return $resource('/api/message/:data', {data:'@data'}, {
+			newMessage: {method: 'POST'},
+			receivedMessages: {method: 'GET'},
+			deleteMessage:{method: 'DELETE'}
 		})
 	})
 
