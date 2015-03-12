@@ -2,29 +2,39 @@
 <nav class="navbar navbar-default" ng-controller="navBarCtrl">
   <div class="container-fluid">
     <div class="navbar-header">
+
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
       <a class="navbar-brand" href="" ng-click="brandButtonPressed()">MySnapChat</a>
     </div>
-    <div class="navbar-collapse collapse">
 
+
+    <div class="navbar-collapse collapse" id="myNavbar">
+      
       <ul class="nav navbar-nav" ng-if="!user.connected">
-        <li><a href="#/register">S'enregistrer</a></li>
-        <li><a href="#/login">Connexion</a></li>
+        <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
+	<li><a href="#/register"><span class="glyphicon glyphicon-pencil"></span> S'enregistrer</a></li>
       </ul> 
 
       <ul class="nav navbar-nav" ng-if="user.connected">
-        <li><a href="#/friendlist">Liste d'amis <span ng-if="notifications>0">(<b style="color : red;">{{notifications}}</b>)</span></a></li>
-        <li><a href="#/addfriend">Ajouter un ami</a></li>
-	<li><a href="#/settings">Paramètres</a></li>
+        <li><a href="#/friendlist"><span class="glyphicon glyphicon-list"></span> Liste d'amis <span ng-if="notifications>0">(<b style="color : red;">{{notifications}}</b>)</span></a></li>
+        <li><a href="#/addfriend"><span class="glyphicon glyphicon-plus"></span> Ajouter un ami</a></li>
+	<li><a href="#/settings"><span class="glyphicon glyphicon-cog"></span> Paramètres</a></li>
       </ul> 
 
-
       <ul class="nav navbar-nav navbar-right" ng-if="user.connected">
-        <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="">{{user.name}} <span class="caret"></span></a>
+        <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href=""><span class="glyphicon glyphicon-user"></span> {{user.name}} <span class="caret"></span></a>
           <ul class="dropdown-menu">	
-           <li><a href="" ng-click="logout()">Deconnexion</a></li>
+           <li><a href="" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Deconnexion</a>
+	   </li>
          </ul>
        </li>
      </ul>
+
    </div>
  </div>
 </nav>
