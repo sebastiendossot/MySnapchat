@@ -10,18 +10,27 @@ var application_root = __dirname,
 
 //Create server
 var app = express();
+var isLocal = process.env.PORT === undefined
+console.log(isLocal ? "LOCAL LAUNCH" : "MODULUS LAUNCH")
 
 // Configure server
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(path.join(application_root ,'../client/www')));
+if(isLocal) {
+    app.use(express.static(path.join(application_root ,'../client/www')));
+}
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.set('jwtTokenSecret', 'PEDSnapSECRE7');
 //Show all errors in development
-//app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+//app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 
 
 //Start server
-var port = 4711;
+var port = isLocal ? 4711 : (process.env.PORT || 9999);
 app.listen(port, function () {
     'use strict';
     console.log('Express server listening on port %d in %s mode', port, app.settings.env);
@@ -29,9 +38,8 @@ app.listen(port, function () {
 });
 
 
-
 //Connect to database
-var db = mongoose.connect('mongodb://localhost/snap');
+var db = mongoose.connect(isLocal ? 'mongodb://localhost/snap' : 'mongodb://nv:nv@ds033897.mongolab.com:33897/snap');
 
 //Schemas
 var Schema = mongoose.Schema;
@@ -208,19 +216,19 @@ app.put('/api/request/:id', function(req, res, next) {
 app.put('/api/user/times', function(req, res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-	res.sendStatus(403)
-    UserModel.findById(id, function(e, result) {
-	if (e)
-	    return next(e)
-	if (!result)
-	    res.sendStatus(404)
-	result.temps = req.body.times
-	result.save(function (err, req) {
-            if (err) 
-		return next(err)
-            res.sendStatus(200)
-        })
-    })
+       res.sendStatus(403)
+   UserModel.findById(id, function(e, result) {
+       if (e)
+           return next(e)
+       if (!result)
+           res.sendStatus(404)
+       result.temps = req.body.times
+       result.save(function (err, req) {
+        if (err) 
+          return next(err)
+      res.sendStatus(200)
+  })
+   })
 })
 
 
@@ -250,7 +258,7 @@ app.get('/api/user/byId/:id', function(req, res, next) {
 //get les messages qui nous sont addressés
 app.get('/api/message/', function(req, res, next) {
     //MessageModel.find({destinataires : {idDestinataires:id, lu:'false'} }, function(e, result){
-	
+
 	// A faire : recupérer les message seulement si on est le destinataire
 	MessageModel.find({type : "text" }, function(e, result){
         if (e) return next(e);
@@ -326,13 +334,13 @@ app.get('/api/friends', function(req, res, next) {
         console.log(id)
     })
 
-	FriendModel.find({ $or: [ {idAmi1 : id, accepted : true }, {idAmi2 : id, accepted : true } ] }, function(e, result){
-		if (e) return next(e);
-		if (result) tmpFriends = tmpFriends.concat(result);
-		if (tmpFriends.length === 0) {
-			return res.send({list:[]})
-		} else {
-			var friends = []
+    FriendModel.find({ $or: [ {idAmi1 : id, accepted : true }, {idAmi2 : id, accepted : true } ] }, function(e, result){
+      if (e) return next(e);
+      if (result) tmpFriends = tmpFriends.concat(result);
+      if (tmpFriends.length === 0) {
+         return res.send({list:[]})
+     } else {
+         var friends = []
 			//For each requester, we get its pseudo and store it in a list we'll send
 			var asyncLoop = function(i, callback) {
 				if( i < result.length ) {
@@ -371,11 +379,11 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
         }
     })
     FriendModel.findByIdAndRemove(id, function(e, result) {
-	if (e) return res.sendStatus(404);
-        if(result) {
-            console.log("friendlist of "+result.pseudo+" removed")
-        }
-    })
+       if (e) return res.sendStatus(404);
+       if(result) {
+        console.log("friendlist of "+result.pseudo+" removed")
+    }
+})
     res.sendStatus(200)
 })
 
@@ -389,10 +397,10 @@ app.delete('/api/friend/:id', function(req, res, next) {
     FriendModel.findById(reqId, function(e, result) {
         if (e) return next(e);
         if (!result) res.sendStatus(404);
-            result.remove(function (err, req) {
-                if (err) return next(err);
-                res.sendStatus(200)
-            })
+        result.remove(function (err, req) {
+            if (err) return next(err);
+            res.sendStatus(200)
+        })
     })
 
 
@@ -409,7 +417,7 @@ app.delete('/api/message/:id', function(req, res, next) {
     MessageModel.findById(reqId, function(e, result) {
         if (e) return next(e);
         if (!result) {
-             console.log("Message supprimé")
+           console.log("Message supprimé")
             //res.sendStatus(404);
         }else{
             result.remove(function (err, req) {

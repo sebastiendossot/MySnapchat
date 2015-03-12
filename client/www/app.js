@@ -13,10 +13,10 @@ var onDeviceReady = function() {
 		'myApp.addfriend',
 		'myApp.viewFriendList',
 		'myApp.viewChat',       
-                'myApp.textInput',
-                'myApp.textOutput',
-	        'myApp.imageInput',
-	        'myApp.viewTime'
+		'myApp.textInput',
+		'myApp.textOutput',
+		'myApp.imageInput',
+		'myApp.viewTime'
 		])
 
 	.factory('sessionInjector', ['$localStorage', function($localStorage) {  
@@ -64,7 +64,7 @@ var onDeviceReady = function() {
 }
 
 
-if ( app ) {
+if ( isMobile ) {
     // Cordova application
     document.addEventListener('deviceready', onDeviceReady(), false);
 } else {

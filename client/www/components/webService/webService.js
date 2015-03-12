@@ -1,14 +1,16 @@
+var SERVER_URL = "http://test2-44045.onmodulus.net/api"//isMobile ? "http://test2-44045.onmodulus.net" : "/api";
+console.log(SERVER_URL)
 angular.module('myApp.webService', ['ngResource'])
 
 .factory('userWebService',
 	function($resource) {
-		return $resource('/api/user/:urlOption/:data', {data:'@data'}, {
+		return $resource(SERVER_URL+'/user/:urlOption/:data', {data:'@data'}, {
 			subscribe: {method: 'POST', params: {urlOption: "subscribe"}},
 			login: {method: 'POST', params: {urlOption: "login"}},
 			byPseudo: {method: 'GET', params: {urlOption: "byPseudo"}},
 			byId: {method: 'GET', params: {urlOption: "byId"}},
 			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}},
-		    putTimes: {method: 'PUT', params: {urlOption: "times"}}
+			putTimes: {method: 'PUT', params: {urlOption: "times"}}
 		})
 	})
 .factory('socialWebService',
