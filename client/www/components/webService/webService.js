@@ -25,7 +25,7 @@ angular.module('myApp.webService', ['ngResource'])
 	})
 .factory('messageWebService',
 	function($resource) {
-		return $resource('/api/message/:data', {data:'@data'}, {
+		return $resource(SERVER_URL+'/api/message/:data', {data:'@data'}, {
 			newMessage: {method: 'POST'},
 			receivedMessages: {method: 'GET'},
 			deleteMessage:{method: 'DELETE'}
