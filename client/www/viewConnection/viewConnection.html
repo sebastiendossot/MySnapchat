@@ -10,20 +10,24 @@
       <label style="color:red">Le nom ou le mot de passe entrés ne correspondent pas. Veuillez réessayez.</label>
     </div>
 
-    <form name="connection">
-      <p>
-       <label> Nom : </label>
-       <input type="text" placeholder="pseudo"
-       ng-required="true" ng-model="pseudo"></input>
-     </p>
-     <p>
-       <label> Mot de passe : </label>
-       <input type="password" placeholder="mot de passe"
-       ng-required="true" ng-model="password"></input>
-     </p>
-     <input type="button" value="Connexion" class="btn btn-primary"
-     ng-disabled="connection.$invalid" ng-click="login()"></input>
-   </form>
+ <form  name="connection" role="form" class="form-horizontal">
+                <div class="form-group">
+                <div class="col-md-8">
+                  <input  placeholder="pseudo" ng-required="true" ng-model="pseudo" class="form-control" type="text"/>
+                </div>
+                </div>
+                
+                <div class="form-group">
+                <div class="col-md-8">
+                  <input name="password" placeholder="Mot de passe" class="form-control" type="password" ng-required="true" ng-model="password"/></div>
+                </div>
+                
+                <div class="form-group">
+                <div class="col-md-offset-0 col-md-8">
+                  <input class="btn btn-success btn btn-success" type="submit" value="Connexion" ng-disabled="connection.$invalid" ng-click="login()"/></div>
+                </div>
+            
+            </form>
 
    <br></br>
 
@@ -35,3 +39,5 @@
 </div>
 
 </div>
+
+
