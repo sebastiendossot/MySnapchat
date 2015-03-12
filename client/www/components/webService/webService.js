@@ -1,4 +1,4 @@
-var SERVER_URL = "http://test2-44045.onmodulus.net/api"//isMobile ? "http://test2-44045.onmodulus.net" : "/api";
+var SERVER_URL = isMobile ? "http://test2-44045.onmodulus.net/api" : "/api";
 console.log(SERVER_URL)
 angular.module('myApp.webService', ['ngResource'])
 
