@@ -43,19 +43,19 @@ describe('send and receive text', function () {
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
 	})
 
-	it("user1 should login, begin chat with user2 and see a new message !", function(){
+	it("user1 should login and see a new message from user2 !", function(){
 		helper.login('user1')
 		element(by.id('text-user2')).click();
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
 		var msg = element(by.css('.primary-font')).getText()
 		expect(msg).toBe("user2");
-		waits(20000);
+		waits(30000);
 		browser.actions()
 		.mouseMove(element(by.id('text-user2')))
 		.perform();
-		waits(20000);
+		waits(30000);
 
-		expect(element(by.css('[ng-show="showInit&&showContinue"]')).getText()).toBe("Hi Bob !");
+		expect(element(by.css('[ng-show="showInit&&showContinue"]')).getText()).toBe("Testetetetetetetet !");
 		helper.logout('user1');
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
 	})
