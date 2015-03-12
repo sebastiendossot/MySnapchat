@@ -26,19 +26,12 @@ angular.module('myApp.viewNavBar', ['ngRoute'])
 	    		socialWebService.receivedRequests(null, success, error)
 	    	}
 	    }
-		//When the user is on the main page and he clicks on the brand button, 
-		//Forces the browser to reload the page
-		$scope.brandButtonPressed = function() {
-			if ($location.url() === mainPageUrl) {
-				$route.reload()
-			} else {
-				if(User.connected) {
-					$location.url(mainPageUrl)
-				} else {
-					$location.url('/login')
-				}
-			}
-		}
+		
+
+	    //Forces the browser to reload the page
+	    $scope.brandButtonPressed = function() {
+		window.location.reload()
+	    }
 
 		
 	}])
