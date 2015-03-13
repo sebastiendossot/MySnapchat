@@ -70,3 +70,40 @@ small
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #555;
 }
+
+
+
+#photo_button
+{
+	float : left;
+	margin-left : 10px;
+	margin-right : 5px;
+}
+
+#icon
+{
+	float : left; 
+	margin : 5px; 
+	font-size : 40px;
+}
+
+#PJ
+{
+	float : left; 
+	width : 130px; 
+	margin-left : 10px;
+}
+
+#label_PJ_navigator
+{
+	position : relative; 
+	top : -10px;
+}
+
+#label_PJ_mobile
+{
+	position : relative;
+	bottom : -3px;
+	float : left;
+	margin-right : 5px;
+}
