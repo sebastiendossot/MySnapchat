@@ -3,21 +3,27 @@
 angular.module('myApp.viewChat', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/chat/:idReceiver', {
+	$routeProvider.when('/chat/:mode/:idReceiver', {
 		templateUrl: 'viewChat/chat.html',
 		controller: 'affichageCtrl',
 		isPrivate: true
 	});
 }])
-.controller('affichageCtrl', ['$scope', '$routeParams', 'messageWebService', 'User', '$location',
-	function($scope, $routeParams, messageWebService, User, $location)  {
+.controller('affichageCtrl', ['$scope', '$routeParams', 'userWebService', 'messageWebService', 'User', '$location',
+	function($scope, $routeParams, userWebService, messageWebService, User, $location)  {
 		
-		$scope.mode = "text";
+		$scope.mode = $routeParams.mode;
 		$("#photoView").hide();
 		
-		// ATTENTION : NOUVEAU SYSTEME DE DESTINATAIRE
-		// L'ID DU DESTINATAIRE EST PASSE DANS L'URL
-		$scope.receiver = $routeParams.idReceiver;
+		$scope.isMobile = isMobile
+		
+		var populateUser = function(data) {
+			$scope.pseudoReceiver = data.user.pseudo;
+		}
+		var error = function(data) {
+			console.error("erreur lors de la récupération du nom de l'ami");
+		}
+		userWebService.byId({data: $routeParams.idReceiver}, populateUser, error);
 		
 		$scope.messageList = []
 

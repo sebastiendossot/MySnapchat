@@ -211,19 +211,66 @@ app.put('/api/request/:id', function(req, res, next) {
 app.put('/api/user/times', function(req, res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-     res.sendStatus(403)
- UserModel.findById(id, function(e, result) {
-     if (e)
-         return next(e)
-     if (!result)
-         res.sendStatus(404)
-     result.temps = req.body.times
-     result.save(function (err, req) {
-        if (err) 
-          return next(err)
-      res.sendStatus(200)
-  })
- })
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+            return next(e)
+	if (!result)
+            res.sendStatus(404)
+	result.temps = req.body.times
+	result.save(function (err, req) {
+            if (err) 
+		return next(err)
+	    res.sendStatus(200)
+	})
+    })
+})
+
+app.put('/api/user/description', function(req,res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id)
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+            return next(e)
+	if (!result)
+            res.sendStatus(404)
+
+	result.description = req.body.description
+	result.save(function (err, req) {
+            if (err) 
+		return next(err)
+	    res.sendStatus(200)
+	})
+    })
+})
+
+app.put('/api/user/password',  function(req, res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id)
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+            return next(e)
+	if (!result)
+            res.sendStatus(404)
+	var hash = crypto.createHash('sha256')
+	hash.update(req.body.oldPassword)
+	var oldPassword = hash.digest('hex')
+	if (oldPassword == result.password) {
+	    hash = crypto.createHash('sha256')
+	    hash.update(req.body.newPassword)
+	    var newPassword = hash.digest('hex')
+	    result.pwd = newPassword
+	    result.save(function (err, req) {
+		if (err) 
+		    return next(err)
+		res.sendStatus(200)
+	    })
+	}
+	else
+	    res.sendStatus(401)
+    })
 })
 
 
@@ -336,14 +383,14 @@ app.get('/api/friends', function(req, res, next) {
        return res.send({list:[]})
    } else {
        var friends = []
-			//For each requester, we get its pseudo and store it in a list we'll send
+			//For each requester, we get its pseudo and description and store it in a list we'll send
 			var asyncLoop = function(i, callback) {
 				if( i < result.length ) {
 					var friendshipId = tmpFriends[i]._id
 					var requestSenderId = tmpFriends[i].idAmi1;
 					if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
 
-					UserModel.findById(requestSenderId, 'pseudo', function(e, user){
+					UserModel.findById(requestSenderId, 'pseudo description', function(e, user){
 						if (e) return next(e);
 						friends.push({user: user, friendshipId: friendshipId});
 						asyncLoop( i+1, callback );

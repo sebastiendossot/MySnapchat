@@ -5,7 +5,7 @@ angular.module('myApp.imageInput', ['ngRoute'])
 .controller('imageCtrl', ['$scope', 'messageWebService', 'User',  '$location',
 	function($scope, messageWebService, User, $location)  {
 	
-	$("#PJ").hide();
+	$("#PJ_navigator").hide();
 	$("#PJ_mobile").hide();
 	
 	$scope.showNavPhotoView = function() 
@@ -29,7 +29,7 @@ angular.module('myApp.imageInput', ['ngRoute'])
 			
 			$("#photoView").hide();
 			$("#chatView").show();
-			$("#PJ").show();
+			$("#PJ_navigator").show();
 		} 
 
 		$("#chatView").hide();

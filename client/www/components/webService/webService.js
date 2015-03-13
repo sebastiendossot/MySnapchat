@@ -9,7 +9,9 @@ angular.module('myApp.webService', ['ngResource'])
 			byPseudo: {method: 'GET', params: {urlOption: "byPseudo"}},
 			byId: {method: 'GET', params: {urlOption: "byId"}},
 			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}},
-			putTimes: {method: 'PUT', params: {urlOption: "times"}}
+			putTimes: {method: 'PUT', params: {urlOption: "times"}},
+		        putDescription: {method: 'PUT', params: {urlOption: "description"}},
+		        putPassword: {method: 'PUT', params: {urlOption: "password"}}
 		})
 	})
 .factory('socialWebService',
