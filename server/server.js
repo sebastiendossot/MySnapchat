@@ -236,7 +236,7 @@ app.put('/api/user/description', function(req,res, next) {
 	if (!result)
             res.sendStatus(404)
 
-	result.mdp = req.body.description
+	result.description = req.body.description
 	result.save(function (err, req) {
             if (err) 
 		return next(err)
@@ -261,7 +261,7 @@ app.put('/api/user/password',  function(req, res, next) {
 	    hash = crypto.createHash('sha256')
 	    hash.update(req.body.newPassword)
 	    var newPassword = hash.digest('hex')
-	    result.password = newPassword
+	    result.pwd = newPassword
 	    result.save(function (err, req) {
 		if (err) 
 		    return next(err)
@@ -383,14 +383,14 @@ app.get('/api/friends', function(req, res, next) {
        return res.send({list:[]})
    } else {
        var friends = []
-			//For each requester, we get its pseudo and store it in a list we'll send
+			//For each requester, we get its pseudo and description and store it in a list we'll send
 			var asyncLoop = function(i, callback) {
 				if( i < result.length ) {
 					var friendshipId = tmpFriends[i]._id
 					var requestSenderId = tmpFriends[i].idAmi1;
 					if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
 
-					UserModel.findById(requestSenderId, 'pseudo', function(e, user){
+					UserModel.findById(requestSenderId, 'pseudo description', function(e, user){
 						if (e) return next(e);
 						friends.push({user: user, friendshipId: friendshipId});
 						asyncLoop( i+1, callback );
