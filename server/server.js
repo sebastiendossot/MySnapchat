@@ -211,19 +211,66 @@ app.put('/api/request/:id', function(req, res, next) {
 app.put('/api/user/times', function(req, res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-     res.sendStatus(403)
- UserModel.findById(id, function(e, result) {
-     if (e)
-         return next(e)
-     if (!result)
-         res.sendStatus(404)
-     result.temps = req.body.times
-     result.save(function (err, req) {
-        if (err) 
-          return next(err)
-      res.sendStatus(200)
-  })
- })
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+            return next(e)
+	if (!result)
+            res.sendStatus(404)
+	result.temps = req.body.times
+	result.save(function (err, req) {
+            if (err) 
+		return next(err)
+	    res.sendStatus(200)
+	})
+    })
+})
+
+app.put('/api/user/description', function(req,res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id)
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+            return next(e)
+	if (!result)
+            res.sendStatus(404)
+
+	result.mdp = req.body.description
+	result.save(function (err, req) {
+            if (err) 
+		return next(err)
+	    res.sendStatus(200)
+	})
+    })
+})
+
+app.put('/api/user/password',  function(req, res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id)
+	res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+	if (e)
+            return next(e)
+	if (!result)
+            res.sendStatus(404)
+	var hash = crypto.createHash('sha256')
+	hash.update(req.body.oldPassword)
+	var oldPassword = hash.digest('hex')
+	if (oldPassword == result.password) {
+	    hash = crypto.createHash('sha256')
+	    hash.update(req.body.newPassword)
+	    var newPassword = hash.digest('hex')
+	    result.password = newPassword
+	    result.save(function (err, req) {
+		if (err) 
+		    return next(err)
+		res.sendStatus(200)
+	    })
+	}
+	else
+	    res.sendStatus(401)
+    })
 })
 
 
