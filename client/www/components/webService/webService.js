@@ -10,7 +10,7 @@ angular.module('myApp.webService', ['ngResource'])
 			byId: {method: 'GET', params: {urlOption: "byId"}},
 			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}},
 			putTimes: {method: 'PUT', params: {urlOption: "times"}},
-		        putDescription: {method: 'PUT', params: {urlOption: "description"}}
+		        putDescription: {method: 'PUT', params: {urlOption: "description"}},
 		        putPassword: {method: 'PUT', params: {urlOption: "password"}}
 		})
 	})
