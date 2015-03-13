@@ -7,7 +7,7 @@ angular.module('myApp.textInput', ['ngRoute'])
 
 	    $scope.text=""
 	    $scope.error = false
-	    $scope.receiver = ($location.path().split('/')[2])
+	    $scope.receiver = ($location.path().split('/')[3])
 
 	    $scope.send = function() {
 

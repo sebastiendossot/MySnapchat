@@ -3,7 +3,7 @@
 angular.module('myApp.viewChat', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/chat/:idReceiver', {
+	$routeProvider.when('/chat/:mode/:idReceiver', {
 		templateUrl: 'viewChat/chat.html',
 		controller: 'affichageCtrl',
 		isPrivate: true
@@ -12,9 +12,10 @@ angular.module('myApp.viewChat', ['ngRoute'])
 .controller('affichageCtrl', ['$scope', '$routeParams', 'userWebService', 'messageWebService', 'User', '$location',
 	function($scope, $routeParams, userWebService, messageWebService, User, $location)  {
 		
-		$scope.mode = "text";
+		$scope.mode = $routeParams.mode;
 		$("#photoView").hide();
 		
+		$scope.isMobile = isMobile
 		
 		var populateUser = function(data) {
 			$scope.pseudoReceiver = data.user.pseudo;
