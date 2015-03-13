@@ -1,0 +1,46 @@
+<div ng-init="d = getElapsedTime(message)"  ng-controller="imageOutputCtrl" oncontextmenu="return false;"> 
+	<li ng-init="showInit=false;showContinue=false;" ng-click="showInit=true;mouseOver(message)" ng-mouseover="showContinue = true" ng-mouseleave="showContinue = false" ng-if="message.idEnvoyeur !== idUser"   class="left clearfix" style="padding-right : 80px;" >
+		<a  ng-copy="MessageCopy(message)"  style="text-decoration:none">
+			<span class="chat-img pull-left">
+				<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+			</span>
+			<div class="chat-body clearfix">
+				<div class="header">
+					<strong class="primary-font">Ami</strong> 
+					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>
+				</div>
+				<div class="container">                    
+	      			<img ng-show="showInit&&showContinue" src="img.png" class="img-thumbnail" alt="img" width="100" height="90" data-toggle="modal" data-target="#myModal" /> 
+	    		</div>
+			</div>
+		</a>
+	</li>
+
+	<li ng-if="message.idEnvoyeur === idUser" class="right clearfix" style="padding-left : 80px;">
+		<span class="chat-img pull-right">
+			<img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+		</span>
+		<div class="chat-body clearfix">
+			<div class="header">
+				<small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>
+				<strong class="pull-right primary-font">Moi</strong><br />
+			</div>
+			<div class="pull-right">
+				
+					<img src="img.png" class="img-thumbnail" alt="img" width="100" height="90" />
+				
+			</div>
+	</li>
+
+	<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	        <div class="modal-body">
+	        	<div >
+	            	<a ng-copy="MessageCopy(message)"><img src="img.png" class="img-responsive" style="display: block;margin-left: auto;margin-right: auto;"  /></a>
+	            </div>
+	        </div>
+	    </div>
+  </div>
+</div>
+</div>
