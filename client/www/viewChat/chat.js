@@ -26,15 +26,11 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		userWebService.byId({data: $routeParams.idReceiver}, populateUser, error);
 		
 		$scope.messageList = []
-		
-		$scope.dateNow = new Date();
+
 
 		var populateMessageList = function(data) {
 			$scope.messageList = data.list;
 			$scope.idUser = User.id;
-			$scope.show = false;
-			$scope.first = true;
-			//console.log($scope.messageList[0].pseudo);
 		}	
 
 		$scope.mouseOver = function(message){
@@ -67,11 +63,37 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		}
 		
 
-		/*var initDate = function(data) {
+		$scope.MessageCopy = function(message) {
+
+			var successDelete = function(data){
+				window.location.reload();
+				alert("Vous avez copié un message, il a été supprimé et votre ami a été prévenu");
+			}
+
+			var successWarn = function(data){
+				messageWebService.deleteMessage({data:message._id}, successDelete, error);
+			}
+			
+			var error = function(data){
+				$scope.error = true;
+			}
+
+			messageWebService.newMessage(
+				    {type: "text", donnes: "Votre ami a copié le message", 
+				     temps: User.time.texte,
+				     idEnvoyeur: User.id,
+				     destinataires: [{idDestinataire: $scope.receiver, lu: false}],
+				     dateEnvoi: new Date()}
+				    , successWarn, error)
+
+	    }
+
+	    $scope.getElapsedTime = function(message) {		
 			var dateNow = new Date();
-			var dateTmp = new Date(data);
-			$scope.date = data;
-		}*/
+			var dateEnvoi = new Date(message.dateEnvoi);
+			var diff = dateNow - dateEnvoi;
+			return Math.round(diff/60000);
+		}
 		
 		messageWebService.receivedMessages(null, populateMessageList, error);
 

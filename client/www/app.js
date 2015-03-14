@@ -16,7 +16,8 @@ var onDeviceReady = function() {
 		'myApp.textInput',
 		'myApp.textOutput',
 		'myApp.imageInput',
-		'myApp.viewTime'
+		'myApp.imageOutput',
+		'myApp.viewTime',
 		])
 
 	.factory('sessionInjector', ['$localStorage', function($localStorage) {  

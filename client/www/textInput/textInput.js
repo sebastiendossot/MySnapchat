@@ -20,12 +20,14 @@ angular.module('myApp.textInput', ['ngRoute'])
 		    $scope.error = true
 		}
 
+		var d = Date.parse(new Date());
+
 		messageWebService.newMessage(
 		    {type: "text", donnes: $scope.text, 
 		     temps: User.time.texte,
 		     idEnvoyeur: User.id,
 		     destinataires: [{idDestinataire: $scope.receiver, lu: false}],
-		     dateEnvoi: new Date()}
+		     dateEnvoi: d}
 		    , success, error)
 
 	    }

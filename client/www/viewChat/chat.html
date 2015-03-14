@@ -17,16 +17,22 @@
 					<div class="panel-body">
 						<ul class="chat" ng-repeat="message in messageList">
 						
-							<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
-							<span ng-if="true" ng-include="'textOutput/viewTextOutput.html'"></span>
-							
-							<!-- Changer le chemin pour inclure la vue pour les images -->
-							<span ng-if="message.type==='image'" ng-include="'Chemin/vers/viewImage.html'"></span>
-							
-							<!-- Changer le chemin pour inclure la vue pour les vidéos -->
-							<span ng-if="message.type==='video'" ng-include="'Chemin/vers/viewVideo.html'"></span>
-
-							
+							<div ng-switch on ="message.type">
+								<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
+								<div ng-switch-when="image" >
+									<div ng-include="'viewTextOutput/viewTextOutput.html'"></div>
+								</div>
+								
+								<!-- Changer le chemin pour inclure la vue pour les images -->
+								<div  ng-switch-when="text" >
+									<div ng-include="'viewImageOutput/viewImageOutput.html'"></div>
+								</div>
+								
+								<!-- Changer le chemin pour inclure la vue pour les vidéos -->
+								<div  ng-switch-when="video" >
+									<div ng-include="'Chemin/vers/viewVideo.html'"></div>
+								</div>
+						</div>
 						</ul>
 					</div>
 					<div class="panel-footer">
@@ -38,11 +44,19 @@
 						</div>
 						
 						<div style="float : left; width : 90%;">
-							<div ng-if="mode === 'text'" ng-include="'textInput/viewTextInput.html'"></div>
+							<div ng-switch on ="mode">
+								<div ng-switch-when="text">
+									<div ng-include="'textInput/viewTextInput.html'"></div>
+								</div>
 							
-							<div ng-if="mode === 'image'" ng-include="'viewImageInput/viewImageInput.html'"></div>
-							
-							<div ng-if="mode === 'video'" ng-controller="videoCtrl" class="input-group"></div>
+								<div ng-switch-when="image">
+									<div ng-include="'viewImageInput/viewImageInput.html'"></div>
+								</div>
+								
+								<div ng-switch-when="video" >
+									<div ng-controller="videoCtrl" class="input-group"></div>
+								</div>
+							</div>
 						</div>
 						
 						<div style="clear : both;"></div>
