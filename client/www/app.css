@@ -1,3 +1,7 @@
 /* app css stylesheet */
 
+textarea {
+  resize: vertical; /* user can resize vertically, but width is fixed */
+}
+
 label.time { display: inline-block; width: 50px }
