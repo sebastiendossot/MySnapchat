@@ -10,13 +10,13 @@
 								<span class="glyphicon glyphicon-chevron-down"></span>
 							</button>
 							<ul class="dropdown-menu slidedown">
-							  <li class="container-fluid row-fluid" ng-include="'viewTime/viewTime.html'"></li>
+								<li class="container-fluid row-fluid" ng-include="'viewTime/viewTime.html'"></li>
 							</ul>
 						</div>
 					</div>
 					<div class="panel-body">
 						<ul class="chat" ng-repeat="message in messageList">
-						
+							
 							<div ng-switch on ="message.type">
 								<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
 								<div ng-switch-when="image" >
@@ -25,22 +25,22 @@
 								
 								<!-- Changer le chemin pour inclure la vue pour les images -->
 								<div  ng-switch-when="text" >
-									<div ng-include="'viewImageOutput/viewImageOutput.html'"></div>
+									<div ng-include="'viewTextOutput/viewTextOutput.html'"></div>
 								</div>
 								
 								<!-- Changer le chemin pour inclure la vue pour les vidéos -->
 								<div  ng-switch-when="video" >
 									<div ng-include="'Chemin/vers/viewVideo.html'"></div>
 								</div>
-						</div>
+							</div>
 						</ul>
 					</div>
 					<div class="panel-footer">
-					
+
 						<div style="float : left; width : 20px;">
-							<a ng-click="changeMode('text')" class="btn btn-xs btn-info" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-envelope"></span></a>
-							<a ng-click="changeMode('image')" class="btn btn-xs btn-warning" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-picture"></span></a>
-							<a ng-click="changeMode('video')" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-film"></span></a>
+							<a ng-click="mode = 'text'" class="btn btn-xs btn-info" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-envelope"></span></a>
+							<a ng-click="mode = 'image'" class="btn btn-xs btn-warning" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-picture"></span></a>
+							<a ng-click="mode = 'video'" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-film"></span></a>
 						</div>
 						
 						<div style="float : left; width : 90%;">
@@ -48,7 +48,7 @@
 								<div ng-switch-when="text">
 									<div ng-include="'viewTextInput/viewTextInput.html'"></div>
 								</div>
-							
+								
 								<div ng-switch-when="image">
 									<div ng-include="'viewImageInput/viewImageInput.html'"></div>
 								</div>
@@ -66,9 +66,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<div id="photoView" ng-controller="imageCtrl">
-	<a id="takePhoto" class="btn btn-lg btn-info"><span class="glyphicon glyphicon-camera"></span>   Prendre une photo</a><br /><br />
-	<video autoplay></video> 
 </div>

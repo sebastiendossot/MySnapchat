@@ -14,8 +14,8 @@ var isLocal = process.env.PORT === undefined
 console.log(isLocal ? "LOCAL LAUNCH" : "MODULUS LAUNCH")
 
 // Configure server
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 if(isLocal) {
     app.use(express.static(path.join(application_root ,'../client/www')));
 }
@@ -64,7 +64,7 @@ var Message = new Schema({
     temps: Number,
     idEnvoyeur : Schema.ObjectId,
     destinataires : [Destinataire],
-    dateEnvoi : Date
+    dateEnvoi : { type: Date, default: Date.now }
 });
 
 /*
@@ -174,11 +174,24 @@ app.post('/api/friend', function(req, res, next) {
 
 //Envoyer un message
 app.post('/api/message', function(req, res, next) {
-    var newMessage = new MessageModel(req.body);
-    newMessage.save(function(e, results){
-        if (e) return next(e);
-        res.send(results);
-    })
+    if(req.body) {
+        var match = /data:([^;]+);base64,(.*)/.exec(req.body.donnes);
+        if(match) {
+
+            base64Data = req.body.donnes.replace(/^data:image\/png;base64,/,"");
+            binaryData = new Buffer(base64Data, 'base64').toString('base64');
+            //console.log("binaryData")
+            //res.setHeader('Content-Type', 'image/png');
+            //res.setHeader('Content-Length', binaryData.length);
+            req.body.donnes = binaryData;
+
+        }
+        var newMessage = new MessageModel(req.body);
+        newMessage.save(function(e, results){
+            if (e) return next(e);
+            res.sendStatus(200);
+        })
+    }
 });
 
 
@@ -211,65 +224,65 @@ app.put('/api/request/:id', function(req, res, next) {
 app.put('/api/user/times', function(req, res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-	res.sendStatus(403)
+        res.sendStatus(403)
     UserModel.findById(id, function(e, result) {
-	if (e)
+        if (e) 
             return next(e)
-	if (!result)
+        if (!result)
             res.sendStatus(404)
-	result.temps = req.body.times
-	result.save(function (err, req) {
+        result.temps = req.body.times
+        result.save(function (err, req) {
             if (err) 
-		return next(err)
-	    res.sendStatus(200)
-	})
+                return next(err)
+            res.sendStatus(200)
+        })
     })
 })
 
 app.put('/api/user/description', function(req,res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-	res.sendStatus(403)
+        res.sendStatus(403)
     UserModel.findById(id, function(e, result) {
-	if (e)
+        if (e)
             return next(e)
-	if (!result)
+        if (!result)
             res.sendStatus(404)
 
-	result.description = req.body.description
-	result.save(function (err, req) {
+        result.description = req.body.description
+        result.save(function (err, req) {
             if (err) 
-		return next(err)
-	    res.sendStatus(200)
-	})
+                return next(err)
+            res.sendStatus(200)
+        })
     })
 })
 
 app.put('/api/user/password',  function(req, res, next) {
     var id = authenticateSender(req.headers)
     if(!id)
-	res.sendStatus(403)
+        res.sendStatus(403)
     UserModel.findById(id, function(e, result) {
-	if (e)
+        if (e)
             return next(e)
-	if (!result)
+        if (!result)
             res.sendStatus(404)
-	var hash = crypto.createHash('sha256')
-	hash.update(req.body.oldPassword)
-	var oldPassword = hash.digest('hex')
-	if (oldPassword == result.password) {
-	    hash = crypto.createHash('sha256')
-	    hash.update(req.body.newPassword)
-	    var newPassword = hash.digest('hex')
-	    result.pwd = newPassword
-	    result.save(function (err, req) {
-		if (err) 
-		    return next(err)
-		res.sendStatus(200)
-	    })
-	}
-	else
-	    res.sendStatus(401)
+        var hash = crypto.createHash('sha256')
+        hash.update(req.body.oldPassword)
+        var oldPassword = hash.digest('hex')
+        if (oldPassword == result.password) {
+            hash = crypto.createHash('sha256')
+            hash.update(req.body.newPassword)
+            var newPassword = hash.digest('hex')
+            result.pwd = newPassword
+            result.save(function (err, req) {
+                if (err) 
+                    return next(err)
+                res.sendStatus(200)
+            })
+        }
+        else
+            res.sendStatus(401)
     })
 })
 
@@ -302,7 +315,7 @@ app.get('/api/message/', function(req, res, next) {
     //MessageModel.find({destinataires : {idDestinataires:id, lu:'false'} }, function(e, result){
 
 	// A faire : recupérer les message seulement si on est le destinataire
-	MessageModel.find({type : "text" }, function(e, result){
+	MessageModel.find( function(e, result){
         if (e) return next(e);
 		//console.log("messages = "+result)
         res.send({list:result})
@@ -377,33 +390,33 @@ app.get('/api/friends', function(req, res, next) {
     })
 
     FriendModel.find({ $or: [ {idAmi1 : id, accepted : true }, {idAmi2 : id, accepted : true } ] }, function(e, result){
-      if (e) return next(e);
-      if (result) tmpFriends = tmpFriends.concat(result);
-      if (tmpFriends.length === 0) {
-       return res.send({list:[]})
-   } else {
-       var friends = []
-			//For each requester, we get its pseudo and description and store it in a list we'll send
-			var asyncLoop = function(i, callback) {
-				if( i < result.length ) {
-					var friendshipId = tmpFriends[i]._id
-					var requestSenderId = tmpFriends[i].idAmi1;
-					if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
+        if (e) return next(e);
+        if (result) tmpFriends = tmpFriends.concat(result);
+        if (tmpFriends.length === 0) {
+            return res.send({list:[]})
+        } else {
+            var friends = []
+            //For each requester, we get its pseudo and description and store it in a list we'll send
+            var asyncLoop = function(i, callback) {
+                if( i < result.length ) {
+                    var friendshipId = tmpFriends[i]._id
+                    var requestSenderId = tmpFriends[i].idAmi1;
+                    if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
 
-					UserModel.findById(requestSenderId, 'pseudo description', function(e, user){
-						if (e) return next(e);
-						friends.push({user: user, friendshipId: friendshipId});
-						asyncLoop( i+1, callback );
-					})
-				} else {
-					callback();
-				}
-			}
-			asyncLoop( 0, function() {
-				res.send({list:friends})
-			});
-		}
-	});
+                    UserModel.findById(requestSenderId, 'pseudo description', function(e, user){
+                        if (e) return next(e);
+                        friends.push({user: user, friendshipId: friendshipId});
+                        asyncLoop( i+1, callback );
+                    })
+                } else {
+                    callback();
+                }
+            }
+            asyncLoop( 0, function() {
+                res.send({list:friends})
+            });
+        }
+    });
 })
 
 /*************************************************************/
@@ -421,11 +434,11 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
         }
     })
     FriendModel.findByIdAndRemove(id, function(e, result) {
-     if (e) return res.sendStatus(404);
-     if(result) {
-        console.log("friendlist of "+result.pseudo+" removed")
-    }
-})
+        if (e) return res.sendStatus(404);
+        if(result) {
+            console.log("friendlist of "+result.pseudo+" removed")
+        }
+    })
     res.sendStatus(200)
 })
 
@@ -459,7 +472,7 @@ app.delete('/api/message/:id', function(req, res, next) {
     MessageModel.findById(reqId, function(e, result) {
         if (e) return next(e);
         if (!result) {
-         console.log("Message supprimé")
+            console.log("Message supprimé")
             //res.sendStatus(404);
         }else{
             result.remove(function (err, req) {

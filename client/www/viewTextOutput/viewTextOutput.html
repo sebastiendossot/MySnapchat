@@ -9,9 +9,16 @@
 			<div class="chat-body clearfix">
 				<div class="header">
 					<strong class="primary-font">{{labelReceiver}}</strong> 
-					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>
+					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>mins ago</small>
 				</div>
-				<p ng-show="showInit&&showContinue" >{{message.donnes}}</p>
+				<div ng-show="showInit&&showContinue" >
+					<span ng-if="message.type === 'text'">
+						<p class="pull-right">{{message.donnes}}</p>
+					</span>
+					<span ng-if="message.type === 'image'">
+						<img src="data:image/png;base64,{{message.donnes}}" alt="">
+					</span>
+				</div>
 			</div>
 		</a>
 	</li>
@@ -25,7 +32,14 @@
 				<small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>
 				<strong class="pull-right primary-font">Moi</strong><br />
 			</div>
-			<p class="pull-right">{{message.donnes}}</p>
+			<div ng-switch on ="message.type">
+				<span ng-switch-when='text'>
+					<p class="pull-right">{{message.donnes}}</p>
+				</span>
+				<span ng-switch-when='image'>
+					<img src="data:image/png;base64,{{message.donnes}}" alt="">
+				</span>
+			</div>
 		</div>
 	</li>
 </div>

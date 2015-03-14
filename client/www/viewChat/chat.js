@@ -13,7 +13,6 @@ angular.module('myApp.viewChat', ['ngRoute'])
 	function($scope, $routeParams, userWebService, messageWebService, User, $location)  {
 		
 		$scope.mode = $routeParams.mode;
-		$("#photoView").hide();
 		
 		$scope.isMobile = isMobile
 		
@@ -26,7 +25,6 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		userWebService.byId({data: $routeParams.idReceiver}, populateUser, error);
 		
 		$scope.messageList = []
-
 
 		var populateMessageList = function(data) {
 			$scope.messageList = data.list;
@@ -45,7 +43,6 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		var error = function() {
 			console.log("erreur lors de la recupération des messages");
 		}
-							
 
 		$scope.deleteMessage = function (message) {
 			var success = function(data) {
@@ -55,13 +52,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 				console.error("erreur lors de la suppression du message");
 			}
 			messageWebService.deleteMessage({data:message._id}, success, error);
-		}
-		
-		$scope.changeMode = function(newMode) 
-		{
-			$scope.mode = newMode;
-		}
-		
+		}		
 
 		$scope.MessageCopy = function(message) {
 
@@ -79,16 +70,16 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			}
 
 			messageWebService.newMessage(
-				    {type: "text", donnes: "Votre ami a copié le message", 
-				     temps: User.time.texte,
-				     idEnvoyeur: User.id,
-				     destinataires: [{idDestinataire: $scope.receiver, lu: false}],
-				     dateEnvoi: new Date()}
-				    , successWarn, error)
+				{type: "text", donnes: "Votre ami a copié le message", 
+				temps: User.time.texte,
+				idEnvoyeur: User.id,
+				destinataires: [{idDestinataire: $scope.receiver, lu: false}],
+				dateEnvoi: new Date()}
+				, successWarn, error)
 
-	    }
+		}
 
-	    $scope.getElapsedTime = function(message) {		
+		$scope.getElapsedTime = function(message) {		
 			var dateNow = new Date();
 			var dateEnvoi = new Date(message.dateEnvoi);
 			var diff = dateNow - dateEnvoi;
@@ -97,12 +88,12 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		
 		messageWebService.receivedMessages(null, populateMessageList, error);
 
-}
-		
-])
+	}
+
+	])
 
 
 .controller('videoCtrl', ['$scope', 'messageWebService', 'User', '$location',
 	function($scope, messageWebService, User, $location)  {
 		
-}]);
+	}]);

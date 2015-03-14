@@ -2,42 +2,56 @@
 
 angular.module('myApp.imageInput', ['ngRoute'])
 
-.controller('imageCtrl', ['$scope', 'messageWebService', 'User',  '$location',
-	function($scope, messageWebService, User, $location)  {
-	
-	$("#PJ_navigator").hide();
-	$("#PJ_mobile").hide();
-	
-	$scope.showNavPhotoView = function() 
-	{
-		var onFail = function(e) { 
-			console.log('failed',e); 
-		}
+.controller('imageCtrl', ['$scope', 'messageWebService', 'User',  '$location', '$routeParams', 'CameraService',
+	function($scope, messageWebService, User, $location, $routeParams, CameraService)  {
 
-		window.URL = window.URL || window.webkitURL ;
-		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-		var video = document.querySelector('video');
-		if(navigator.getUserMedia) {
-			navigator.getUserMedia({video: true},function(stream) { video.src = window.URL.createObjectURL(stream); },onFail);
-		}
-		
-		document.getElementById("takePhoto").onclick = function() 
-		{ 
-			var canvas = document.getElementById('canvas'); 
-			var ctx = canvas.getContext('2d'); 
-			ctx.drawImage(video,0,0,30,30);
-			
-			$("#photoView").hide();
-			$("#chatView").show();
-			$("#PJ_navigator").show();
-		} 
+		/*$("#PJ").hide();
+		$("#PJ_mobile").hide();*/
+		$scope.shotable = false;
+		$scope.showNavPhotoView = function() 
+		{	
+			$scope.hasUserMedia = CameraService.hasUserMedia;
+			$scope.hideStream = false;
+			if(!$scope.hasUserMedia) {
+				alert("Impossible to get access to you camera. Your browser may not be compatible")
+				return;
+			}
+			$scope.webcamOn = true;
+			$scope.onSuccess= function() {
+				$scope.shotable = true;
+				$scope.cameraAccessRefused = false;
+				$scope.$apply();
+			}
+			$scope.onError = function(err) {
+				if(err.name == "PermissionDeniedError") {
+					$scope.cameraAccessRefused = true;
+					$scope.$apply();
+				}
+			}
 
-		$("#chatView").hide();
-		$("#photoView").show();
-	}
-	
-	$scope.showMobilePhotoView = function() 
-	{
+			$scope.takeSnapshot = function() {
+				if($scope.shotable) {
+					var canvas  = document.querySelector('canvas'),
+					ctx     = canvas.getContext('2d'),
+					videoElement = document.querySelector('video'),
+					w = videoElement.offsetWidth,
+					h = videoElement.offsetHeight;
+
+					canvas.width = w; // update the canvas width and height
+					canvas.height = h;
+          			// Grab the image from the video
+          			//ctx.fillRect(0, 0, w, h);
+          			ctx.drawImage(videoElement, 0, 0, w, h);
+          			$scope.hideStream = true;
+
+          			$scope.dataUrl = canvas.toDataURL();
+          			console.log($scope.dataUrl);
+          		}
+          	}
+          }
+
+          $scope.showMobilePhotoView = function() 
+          {
 		var pictureSource;   // picture source
 		var destinationType; // sets the format of returned value
 
@@ -72,8 +86,26 @@ angular.module('myApp.imageInput', ['ngRoute'])
 		}
 	}
 	
-	$scope.send = function() 
+	$scope.send = function(dataUrl) 
 	{
-		alert("envoi image")
+		console.log("SENDING : "+dataUrl)
+		if(dataUrl) {
+			var success = function() {
+				//$scope.ress = "data:image/png;base64,"+data.img;
+				window.location.reload()
+			}
+			var error = function(data) {
+				console.error("SUCCESS : " +data)
+			}
+			messageWebService.newMessage(
+			{
+				type: "image", 
+				donnes: dataUrl, 
+				temps: User.time.image,
+				idEnvoyeur: User.id,
+				destinataires: [ {idDestinataire: $routeParams.idReceiver, lu: false} ]
+			}
+			, success, error)
+		}
 	}	
 }])
