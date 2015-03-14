@@ -1,33 +1,28 @@
 
-<div class="container-fluid row">
+<div style="color:#333" ng-controller="timeCtrl">
+
 <strong>Temps de visualisation des médias :</strong>
 <div class="dropdown-header">Temps compris entre 1 et 600 secondes</div>
 
-<form name="time" class="form-horizontal" ng-controller="timeCtrl">
+<form name="time">
 
-  <div class="form-group">
-    <label class="control-label col-sm-1" for="text">Texte </label>
-    <div class="col-sm-2">
-      <input type="number" id="text" class="form-control"
-	     min="1" max="600" ng-model="textTime" ng-required="true"></input>
-    </div>
-  </div>
+  <p>
+    <label class="time" for="text">Texte </label>
+    <input type="number" id="text" min="1" max="600" ng-model="textTime"
+	   ng-required="true" onclick="event.stopPropagation()"></input>
+  </p>
   
-  <div class="form-group">
-    <label class="control-label col-sm-1" for="image">Image </label>
-    <div class="col-sm-2">
-      <input type="number" id="image" class="form-control" min="1" max="600"
-	     ng-model="imageTime" ng-required="true"></input>
-    </div>
-  </div>
+  <p>
+    <label class="time" for="image">Image </label>
+    <input type="number" id="image" min="1" max="600" ng-model="imageTime"
+	   ng-required="true" onclick="event.stopPropagation()"></input>
+  </p>
 
-  <div class="form-group">
-    <label class="control-label col-sm-1" for="video">Vidéo </label>
-    <div class="col-sm-2">
-      <input type="number" id="video" class="form-control" min="1" max="600"
-	     ng-model="videoTime" ng-required="true"></input>
-    </div>
-  </div>
+  <p>
+    <label class="time" for="video">Vidéo </label>
+    <input type="number" id="video" min="1" max="600" ng-model="videoTime"
+	   ng-required="true" onclick="event.stopPropagation()"></input>
+  </p>
   
   <input type="button" class="btn btn-primary" value="Enregistrer"
 	 ng-disabled="time.$invalid||time.$pristine" ng-click="update()"></input>
