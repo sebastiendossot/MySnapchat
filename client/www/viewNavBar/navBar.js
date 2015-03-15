@@ -2,8 +2,8 @@
 
 angular.module('myApp.viewNavBar', ['ngRoute'])
 
-.controller('navBarCtrl', ['$scope', 'User', 'socialWebService', '$location', 'mainPageUrl', '$route',
-	function($scope, User, socialWebService, $location, mainPageUrl, $route) {
+.controller('navBarCtrl', ['$scope', 'User', 'socialWebService', '$location', '$route',
+	function($scope, User, socialWebService, $location, $route) {
 
 		$scope.user = User
 
@@ -26,12 +26,12 @@ angular.module('myApp.viewNavBar', ['ngRoute'])
 	    		socialWebService.receivedRequests(null, success, error)
 	    	}
 	    }
-		
+	    
 
 	    //Forces the browser to reload the page
 	    $scope.brandButtonPressed = function() {
-		window.location.reload()
+	    	window.location.reload()
 	    }
 
-		
+	    
 	}])
