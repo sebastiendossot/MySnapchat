@@ -2,22 +2,17 @@
 	<!--var dateNow = new Date(); var dateTmp = new Date(message.dateEnvoi);$scope.date = 1-->
 
 	<li ng-init="showInit=false;showContinue=false" ng-click="showInit=true;mouseOver(message)" ng-mouseover="showContinue = true" ng-mouseleave="showContinue = false" ng-if="message.idEnvoyeur !== idUser"   class="left clearfix" style="padding-right : 80px;">
-		<a  ng-copy="MessageCopy(message)"  style="text-decoration:none">
+		<a  ng-copy="MessageCopy(message)"  style="text-decoration:none;">
 			<span class="chat-img pull-left">
 				<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
 			</span>
 			<div class="chat-body clearfix">
 				<div class="header">
-					<strong class="primary-font">{{labelReceiver}}</strong> 
-					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>mins ago</small>
+					<strong class="primary-font">{{pseudoReceiver}}</strong> 
+					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small></small>
 				</div>
 				<div ng-show="showInit&&showContinue" >
-					<span ng-if="message.type === 'text'">
-						<p class="pull-right">{{message.donnes}}</p>
-					</span>
-					<span ng-if="message.type === 'image'">
-						<img src="data:image/png;base64,{{message.donnes}}" alt="">
-					</span>
+					<p>{{message.donnes}}</p>
 				</div>
 			</div>
 		</a>
@@ -32,14 +27,8 @@
 				<small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>{{d}} mins ago</small>
 				<strong class="pull-right primary-font">Moi</strong><br />
 			</div>
-			<div ng-switch on ="message.type">
-				<span ng-switch-when='text'>
-					<p class="pull-right">{{message.donnes}}</p>
-				</span>
-				<span ng-switch-when='image'>
-					<img src="data:image/png;base64,{{message.donnes}}" alt="">
-				</span>
-			</div>
+			<p class="pull-right">{{message.donnes}}</p>
+
 		</div>
 	</li>
 </div>

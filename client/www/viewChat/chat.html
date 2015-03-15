@@ -15,17 +15,17 @@
 						</div>
 					</div>
 					<div class="panel-body">
-						<ul class="chat" ng-repeat="message in messageList">
+						<ul class="chat" ng-repeat="message in messageList | orderBy : 'dateEnvoi'">
 							
 							<div ng-switch on ="message.type">
 								<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
-								<div ng-switch-when="image" >
+								<div ng-switch-when="text" >
 									<div ng-include="'viewTextOutput/viewTextOutput.html'"></div>
 								</div>
 								
 								<!-- Changer le chemin pour inclure la vue pour les images -->
-								<div  ng-switch-when="text" >
-									<div ng-include="'viewTextOutput/viewTextOutput.html'"></div>
+								<div  ng-switch-when="image" >
+									<div ng-include="'viewImageOutput/viewImageOutput.html'"></div>
 								</div>
 								
 								<!-- Changer le chemin pour inclure la vue pour les vidéos -->
