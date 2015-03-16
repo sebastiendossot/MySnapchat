@@ -18,6 +18,7 @@ var onDeviceReady = function() {
 		'myApp.textOutput',
 		'myApp.imageInput',
 		'myApp.imageOutput',
+		'myApp.videoInput',
 		'myApp.viewTime',
 		])
 

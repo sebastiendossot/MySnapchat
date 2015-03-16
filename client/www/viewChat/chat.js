@@ -94,9 +94,3 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		messageWebService.receivedMessages(null, populateMessageList, error);
 
 	}])
-
-
-.controller('videoCtrl', ['$scope', 'messageWebService', 'User', '$location',
-	function($scope, messageWebService, User, $location)  {
-		
-	}]);
