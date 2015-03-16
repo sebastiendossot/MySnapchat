@@ -46,7 +46,8 @@ angular.module('myApp.imageInput', ['ngRoute'])
 		}
 
 		$scope.showMobilePhotoView = function() {
-			$scope.preview = false;
+			//$scope.preview = false;
+			
 			var pictureSource;   // picture source
 			var destinationType; // sets the format of returned value
 
@@ -64,10 +65,13 @@ angular.module('myApp.imageInput', ['ngRoute'])
 				// Uncomment to view the base64-encoded image data
 				// console.log(imageData);
 
+				$scope.mobilePreview(true)
+				
 				var smallImage = document.getElementById('smallImage');
 				smallImage.style.display = 'block';
 				smallImage.src = "data:image/jpeg;base64," + imageData;
-				$scope.preview = true;
+				//$scope.preview = true;
+				
 				$scope.dataUrl = imageData
 				$scope.$apply();
 			}
@@ -84,6 +88,8 @@ angular.module('myApp.imageInput', ['ngRoute'])
 	
 	$scope.send = function(dataUrl) 
 	{
+		$scope.mobilePreview(false)
+	
 		console.log("SENDING : "+dataUrl)
 		if(dataUrl) {
 			var success = function() {

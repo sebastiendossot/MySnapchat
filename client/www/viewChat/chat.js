@@ -14,6 +14,11 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		
 		$scope.mode = $routeParams.mode;
 		
+		$scope.showPreview = false;
+		$scope.mobilePreview = function(bool){
+			$scope.showPreview = bool;
+		}
+		
 		$scope.isMobile = isMobile
 		
 		var populateUser = function(data) {
@@ -30,7 +35,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			$scope.messageList = data.list;
 			$scope.idUser = User.id;
 		}	
-
+		
 		$scope.mouseOver = function(message){
 			$scope.show = true;
 			console.log(message.temps)	
@@ -88,9 +93,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		
 		messageWebService.receivedMessages(null, populateMessageList, error);
 
-	}
-
-	])
+	}])
 
 
 .controller('videoCtrl', ['$scope', 'messageWebService', 'User', '$location',
