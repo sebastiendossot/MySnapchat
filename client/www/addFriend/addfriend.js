@@ -16,18 +16,6 @@ angular.module('myApp.addfriend', ['ngRoute'])
   $scope.addfriend = function() {
     var pseudo = $scope.searchInfo;
 
-	/*
-    var success = function(friend) {
-      window.location.assign('#/friendlist')  
-    }
-    var error = function(data, status, headers){
-      if(data.status === 404) {
-        alert("Utilisateur inconnu");
-      }
-      console.error(data);
-    }
-	*/
-
 	var error = function(data) {
 		console.error("Une erreur s'est produite lors de l'ajout de l'utilisateur");
 	}
@@ -37,7 +25,6 @@ angular.module('myApp.addfriend', ['ngRoute'])
 		if(member.user!=null && member.user._id != User.id)
 		{
 			var successVerification = function(data) {
-			
 				if(!data.exist)
 				{
 					var successAdd = function(friend) {
@@ -61,25 +48,6 @@ angular.module('myApp.addfriend', ['ngRoute'])
 		}
 	}
 	userWebService.byPseudo({data: pseudo}, successResearch, error);
-	
-		
-	
-	
-	/*
-	var populateUser = function(data) {
-		alert(data.exist);
-	}
-	var error = function(data) {
-		console.error("erreur lors de la récupération du nom de l'ami");
-	}
-	socialWebService.alreadyInserted({data: "507f191e810c19729de860ea"}, populateUser, error);
-	*/
-	
-    /*Directly launch the new friendship to server. Server will return error 404 if the
-    pseudo the user entered is invalid*/
-    //socialWebService.newFriend({'pseudo' : pseudo}, success, error)
-
-    //$scope.searchInfo ="";
   }
 
 }]);
