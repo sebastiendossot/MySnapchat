@@ -20,9 +20,11 @@ angular.module('myApp.webService', ['ngResource'])
 			receivedRequests: {method: 'GET', params: {urlOption: "receivedRequests"}},
 			sentRequests: {method: 'GET', params: {urlOption: "sentRequests"}},
 			friends: {method: 'GET', params: {urlOption: "friends"}},
+			alreadyInserted: {method: 'GET', params: {urlOption: "alreadyInserted"}},
 			newFriend: {method: 'POST', params: {urlOption: "friend"}},
 			declineRequest: {method: 'DELETE', params: {urlOption: "friend"}},
 			acceptRequest: {method: 'PUT', params: {urlOption: "request"}}
+			
 		})
 	})
 .factory('messageWebService',

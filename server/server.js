@@ -419,6 +419,28 @@ app.get('/api/friends', function(req, res, next) {
     });
 })
 
+// Demande existante
+app.get('/api/alreadyInserted/:idami', function(req, res, next) {
+	console.log("alreadyinserted = "+req.params.idami)
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
+    var tmpFriends = [];
+    FriendModel.find(function(e, res) {
+        console.log(res);
+        console.log(id)
+    })
+
+    FriendModel.find({ $or: [ {idAmi1 : id, idAmi2 : req.params.idami }, {idAmi1 : req.params.idami, idAmi2 : id } ] }, function(e, result){
+        if (e) return next(e);
+        if (result) tmpFriends = tmpFriends.concat(result);
+        if (tmpFriends.length === 0) {
+            return res.send({exist:false})
+        } else {
+            return res.send({exist:true})
+        }
+    });
+})
+
 /*************************************************************/
 /********************* DELETE REQUESTS ***********************/
 /*************************************************************/
