@@ -19,26 +19,29 @@
 			
 			<div class="list-group-item" ng-repeat="friend in friendList">
 
-			  <form class="vertical-form">
+			  <form class="vertical-form" style="height : 20px;">
 			    <div class="form-group">
-				<strong>{{friend.user.pseudo}}</strong>
-				<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
-				<a href="#/chat/video/{{friend.user._id}}" class="btn btn-xs btn-success" style="float : right; margin-right : 20px;"><span class="glyphicon glyphicon-film"></span>  </a>
-				<a href="#/chat/image/{{friend.user._id}}" class="btn btn-xs btn-warning" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-picture"></span>  </a>
-				<a href="#/chat/text/{{friend.user._id}}" id="text-{{friend.user.pseudo}}" class="btn btn-xs btn-info" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-envelope"></span>  </a>
-			</div>
+					<strong>{{friend.user.pseudo}}</strong>
+					<a ng-click="deleteFriend(friend)" class="btn btn-xs btn-danger" style="float : right;"><span class="glyphicon glyphicon-remove"></span></a>
+					<a href="#/chat/video/{{friend.user._id}}" class="btn btn-xs btn-success" style="float : right; margin-right : 20px;"><span class="glyphicon glyphicon-film"></span>  </a>
+					<a href="#/chat/image/{{friend.user._id}}" class="btn btn-xs btn-warning" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-picture"></span>  </a>
+					<a href="#/chat/text/{{friend.user._id}}" id="text-{{friend.user.pseudo}}" class="btn btn-xs btn-info" style="float : right; margin-right : 4px;"><span class="glyphicon glyphicon-envelope"></span>  </a>
+				</div>
 
 			    <div class="form-group" ng-if="friend.user.description" style="color:grey">
 			      {{friend.user.description}}
 			    </div>
 			  </form>
 
-		</div><br /><br />
+			</div><br /><br />
+		</div>
 	</div>
+	
 	<div ng-if="friendList.length===0">
 		Vous n'avez aucun ami dans votre liste pour le moment.<br />
 		Retrouvez dés à présent vos amis grâce au <a href="#/addfriend">formulaire de recherche d'amis</a>.<br /><br />
 	</div>
+	
 	
 	<div ng-if="sentRequestList.length>0">
 		<h3>Demandes que vous avez effectué :</h3>
