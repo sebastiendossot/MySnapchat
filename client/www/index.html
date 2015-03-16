@@ -11,6 +11,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="app.css">
+	<link rel="stylesheet" href="textInput/textInput.css">
 	<link rel="stylesheet" type="text/css" href="viewChat/chat.css">
 </head>
 <body>
@@ -27,8 +28,8 @@
   	<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
   <script>
-  	var isMobile = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
-  	if(isMobile) {
+  	var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+  	if(app) {
   		var script = document.createElement('script');
   		script.type = 'text/javascript';
   		script.src = 'cordova.js';    
@@ -43,22 +44,18 @@
   <script src="bower_components/ngstorage/ngStorage.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src="bower_components/webcam-directive/dist/webcam.min.js"></script>
   <script src="components/api/api.js"></script>
   <script src="components/webService/webService.js"></script>
   <script src="app.js"></script>
   <script src="viewSettings/settings.js"></script>
-  <script src="viewRegister/register.js"></script>
+  <script src="register/register.js"></script>
   <script src="viewConnection/connection.js"></script>
   <script src="viewFriendList/friendlist.js"></script>
   <script src="viewChat/chat.js"></script>
   <script src="viewNavBar/navBar.js"></script>
   <script src="addFriend/addfriend.js"></script>
-  <script src="viewTextInput/textInput.js"></script>
-  <script src="viewTextOutput/textOutput.js"></script>
-  <script src="viewTime/time.js"></script>
-  <script src="viewImageInput/imageInput.js"></script>
-  <script src="viewImageOutput/imageOutput.js"></script>
-
+  <script src="textInput/textInput.js"></script>
+  <script src="textOutput/textOutput.js"></script>
+  
 </body>
 </html>

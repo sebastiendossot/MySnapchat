@@ -42,17 +42,4 @@ angular.module('myApp.settings', ['ngRoute'])
 			userWebService.unsubscribe({}, success, error);
 		}
 
-	    $scope.description = User.description
-
-	    $scope.updateDescription = function() {
-		User.description = $scope.description
-		var success = function() {
-		    console.log("description updated")
-		}
-		var error = function() {
-		    console.log("description failed to update")
-		}
-		userWebService.putDescription({description: $scope.description}, success, error)
-	    }
-
 	}]);

@@ -4,7 +4,7 @@ angular.module('myApp.register', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/register', {
-    templateUrl: 'viewRegister/register.html',
+    templateUrl: 'register/register.html',
     controller: 'Register2Ctrl'
 });
 }])
@@ -48,11 +48,9 @@ angular.module('myApp.register', ['ngRoute'])
             }
         }
         userWebService.subscribe({
-            pseudo: $scope.pseudo,
-            email: $scope.email,       
-            pwd: $scope.pwd,
-	    description: "",
-	    temps: {texte: 60, image: 60, video: 60}
+            'pseudo' : $scope.pseudo,
+            'email': $scope.email,       
+            'pwd': $scope.pwd
         }, success, error);
     }
 }])

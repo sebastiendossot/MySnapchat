@@ -1,7 +1,7 @@
 exports.config = {
-  allScriptsTimeout: 10000,
+  allScriptsTimeout: 30000,
 
-  specs: [  
+  specs: [
   'chatting.js'
   ],
 
@@ -14,6 +14,6 @@ exports.config = {
   framework: 'jasmine',
 
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 10000
+    defaultTimeoutInterval: 30000
   }
 };

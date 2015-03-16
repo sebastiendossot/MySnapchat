@@ -43,36 +43,19 @@ describe('send and receive text', function () {
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
 	})
 
-
-it("user1 should send some text to his new friend user1", function(){
-
-		helper.login('user1')		
-		
-
-		element(by.id('text-user2')).click();
-		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
-		element(by.model('text')).sendKeys("je suis user1 j'envoie un message a user2!");
-		element(by.css('[ng-click="send()"]')).click()
-		helper.logout('user1');
-		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
-
-		helper.logout('user1')
-	})
-
-
-	it("user1 should login and see a new message from user2 !", function(){
+	it("user1 should login, begin chat with user2 and see a new message !", function(){
 		helper.login('user1')
 		element(by.id('text-user2')).click();
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
 		var msg = element(by.css('.primary-font')).getText()
 		expect(msg).toBe("user2");
-		waits(30000);
+		waits(20000);
 		browser.actions()
 		.mouseMove(element(by.id('text-user2')))
 		.perform();
-		waits(30000);
+		waits(20000);
 
-		expect(element(by.css('[ng-show="showInit&&showContinue"]')).getText()).toBe("Testetetetetetetet !");
+		expect(element(by.css('[ng-show="showInit&&showContinue"]')).getText()).toBe("Hi Bob !");
 		helper.logout('user1');
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
 	})

@@ -1,69 +1,48 @@
-<div id="chatView">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<span class="glyphicon glyphicon-comment"></span> Chat avec {{pseudoReceiver}}
-						<div class="btn-group pull-right">
-							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-								<span class="glyphicon glyphicon-chevron-down"></span>
-							</button>
-							<ul class="dropdown-menu slidedown">
-								<li class="container-fluid row-fluid" ng-include="'viewTime/viewTime.html'"></li>
-							</ul>
-						</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat avec {{labelReceiver}}
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <ul class="dropdown-menu slidedown">
+                            <li><a><span class="glyphicon glyphicon-refresh"></span>Option</a></li>
+                        </ul>
 					</div>
-					<div class="panel-body">
-						<ul class="chat" ng-repeat="message in messageList | orderBy : 'dateEnvoi'">
-							
-							<div ng-switch on ="message.type">
-								<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
-								<div ng-switch-when="text" >
-									<div ng-include="'viewTextOutput/viewTextOutput.html'"></div>
-								</div>
-								
-								<!-- Changer le chemin pour inclure la vue pour les images -->
-								<div  ng-switch-when="image" >
-									<div ng-include="'viewImageOutput/viewImageOutput.html'"></div>
-								</div>
-								
-								<!-- Changer le chemin pour inclure la vue pour les vidéos -->
-								<div  ng-switch-when="video" >
-									<div ng-include="'Chemin/vers/viewVideo.html'"></div>
-								</div>
-							</div>
-						</ul>
-					</div>
-					<div class="panel-footer">
+                </div>
+                <div class="panel-body">
+                    <ul class="chat" ng-repeat="message in messageList">
+					
+						<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
+						<span ng-if="true" ng-include="'textOutput/viewTextOutput.html'"></span>
+						
+						<!-- Changer le chemin pour inclure la vue pour les images -->
+						<span ng-if="message.type==='image'" ng-include="'Chemin/vers/viewImage.html'"></span>
+						
+						<!-- Changer le chemin pour inclure la vue pour les vidéos -->
+						<span ng-if="message.type==='video'" ng-include="'Chemin/vers/viewVideo.html'"></span>
 
-						<div style="float : left; width : 20px;">
-							<a ng-click="mode = 'text'" class="btn btn-xs btn-info" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-envelope"></span></a>
-							<a ng-click="mode = 'image'" class="btn btn-xs btn-warning" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-picture"></span></a>
-							<a ng-click="mode = 'video'" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-film"></span></a>
-						</div>
 						
-						<div style="float : left; width : 90%;">
-							<div ng-switch on ="mode">
-								<div ng-switch-when="text">
-									<div ng-include="'viewTextInput/viewTextInput.html'"></div>
-								</div>
-								
-								<div ng-switch-when="image">
-									<div ng-include="'viewImageInput/viewImageInput.html'"></div>
-								</div>
-								
-								<div ng-switch-when="video" >
-									<div ng-controller="videoCtrl" class="input-group"></div>
-								</div>
-							</div>
-						</div>
-						
-						<div style="clear : both;"></div>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+				
+                    <div ng-if="true" ng-include="'textInput/viewTextInput.html'">
+                    </div>
+					
+					<div ng-if="false" ng-controller="imageCtrl" class="input-group">
+                        Insérer le système d'envoi d'image ici !
+                    </div>
+					
+					<div ng-if="false" ng-controller="videoCtrl" class="input-group">
+                        Insérer le système d'envoi de vidéo ici !
+                    </div>
+					
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
