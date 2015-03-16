@@ -5,11 +5,8 @@ angular.module('myApp.imageInput', ['ngRoute'])
 .controller('imageCtrl', ['$scope', 'messageWebService', 'User',  '$location', '$routeParams', 'CameraService',
 	function($scope, messageWebService, User, $location, $routeParams, CameraService)  {
 
-		/*$("#PJ").hide();
-		$("#PJ_mobile").hide();*/
 		$scope.shotable = false;
-		$scope.showNavPhotoView = function() 
-		{	
+		$scope.showNavPhotoView = function() {	
 			$scope.hasUserMedia = CameraService.hasUserMedia;
 			$scope.hideStream = false;
 			if(!$scope.hasUserMedia) {
@@ -39,46 +36,45 @@ angular.module('myApp.imageInput', ['ngRoute'])
 
 					canvas.width = w; // update the canvas width and height
 					canvas.height = h;
-          			// Grab the image from the video
-          			//ctx.fillRect(0, 0, w, h);
-          			ctx.drawImage(videoElement, 0, 0, w, h);
-          			$scope.hideStream = true;
+					ctx.drawImage(videoElement, 0, 0, w, h);
+					$scope.hideStream = true;
 
-          			$scope.dataUrl = canvas.toDataURL();
-          			console.log($scope.dataUrl);
-          		}
-          	}
-          }
+					$scope.dataUrl = canvas.toDataURL();
+					console.log($scope.dataUrl);
+				}
+			}
+		}
 
-          $scope.showMobilePhotoView = function() 
-          {
-		var pictureSource;   // picture source
-		var destinationType; // sets the format of returned value
+		$scope.showMobilePhotoView = function() {
+			$scope.preview = false;
+			var pictureSource;   // picture source
+			var destinationType; // sets the format of returned value
 
-		// Wait for device API libraries to load
-		document.addEventListener("deviceready",onDeviceReady,false);
+			// Wait for device API libraries to load
+			//document.addEventListener("deviceready",onDeviceReady,false);
 
-		// device APIs are available
-		function onDeviceReady() {
+			// device APIs are available
 			pictureSource=navigator.camera.PictureSourceType;
 			destinationType=navigator.camera.DestinationType;
 			capturePhotoEdit()
-			$("#PJ_mobile").show();
-		}
+			//$("#PJ_mobile").show();
 
-		// Called when a photo is successfully retrieved
-		function onPhotoDataSuccess(imageData) {
-			// Uncomment to view the base64-encoded image data
-			// console.log(imageData);
+			// Called when a photo is successfully retrieved
+			function onPhotoDataSuccess(imageData) {
+				// Uncomment to view the base64-encoded image data
+				// console.log(imageData);
 
-			var smallImage = document.getElementById('smallImage');
-			smallImage.style.display = 'block';
-			smallImage.src = "data:image/jpeg;base64," + imageData;
-		}
+				var smallImage = document.getElementById('smallImage');
+				smallImage.style.display = 'block';
+				smallImage.src = "data:image/jpeg;base64," + imageData;
+				$scope.preview = true;
+				$scope.dataUrl = imageData
+				$scope.$apply();
+			}
 
-		function capturePhotoEdit() {
+			function capturePhotoEdit() {
 			// Take picture using device camera, allow edit, and retrieve image as base64-encoded string
-			navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true, destinationType: destinationType.DATA_URL });
+			navigator.camera.getPicture(onPhotoDataSuccess, onFail, { allowEdit: true, destinationType: destinationType.DATA_URL });
 		}
 
 		function onFail(message) {

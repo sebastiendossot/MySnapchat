@@ -38,12 +38,23 @@
 					<input type="button" value="Envoyer" class="btn btn-info" ng-disabled="input.$invalid" ng-click="send()"></input>
 				</span>
 			</div>-->
+			<div class="col-sm-6" class="text-center" ng-show="preview">
+				<img style="display:none; width:50px; height:50px; float:left;" id="smallImage" src="" /><br />
+				<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn btn-default" ng-click="showMobilePhotoView()">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Prendre un autre cliché
+					</button>
+					<button type="button" class="btn btn-info pull" ng-disabled="input.$invalid" ng-click="send(dataUrl)">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Envoyer
+					</button>
+				</div>
+			</div>
 			
-			<div id="PJ_mobile">
+			<!--<div id="PJ_mobile">
 				<span ng-if="isMobile">
 					<b id="label_PJ_mobile">Pièce jointe : </b>
 					<img style="display:none; width:30px; height:30px; float:left;" id="smallImage" src="" /><br />
-					<input type="button" value="Envoyer" class="btn btn-info" ng-disabled="input.$invalid" ng-click="send()"></input>
+					<input type="button" value="Envoyer" class="btn btn-info" ng-disabled="input.$invalid" ng-click="send(dataUrl)"></input>
 				</span>
 			</div>
 			
