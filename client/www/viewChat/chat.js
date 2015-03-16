@@ -3,31 +3,32 @@
 angular.module('myApp.viewChat', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/chat', {
+	$routeProvider.when('/chat/:mode/:idReceiver', {
 		templateUrl: 'viewChat/chat.html',
 		controller: 'affichageCtrl',
 		isPrivate: true
 	});
 }])
-.controller('affichageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, messageWebService, User, Messaging, $location)  {
-		var receivers = Messaging.receivers;
+.controller('affichageCtrl', ['$scope', '$routeParams', 'userWebService', 'messageWebService', 'User', '$location',
+	function($scope, $routeParams, userWebService, messageWebService, User, $location)  {
+		
+		$scope.mode = $routeParams.mode;
+		
+		$scope.isMobile = isMobile
+		
+		var populateUser = function(data) {
+			$scope.pseudoReceiver = data.user.pseudo;
+		}
+		var error = function(data) {
+			console.error("erreur lors de la récupération du nom de l'ami");
+		}
+		userWebService.byId({data: $routeParams.idReceiver}, populateUser, error);
+		
 		$scope.messageList = []
-
-		Messaging.resetReceivers();
-	
-		$scope.labelReceiver = receivers[0].pseudo
-		
-		$scope.dateNow = new Date();
-
-		
 
 		var populateMessageList = function(data) {
 			$scope.messageList = data.list;
 			$scope.idUser = User.id;
-			$scope.show = false;
-			$scope.first = true;
-			//console.log($scope.messageList[0].pseudo);
 		}	
 
 		$scope.mouseOver = function(message){
@@ -42,7 +43,6 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		var error = function() {
 			console.log("erreur lors de la recupération des messages");
 		}
-							
 
 		$scope.deleteMessage = function (message) {
 			var success = function(data) {
@@ -52,28 +52,48 @@ angular.module('myApp.viewChat', ['ngRoute'])
 				console.error("erreur lors de la suppression du message");
 			}
 			messageWebService.deleteMessage({data:message._id}, success, error);
+		}		
+
+		$scope.MessageCopy = function(message) {
+
+			var successDelete = function(data){
+				window.location.reload();
+				alert("Vous avez copié un message, il a été supprimé et votre ami a été prévenu");
+			}
+
+			var successWarn = function(data){
+				messageWebService.deleteMessage({data:message._id}, successDelete, error);
+			}
+			
+			var error = function(data){
+				$scope.error = true;
+			}
+
+			messageWebService.newMessage(
+				{type: "text", donnes: "Votre ami a copié le message", 
+				temps: User.time.texte,
+				idEnvoyeur: User.id,
+				destinataires: [{idDestinataire: $scope.receiver, lu: false}],
+				dateEnvoi: new Date()}
+				, successWarn, error)
+
 		}
 
-
-		/*var initDate = function(data) {
+		$scope.getElapsedTime = function(message) {		
 			var dateNow = new Date();
-			var dateTmp = new Date(data);
-			$scope.date = data;
-		}*/
+			var dateEnvoi = new Date(message.dateEnvoi);
+			var diff = dateNow - dateEnvoi;
+			return Math.round(diff/60000);
+		}
 		
 		messageWebService.receivedMessages(null, populateMessageList, error);
 
-}
-		
-])
+	}
+
+	])
 
 
-.controller('imageCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, messageWebService, User, Messaging, $location)  {
+.controller('videoCtrl', ['$scope', 'messageWebService', 'User', '$location',
+	function($scope, messageWebService, User, $location)  {
 		
-}])
-
-.controller('videoCtrl', ['$scope', 'messageWebService', 'User', 'Messaging', '$location',
-	function($scope, messageWebService, User, Messaging, $location)  {
-		
-}]);
+	}]);

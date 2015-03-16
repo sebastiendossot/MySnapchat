@@ -4,6 +4,7 @@ var onDeviceReady = function() {
 	angular.module('myApp', [
 		'ngRoute',
 		'ngStorage',
+		'webcam',
 		'myApp.api',
 		'myApp.webService',
 		'myApp.viewConnection',
@@ -12,9 +13,12 @@ var onDeviceReady = function() {
 		'myApp.settings',
 		'myApp.addfriend',
 		'myApp.viewFriendList',
-		'myApp.viewChat',
-        'myApp.textInput',
-        'myApp.textOutput',
+		'myApp.viewChat',       
+		'myApp.textInput',
+		'myApp.textOutput',
+		'myApp.imageInput',
+		'myApp.imageOutput',
+		'myApp.viewTime',
 		])
 
 	.factory('sessionInjector', ['$localStorage', function($localStorage) {  
@@ -28,11 +32,12 @@ var onDeviceReady = function() {
 		};
 		return sessionInjector;
 	}])
-	.value('mainPageUrl', '/friendlist')
 	.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 		$routeProvider.otherwise({redirectTo: '/login'});
 		$httpProvider.interceptors.push('sessionInjector');
-	}]).run(function($rootScope, $location, User, mainPageUrl) {
+	}]).run(function($rootScope, $location, User) {
+		$rootScope.mainPageUrl = "friendlist";
+		$rootScope.isMobile = isMobile;
 		$rootScope.$on("$locationChangeStart", function(event, next, current){
 			var getHash = function(path){
 				var idx = path.indexOf('#');
@@ -43,7 +48,7 @@ var onDeviceReady = function() {
 			if ((hash === "/login" || hash === "/register")  && User.connected) {
 				event.preventDefault();
 				console.log("Already logged, redirecting to main page")
-				$location.url(mainPageUrl)
+				$location.url($rootScope.mainPageUrl)
 			}
 		});
 		$rootScope.$on("$routeChangeStart",function(event, next, current){
@@ -62,7 +67,7 @@ var onDeviceReady = function() {
 }
 
 
-if ( app ) {
+if ( isMobile ) {
     // Cordova application
     document.addEventListener('deviceready', onDeviceReady(), false);
 } else {
