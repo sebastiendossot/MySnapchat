@@ -20,7 +20,7 @@ angular.module('myApp.settings', ['ngRoute'])
 
 		$scope.setErrorCallback = function() {
 			$scope.callback.title = "Erreur";
-			$scope.callback.content = "Un problème inattendu est survenu, veuillez réessayer plus tard";
+			$scope.callback.content = "Un problème inattendu est survenu, veuillez réessayer plus tard.";
 		}
 		
 		$scope.pressRemoveAccount = function() {
@@ -53,6 +53,24 @@ angular.module('myApp.settings', ['ngRoute'])
 		    console.log("description failed to update")
 		}
 		userWebService.putDescription({description: $scope.description}, success, error)
+	    }
+
+	    $scope.oldPassword = ""
+	    $scope.newPassword = ""
+	    $scope.confirmPassword = ""
+
+	    $scope.changePassword = function () {
+		$('#changePassword').modal('hide')
+		var success = function() {
+		    $scope.callback.title = "Succès";
+		    $scope.callback.content = "Votre nouveau mot de passe a été enregistré.";
+		    $('#callbackDialog').modal('show')
+		}
+		var error = function() {
+		    $scope.setErrorCallback()
+		    $('#callbackDialog').modal('show')
+		}
+		userWebService.putPassword({oldPassword: $scope.oldPassword, newPassword: $scope.newPassword}, success, error)
 	    }
 
 	}]);

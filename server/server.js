@@ -47,10 +47,12 @@ var Friend = new Schema({
 
 var User = new Schema({
     pseudo: {type: String, unique: true},
-    description: String,
+    description: {type: String, default:""},
     email: String,
     pwd: String,
-    temps: {texte: Number, image: Number, video: Number}
+    temps: {texte: {type: Number, default:60},
+	    image: {type: Number, default:60},
+	    video: {type: Number, default:60}}
 });
 
 var Destinataire = new Schema({
@@ -270,7 +272,7 @@ app.put('/api/user/password',  function(req, res, next) {
         var hash = crypto.createHash('sha256')
         hash.update(req.body.oldPassword)
         var oldPassword = hash.digest('hex')
-        if (oldPassword == result.password) {
+        if (oldPassword == result.pwd) {
             hash = crypto.createHash('sha256')
             hash.update(req.body.newPassword)
             var newPassword = hash.digest('hex')
@@ -281,8 +283,9 @@ app.put('/api/user/password',  function(req, res, next) {
                 res.sendStatus(200)
             })
         }
-        else
+        else {
             res.sendStatus(401)
+	}
     })
 })
 

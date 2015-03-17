@@ -15,12 +15,12 @@
 	    <div class="form-group">
 	      <div class="col-sm-10">
 		<input type="text" class="form-control" 
-		       ng-model="description"></input>
+		       ng-model="description" ng-maxlength="100">
 	      </div>
 	      <div class="col-sm-2">
 		<input type="button" value="Enregister" class="btn btn-primary"
 		       ng-disabled="descForm.$invalid||descForm.$pristine"
-		       ng-click="updateDescription()"></input>
+		       ng-click="updateDescription()">
 	      </div>
 	    </div>
 	  </form>
@@ -29,7 +29,9 @@
 	<div class="list-group-item" ng-include="'viewTime/viewTime.html'">
 	</div>
 
-	<a href="" ng-click="" data-toggle="modal" data-target="#removeConfirmation" class="list-group-item"><strong>Supprimer mon compte</strong></a>
+	<a href="" data-toggle="modal" data-target="#changePassword" class="list-group-item"><strong>Changer mon mot de passe</strong></a>
+
+	<a href="" data-toggle="modal" data-target="#removeConfirmation" class="list-group-item"><strong>Supprimer mon compte</strong></a>
 
 </div>
 
@@ -72,3 +74,47 @@
 	</div>
 </div>
 <!-- /Callback dialog-->
+
+
+<!-- enter information to change password-->
+<div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="changePasswordLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Besoin de changer de mot de passe ?</h4>
+			</div>
+
+			<form name="passForm" ng-submit="changePassword()">
+			<div class="modal-body">			 
+			  <div class="form-group">
+			    <label for="oldPassword">Ancien mot de passe : </label>
+			    <input  type="password" class="form-control"
+				    id="oldPassword" placeholder="Mot de Passe"
+				    ng-required="true" ng-model="oldPassword">
+			  </div>
+			  <div class="form-group">
+			    <label for="newPassword">Nouveau mot de passe : </label>
+			    <input  type="password" class="form-control"
+				    ng-minlength="5"
+				    id="newPassword" placeholder="Mot de Passe"
+				    ng-required="true" ng-model="newPassword">
+			  </div>
+			  <div class="form-group">
+			    <label for="confirmPassword">Confirmez le nouveau mot de passe : </label>
+			    <input  type="password" class="form-control"
+				    id="confirmPassword" placeholder="Mot de Passe"	
+				    ng-model="confirmPassword" ng-required="true">
+			    <label ng-if="newPassword!=confirmPassword" style="color:red">Les deux mot de passes ne sont pas identiques.</label>
+			  </div>
+			  
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+				<button type="submit" class="btn btn-primary" ng-click="ChangePassword()" ng-disabled="passForm.$invalid||(newPassword!=confirmPassword)">Changer le mot de passe</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- /Ask confirmation of deletion-->
