@@ -110,7 +110,7 @@
 			  
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="initPassword()">Annuler</button>
 				<button type="submit" class="btn btn-primary" ng-click="ChangePassword()" ng-disabled="passForm.$invalid||(newPassword!=confirmPassword)">Changer le mot de passe</button>
 			</div>
 			</form>

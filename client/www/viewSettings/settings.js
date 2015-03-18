@@ -59,14 +59,22 @@ angular.module('myApp.settings', ['ngRoute'])
 	    $scope.newPassword = ""
 	    $scope.confirmPassword = ""
 
+	    $scope.initPassword = function () {
+		$scope.oldPassword = ""
+		$scope.newPassword = ""
+		$scope.confirmPassword = ""
+	    }
+
 	    $scope.changePassword = function () {
 		$('#changePassword').modal('hide')
 		var success = function() {
+		    $scope.initPassword()
 		    $scope.callback.title = "Succès";
 		    $scope.callback.content = "Votre nouveau mot de passe a été enregistré.";
 		    $('#callbackDialog').modal('show')
 		}
 		var error = function() {
+		    $scope.initPassword()
 		    $scope.setErrorCallback()
 		    $('#callbackDialog').modal('show')
 		}
