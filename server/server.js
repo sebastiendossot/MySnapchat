@@ -493,8 +493,6 @@ app.delete('/api/friend/:id', function(req, res, next) {
             res.sendStatus(200)
         })
     })
-
-
 });
 
 

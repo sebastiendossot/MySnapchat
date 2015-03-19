@@ -5,7 +5,6 @@ angular.module('myApp.imageInput', ['ngRoute'])
 .controller('imageCtrl', ['$scope', 'messageWebService', 'User',  '$location', '$routeParams', 'CameraService',
 	function($scope, messageWebService, User, $location, $routeParams, CameraService)  {
 
-		$scope.shotable = false;
 		$scope.showNavPhotoView = function() {	
 			$scope.hasUserMedia = CameraService.hasUserMedia;
 			$scope.hideStream = false;
@@ -16,7 +15,6 @@ angular.module('myApp.imageInput', ['ngRoute'])
 			$scope.webcamOn = true;
 			$scope.onSuccess= function() {
 				$scope.shotable = true;
-				$scope.cameraAccessRefused = false;
 				$scope.$apply();
 			}
 			$scope.onError = function(err) {
@@ -46,51 +44,28 @@ angular.module('myApp.imageInput', ['ngRoute'])
 		}
 
 		$scope.showMobilePhotoView = function() {
-			//$scope.preview = false;
-			
-			var pictureSource;   // picture source
-			var destinationType; // sets the format of returned value
-
-			// Wait for device API libraries to load
-			//document.addEventListener("deviceready",onDeviceReady,false);
-
-			// device APIs are available
-			pictureSource=navigator.camera.PictureSourceType;
-			destinationType=navigator.camera.DestinationType;
+			var pictureSource = navigator.camera.PictureSourceType;
+			var destinationType = navigator.camera.DestinationType;
 			capturePhotoEdit()
-			//$("#PJ_mobile").show();
 
 			// Called when a photo is successfully retrieved
 			function onPhotoDataSuccess(imageData) {
-				// Uncomment to view the base64-encoded image data
-				// console.log(imageData);
-
-				$scope.mobilePreview(true)
-				
-				var smallImage = document.getElementById('smallImage');
-				smallImage.style.display = 'block';
-				smallImage.src = "data:image/jpeg;base64," + imageData;
-				//$scope.preview = true;
-				
-				$scope.dataUrl = imageData
-				$scope.$apply();
+				$scope.send("data:image/png;base64," + imageData)
 			}
-
 			function capturePhotoEdit() {
 			// Take picture using device camera, allow edit, and retrieve image as base64-encoded string
-			navigator.camera.getPicture(onPhotoDataSuccess, onFail, { allowEdit: true, destinationType: destinationType.DATA_URL });
+			navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 10, encodingType: 1, allowEdit: true, destinationType: destinationType.DATA_URL });
 		}
 
 		function onFail(message) {
-			alert('Failed because: ' + message);
+			console.error('Camera getPicture error : ' + message);
 		}
 	}
 	
 	$scope.send = function(dataUrl) 
 	{
 		$scope.mobilePreview(false)
-	
-		console.log("SENDING : "+dataUrl)
+
 		if(dataUrl) {
 			var success = function() {
 				//$scope.ress = "data:image/png;base64,"+data.img;

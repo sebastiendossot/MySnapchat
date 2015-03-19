@@ -3,7 +3,7 @@
 angular.module('myApp.viewChat', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/chat/:mode/:idReceiver', {
+	$routeProvider.when('/chat/:idReceiver', {
 		templateUrl: 'viewChat/chat.html',
 		controller: 'affichageCtrl',
 		isPrivate: true
@@ -11,11 +11,12 @@ angular.module('myApp.viewChat', ['ngRoute'])
 }])
 .controller('affichageCtrl', ['$scope', '$routeParams', 'userWebService', 'messageWebService', 'User', '$location',
 	function($scope, $routeParams, userWebService, messageWebService, User, $location)  {
-		
-		$scope.mode = $routeParams.mode;
+
+		$scope.mode = $routeParams.mode ? $routeParams.mode : "text";
 		$scope.showPreview = false;
 		$scope.messageList = []
 		$scope.msgOpened = {}
+		$scope.idReceiver = $routeParams.idReceiver;
 
 		$scope.mobilePreview = function(bool){
 			$scope.showPreview = bool;
@@ -29,7 +30,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			var error = function(data) {
 				console.error("Erreur lors de la récupération du nom de l'ami");
 			}
-			userWebService.byId({data: $routeParams.idReceiver}, success, error);
+			userWebService.byId({data: $scope.idReceiver}, success, error);
 		}
 		whoIsIt();
 		
@@ -42,7 +43,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			var error = function() {
 				console.error("Erreur lors de la recupération des messages");
 			}
-			messageWebService.get({data: $routeParams.idReceiver}, populateMessageList, error);	
+			messageWebService.get({data: $scope.idReceiver}, populateMessageList, error);	
 		}
 		$scope.getMessages();
 
@@ -65,7 +66,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 				type: "text",
 				donnes: "Votre ami a copié un de vos message",
 				idEnvoyeur: User.id,
-				destinataires: [{idDestinataire: $scope.receiver}]
+				destinataires: [{idDestinataire: $scope.idReceiver}]
 			}, successWarn)
 			$scope.deleteMessage(message);
 		}
