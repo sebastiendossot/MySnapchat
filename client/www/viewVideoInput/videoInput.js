@@ -52,6 +52,7 @@ angular.module('myApp.videoInput', ['ngRoute'])
 
 				$scope.stopRecord = function() {
 					$scope.onRecord = false;
+					$scope.hideStream = true;
  					cancelAnimationFrame($scope.rafId);  // Note: not using vendor prefixes!
 
   					// 2nd param: framerate for the video file.
@@ -59,16 +60,19 @@ angular.module('myApp.videoInput', ['ngRoute'])
 
   					var video = document.querySelector('#result');
   					video.src = window.URL.createObjectURL(webmBlob);
+  					$scope.dataUrl = video.src;
   				}
   			}
   		}
   		$scope.showMobileVideoView = function() {
 
   			function captureSuccess(mediaFiles) {
-  				var video = document.querySelector('#result');
+  				console.log(mediaFiles[0])
+  				/*var video = document.querySelector('#result');
   				video.src = mediaFiles[0].fullPath;
   				$scope.hideStream = true;
-  				$scope.$apply();
+  				$scope.$apply();*/
+  				$scope.send(mediaFiles)
   			}
 
   			function captureError(error) {
@@ -78,6 +82,29 @@ angular.module('myApp.videoInput', ['ngRoute'])
   			navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1, duration: 6});
 
   		}
+  		$scope.send = function(dataUrl) 
+  		{
+  			$scope.mobilePreview(false)
+
+  			if(dataUrl) {
+  				var success = function() {
+					//$scope.ress = "data:image/png;base64,"+data.img;
+					window.location.reload()
+				}
+				var error = function(data) {
+					console.error("SUCCESS : " +data)
+				}
+				messageWebService.newMessage(
+				{
+					type: "video", 
+					donnes: dataUrl, 
+					temps: User.time.video,
+					idEnvoyeur: User.id,
+					destinataires: [ {idDestinataire: $routeParams.idReceiver, lu: false} ]
+				}
+				, success, error)
+			}
+		}	
 		/*var mediaConstraints = { audio: !!navigator.mozGetUserMedia, video: true };
 		document.querySelector('#start-recording').onclick = function() {
 			this.disabled = true;
