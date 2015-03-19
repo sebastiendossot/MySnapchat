@@ -10,8 +10,8 @@ angular.module('myApp.webService', ['ngResource'])
 			byId: {method: 'GET', params: {urlOption: "byId"}},
 			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}},
 			putTimes: {method: 'PUT', params: {urlOption: "times"}},
-		        putDescription: {method: 'PUT', params: {urlOption: "description"}},
-		        putPassword: {method: 'PUT', params: {urlOption: "password"}}
+			putDescription: {method: 'PUT', params: {urlOption: "description"}},
+			putPassword: {method: 'PUT', params: {urlOption: "password"}}
 		})
 	})
 .factory('socialWebService',
@@ -31,7 +31,6 @@ angular.module('myApp.webService', ['ngResource'])
 	function($resource) {
 		return $resource(SERVER_URL+'/message/:data', {data:'@data'}, {
 			newMessage: {method: 'POST'},
-			receivedMessages: {method: 'GET'},
 			deleteMessage:{method: 'DELETE'}
 		})
 	})

@@ -50,14 +50,16 @@ var User = new Schema({
     description: {type: String, default:""},
     email: String,
     pwd: String,
-    temps: {texte: {type: Number, default:60},
-	    image: {type: Number, default:60},
-	    video: {type: Number, default:60}}
+    temps: {
+        texte: {type: Number, default:60},
+        image: {type: Number, default:60},
+        video: {type: Number, default:60}
+    }
 });
 
 var Destinataire = new Schema({
     idDestinataire : Schema.ObjectId,
-    lu : Boolean
+    lu : {type: Boolean, default:false}
 });
 
 var Message = new Schema({
@@ -285,7 +287,7 @@ app.put('/api/user/password',  function(req, res, next) {
         }
         else {
             res.sendStatus(401)
-	}
+        }
     })
 })
 
@@ -318,17 +320,18 @@ app.get('/api/message/:idFriend', function(req, res, next) {
 	
     var id = authenticateSender(req.headers);
     if (!id) return res.sendStatus(403);
-	
-	MessageModel.find({ $or: [{idEnvoyeur : id},{idEnvoyeur : req.params.idFriend}]}, function(e, result){
+
+    MessageModel.find({ $or: [{idEnvoyeur : id},{idEnvoyeur : req.params.idFriend}]}, function(e, result){
         if (e) return next(e);
 
-		var privateMessages = [];
-		result.forEach(function(entry) {
-			if(entry.destinataires[0].idDestinataire == id || entry.destinataires[0].idDestinataire == req.params.idFriend) {
-				privateMessages.push(entry)
-			}
-		});
-		
+        var privateMessages = [];
+
+        result.forEach(function(entry) {
+            if(entry.destinataires[0].idDestinataire == id || entry.destinataires[0].idDestinataire == req.params.idFriend) {
+                privateMessages.push(entry)
+            }
+        });
+
         res.send({list:privateMessages})
     })
 })
@@ -497,22 +500,31 @@ app.delete('/api/friend/:id', function(req, res, next) {
 
 //suppression du message
 app.delete('/api/message/:id', function(req, res, next) {
-    var reqId = req.params.id;
-    console.log("Delete message - ID line = "+req.params.id);
     var id = authenticateSender(req.headers);
     if (!id) return res.sendStatus(403);
-    //If the user asking to delete is the one who received the request, Okay
+    var reqId = req.params.id;
+    //Find the message to know how much it'll last
     MessageModel.findById(reqId, function(e, result) {
-        if (e) return next(e);
+        if (e) return res.sendStatus(404);
         if (!result) {
-            console.log("Message supprimé")
-            //res.sendStatus(404);
+            res.sendStatus(404);
         }else{
-            result.remove(function (err, req) {
-                if (err) return next(err);
-                res.sendStatus(200)
+            //wait and then remove the message
+            setTimeout(function(){
+                MessageModel.findById(reqId, function(e, result) {
+                    if (e) return next(e);
+                    if (!result) {
+                    //console.log("Message déjà supprimé")
+                }else{
+                    result.remove(function (err, req) {
+                        if (err) return next(err);
+                        res.sendStatus(200)
+                    })
+                }
             })
+            }, result.temps*1000);
         }
     })
+    //console.log("Delete message - ID line = "+req.params.id);
 
 });

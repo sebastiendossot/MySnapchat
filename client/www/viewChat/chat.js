@@ -13,84 +13,80 @@ angular.module('myApp.viewChat', ['ngRoute'])
 	function($scope, $routeParams, userWebService, messageWebService, User, $location)  {
 		
 		$scope.mode = $routeParams.mode;
-		
 		$scope.showPreview = false;
+		$scope.messageList = []
+		$scope.msgOpened = {}
+
 		$scope.mobilePreview = function(bool){
 			$scope.showPreview = bool;
 		}
-		
-		$scope.isMobile = isMobile
-		
-		var populateUser = function(data) {
-			$scope.pseudoReceiver = data.user.pseudo;
-		}
-		var error = function(data) {
-			console.error("erreur lors de la récupération du nom de l'ami");
-		}
-		userWebService.byId({data: $routeParams.idReceiver}, populateUser, error);
-		
-		$scope.messageList = []
 
-		var populateMessageList = function(data) {
-			$scope.messageList = data.list;
-			$scope.idUser = User.id;
-		}	
+		//Identify the user we are talking to
+		var whoIsIt = function() {
+			var success = function(data) {
+				$scope.pseudoReceiver = data.user.pseudo;
+			}
+			var error = function(data) {
+				console.error("Erreur lors de la récupération du nom de l'ami");
+			}
+			userWebService.byId({data: $routeParams.idReceiver}, success, error);
+		}
+		whoIsIt();
 		
-		$scope.mouseOver = function(message){
-			$scope.show = true;
-			console.log(message.temps)	
-			setTimeout(function(){
-				console.log("fin")
-				$scope.deleteMessage(message);
-			}, 6000);
+		//Get and fill the messages
+		$scope.getMessages = function() {
+			var populateMessageList = function(data) {
+				$scope.messageList = data.list;
+				$scope.idUser = User.id;
+			}
+			var error = function() {
+				console.error("Erreur lors de la recupération des messages");
+			}
+			messageWebService.get({data: $routeParams.idReceiver}, populateMessageList, error);	
 		}
+		$scope.getMessages();
 
-		var error = function() {
-			console.log("erreur lors de la recupération des messages");
-		}
 
 		$scope.deleteMessage = function (message) {
 			var success = function(data) {
-				messageWebService.receivedMessages({data: $routeParams.idReceiver}, populateMessageList, error);
+				$('#mediaModal').modal('hide')
+				$scope.getMessages();
 			}
 			var error = function(data) {
-				console.error("erreur lors de la suppression du message");
+				console.error("erreur lors de la suppression du message : "+message._id);
 			}
 			messageWebService.deleteMessage({data:message._id}, success, error);
-		}		
+		}	
 
-		$scope.MessageCopy = function(message) {
-
-			var successDelete = function(data){
-				window.location.reload();
-				alert("Vous avez copié un message, il a été supprimé et votre ami a été prévenu");
-			}
-
-			var successWarn = function(data){
-				messageWebService.deleteMessage({data:message._id}, successDelete, error);
-			}
-			
-			var error = function(data){
-				$scope.error = true;
-			}
-
+		$scope.messageCopy = function(message) {
+			alert("Vous avez copié un message, votre ami a été prévenu");
 			messageWebService.newMessage(
-				{type: "text", donnes: "Votre ami a copié le message", 
-				temps: User.time.texte,
+			{
+				type: "text",
+				donnes: "Votre ami a copié un de vos message",
 				idEnvoyeur: User.id,
-				destinataires: [{idDestinataire: $scope.receiver, lu: false}],
-				dateEnvoi: new Date()}
-				, successWarn, error)
-
+				destinataires: [{idDestinataire: $scope.receiver}]
+			}, successWarn)
+			$scope.deleteMessage(message);
 		}
 
 		$scope.getElapsedTime = function(message) {		
-			var dateNow = new Date();
-			var dateEnvoi = new Date(message.dateEnvoi);
-			var diff = dateNow - dateEnvoi;
+			var diff = new Date() - new Date(message.dateEnvoi);
 			return Math.round(diff/60000);
 		}
-		
-		messageWebService.receivedMessages({data: $routeParams.idReceiver}, populateMessageList, error);
+
+		//Function that 
+		$scope.showMsg = function(bool, message) {
+			//No need to spam the delete queue, just ask to delete te message only if it has not already been asked
+			if(!$scope.msgOpened[message._id] && bool) {
+				$scope.msgOpened[message._id] = true;
+				$scope.deleteMessage(message);
+			}
+			message.show = bool;
+			if(message.type == 'image'){
+				$scope.mediaToShow = message.donnes
+				$('#mediaModal').modal(bool ? 'show' : 'hide')
+			}
+		}
 
 	}])

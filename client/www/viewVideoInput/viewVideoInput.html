@@ -5,31 +5,28 @@
 			<div class="row">
 				<div class="col-sm-6" ng-if='webcamOn' ng-hide="hideStream">
 					<div class="alert alert-danger" ng-show="cameraAccessRefused" role="alert">Vous avez refusé l'accès à la caméra</div>
-			<div class="alert alert-info" ng-hide="shotable || cameraAccessRefused" role="alert"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
-      </span> Veuillez accepter l'accès à la webcam</div>
+					<div class="alert alert-info" ng-hide="shotable || cameraAccessRefused" role="alert"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate">
+					</span> Veuillez accepter l'accès à la webcam</div>
 
 					<webcam on-stream="onStream(stream)"
-						on-error="onError(err)"
-						on-streaming="onSuccess()"
-						video="your.video">
-				   </webcam>
+					on-error="onError(err)"
+					on-streaming="onSuccess()"
+					video="your.video">
+				</webcam>
 
-				</div>
-					<div class="col-sm-6" class="text-center" ng-show="hideStream">
-						<canvas id='canvas'>
-						</canvas>
-				</div>
-          <center>
-        <div id="videos-container"></div>
-       </center>
-        <div> 
-            <center>
-             <button id="start-recording" class="btn btn-info"><span class="glyphicon glyphicon-facetime-video"></button>
-              <button id="stop-recording" class="btn btn-danger"><sapn class="glyphicon glyphicon-stop" disabled></button>
-              
-        </div>
-         </center> 
-       
+			</div>
+			<div class="col-sm-6" class="text-center" ng-show="hideStream">
+				<canvas id='canvas'>
+				</canvas>
+			</div>
+			<center>
+				<div id="videos-container"></div>
+			</center>
+			<div> 
+				<center>
+					<button id="start-recording" class="btn btn-info"><span class="glyphicon glyphicon-facetime-video"></button>
+					<button id="stop-recording" class="btn btn-danger"><sapn class="glyphicon glyphicon-stop" disabled></button>
+				</center> 
 			</div>
 		</div>
 
