@@ -314,14 +314,22 @@ app.get('/api/user/byId/:id', function(req, res, next) {
 })
 
 //get les messages qui nous sont addressés
-app.get('/api/message/', function(req, res, next) {
-    //MessageModel.find({destinataires : {idDestinataires:id, lu:'false'} }, function(e, result){
-
-	// A faire : recupérer les message seulement si on est le destinataire
-	MessageModel.find( function(e, result){
+app.get('/api/message/:idFriend', function(req, res, next) {
+	
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
+	
+	MessageModel.find({ $or: [{idEnvoyeur : id},{idEnvoyeur : req.params.idFriend}]}, function(e, result){
         if (e) return next(e);
-		//console.log("messages = "+result)
-        res.send({list:result})
+
+		var privateMessages = [];
+		result.forEach(function(entry) {
+			if(entry.destinataires[0].idDestinataire == id || entry.destinataires[0].idDestinataire == req.params.idFriend) {
+				privateMessages.push(entry)
+			}
+		});
+		
+        res.send({list:privateMessages})
     })
 })
 

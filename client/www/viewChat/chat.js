@@ -51,7 +51,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 
 		$scope.deleteMessage = function (message) {
 			var success = function(data) {
-				messageWebService.receivedMessages(null, populateMessageList, error);
+				messageWebService.receivedMessages({data: $routeParams.idReceiver}, populateMessageList, error);
 			}
 			var error = function(data) {
 				console.error("erreur lors de la suppression du message");
@@ -91,6 +91,6 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			return Math.round(diff/60000);
 		}
 		
-		messageWebService.receivedMessages(null, populateMessageList, error);
+		messageWebService.receivedMessages({data: $routeParams.idReceiver}, populateMessageList, error);
 
 	}])
