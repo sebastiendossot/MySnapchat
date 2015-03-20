@@ -1,12 +1,18 @@
 exports.config = {
-  allScriptsTimeout: 10000,
+  allScriptsTimeout: 20000,
 
-  specs: [  
-  'chatting.js'
+  specs: [ 
+    'sendReceiveImage.js'
   ],
 
   capabilities: {
-    'browserName': 'chrome'
+      'browserName': 'chrome',
+      'chromeOptions': {
+	  args: ['--use-fake-ui-for-media-stream'],
+	  prefs: {
+              'VideoCaptureAllowedUrls': ['http://localhost:4711']  
+	  }
+      }
   },
 
   //baseUrl: 'http://localhost:4711',
@@ -14,6 +20,6 @@ exports.config = {
   framework: 'jasmine',
 
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 10000
+    defaultTimeoutInterval: 20000
   }
 };

@@ -48,15 +48,12 @@ it("user1 should send some text to his new friend user1", function(){
 
 		helper.login('user1')		
 		
-
 		element(by.id('text-user2')).click();
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
 		element(by.model('text')).sendKeys("je suis user1 j'envoie un message a user2!");
 		element(by.css('[ng-click="send()"]')).click()
 		helper.logout('user1');
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
-
-		helper.logout('user1')
 	})
 
 
@@ -79,22 +76,8 @@ it("user1 should send some text to his new friend user1", function(){
 
 	it('should end the test by unregistering user1 & user2', function() {
 		var unsub = function(user) {
-			helper.login(user);
-
-			element(by.linkText('Paramètres')).click()
-
-			element(by.linkText('Supprimer mon compte')).click()
-			element(by.buttonText('Oui')).click()
-			browser.wait( function() {
-				return element(by.buttonText('Okay')).isDisplayed()
-			});
-			element(by.buttonText('Okay')).click()
-			browser.wait( function() {
-				return browser.getCurrentUrl().then(function (newUrl) {
-					return (newUrl !== 'http://localhost:4711/#/settings');
-				})
-			})
-			expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
+		    helper.login(user);
+		    helper.unsubscribe()
 		}
 		unsub('user1');
 		unsub('user2');

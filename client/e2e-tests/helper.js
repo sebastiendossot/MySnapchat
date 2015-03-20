@@ -28,5 +28,22 @@ module.exports = {
 		expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/friendlist')
 
 		expect(element.all(by.repeater('request in sentRequestList')).get(0).getText()).toMatch('user2')
-	}
+	},
+
+    unsubscribe: function() {
+	element(by.linkText('Paramètres')).click()
+	element(by.linkText('Supprimer mon compte')).click()
+	element(by.buttonText('Oui')).click()
+	browser.wait( function() {
+	    return element(by.buttonText('Okay')).isDisplayed()
+	});
+	element(by.buttonText('Okay')).click()
+	browser.wait( function() {
+	    return browser.getCurrentUrl().then(function (newUrl) {
+		return (newUrl !== 'http://localhost:4711/#/settings')
+	    })
+	})
+	expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
+    }
+
 }
