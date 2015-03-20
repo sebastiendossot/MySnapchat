@@ -14,6 +14,7 @@ angular.module('myApp.webService', ['ngResource'])
 			putPassword: {method: 'PUT', params: {urlOption: "password"}}
 		})
 	})
+
 .factory('socialWebService',
 	function($resource) {
 		return $resource(SERVER_URL+'/:urlOption/:data', {data:'@data'}, {
@@ -27,6 +28,7 @@ angular.module('myApp.webService', ['ngResource'])
 			
 		})
 	})
+
 .factory('messageWebService',
 	function($resource) {
 		return $resource(SERVER_URL+'/message/:data', {data:'@data'}, {

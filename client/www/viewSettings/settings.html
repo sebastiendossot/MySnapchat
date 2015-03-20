@@ -10,7 +10,7 @@
 	<div class="list-group-item">
 	  <form name="descForm" class="form-horizontal">    
 	    <div class="form-group col-sm-12">
-	      <strong> Description</strong> :
+	      <strong>Description</strong> :
 	    </div>
 	    <div class="form-group">
 	      <div class="col-sm-10">
@@ -21,6 +21,29 @@
 		<input type="button" value="Enregister" class="btn btn-primary"
 		       ng-disabled="descForm.$invalid||descForm.$pristine"
 		       ng-click="updateDescription()">
+	      </div>
+	    </div>
+	  </form>
+	</div>
+
+	<div class="list-group-item">
+	  <strong>Image de profil</strong> :
+	  <div class="dropdown-header">Image de moins de 100Ko</div>
+	  <p>
+	    <input type="file" nv-file-select uploader="uploader" accept="image/*"ng-click="clearQueue()">
+	  </p>
+	  <p>
+	    <label ng-show="!uploader.isHTML5">Attention : prévisualisation impossible car ce navigateur n'est pas compatible HTML5.</label>
+	  </p>
+	  </form>
+	  <form name="picture" class="form-inline">
+	    <div ng-repeat="item in uploader.queue">
+	      <div class="form-group">
+		<div ng-show="uploader.isHTML5" ng-thumb="{file: item._file, height: 100}"></div>
+	      </div>
+	      <div class="form-group">
+		<input type="button" value="Enregistrer" class="btn btn-primary"
+		       ng-disabled="!uploader.queue.length" ng-click="savePicture()">
 	      </div>
 	    </div>
 	  </form>

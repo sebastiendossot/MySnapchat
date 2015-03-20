@@ -48,6 +48,7 @@ var Friend = new Schema({
 var User = new Schema({
     pseudo: {type: String, unique: true},
     description: {type: String, default:""},
+    image : {type: String, default:"pictures/default.png"},
     email: String,
     pwd: String,
     temps: {
@@ -291,7 +292,28 @@ app.put('/api/user/password',  function(req, res, next) {
     })
 })
 
+app.put('/api/user/picture', function(req,res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id)
+        res.sendStatus(403)
+    UserModel.findById(id, function(e, result) {
+        if (e)
+            return next(e)
+        if (!result)
+            res.sendStatus(404)
 
+	if (result.image != "pictures/default.png")
+	    fs.unlink(result.image, function (){
+		console.log(result.image + " deleted")
+	    })
+        result.image = req.body.picture
+        result.save(function (err, req) {
+            if (err) 
+                return next(err)
+            res.sendStatus(200)
+        })
+    })
+})
 
 /*************************************************************/
 /********************** GET REQUESTS *************************/

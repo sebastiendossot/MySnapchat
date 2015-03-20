@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.settings', ['ngRoute'])
+angular.module('myApp.settings', ['ngRoute', 'angularFileUpload'])
 
 .config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/settings', {
@@ -10,8 +10,8 @@ angular.module('myApp.settings', ['ngRoute'])
 	});
 }])
 
-.controller('SettingsCtrl', ['$scope', 'userWebService', 'User', '$location',
-	function($scope, userWebService, User, $location)  {
+.controller('SettingsCtrl', ['$scope', 'userWebService', 'User', '$location', 'FileUploader', 
+	function($scope, userWebService, User, $location, FileUploader)  {
 		$scope.User = User;
 		$scope.callback = {
 			title:'',
@@ -80,5 +80,45 @@ angular.module('myApp.settings', ['ngRoute'])
 		}
 		userWebService.putPassword({oldPassword: $scope.oldPassword, newPassword: $scope.newPassword}, success, error)
 	    }
+
+
+	    $scope.uploader = new FileUploader({
+		url: '/api/user/picture',
+		method: 'PUT',
+		filters: [
+		    {name: 'imageFilter',
+		     fn: function(item, options) {
+			 var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|'
+			 return '|jpg|png|jpeg|bmp|'.indexOf(type) !== -1
+		     }
+		    },
+		    {name :'sizeFilter',
+		     fn: function(item, options) {
+			 return item.size < 100000
+		     }
+		    }
+		]})
+
+	    $scope.clearQueue = function(){
+		$scope.uploader.clearQueue()
+	    }
+
+	    $scope.savePicture = function(item) {
+		$scope.uploader.uploadAll()
+		$scope.uploader.onSuccesItem = function(fileItem, response, status, headers) {
+		    console.info('onSuccessItem', fileItem, response, status, headers);
+		};
+		$scope.uploader.onErrorItem = function(fileItem, response, status, headers) {
+		    console.info('onErrorItem', fileItem, response, status, headers);
+		};
+		/*var success = function() {
+		    console.log("success")
+		}
+		var error = function() {
+		    console.log("error")
+		}
+		userWebService.putPicture({picture: item}, success, error)*/
+	    }
+
 
 	}]);

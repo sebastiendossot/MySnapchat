@@ -2,12 +2,12 @@ module.exports = {
 	login: function (user, pwd) {
 		element(by.model('pseudo')).sendKeys(user)
 		element(by.model('password')).sendKeys(pwd)
-		element(by.buttonText('Connection')).click()
+		element(by.buttonText('Connexion')).click()
 	},
 	login: function (user) {
 		element(by.model('pseudo')).sendKeys(user)
 		element(by.model('password')).sendKeys(user)
-		element(by.buttonText('Connection')).click()
+		element(by.buttonText('Connexion')).click()
 	},
 	subscribe: function(user) {
 		element(by.model('email')).sendKeys(user+'@gmail.com');
