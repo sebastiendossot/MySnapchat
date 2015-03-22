@@ -8,9 +8,9 @@
 			<div class="chat-body clearfix">
 				<div class="header">
 					<strong class="primary-font">{{pseudoReceiver}}</strong> 
-					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{getElapsedTime(message)}} mins ago</small></small>
+					<small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{getElapsedTime(message)}} </small></small>
 				</div>
-				<div ng-copy="messageCopy(message)">
+				<div ng-copy="messageCopy(message)" id="msg">
 					<div ng-switch on ="message.type">
 						<p ng-switch-when="text" ng-show="message.show">{{message.donnes}}</p>
 					</div>
@@ -24,7 +24,7 @@
 			</span>
 			<div class="chat-body clearfix">
 				<div class="header">
-					<small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>{{getElapsedTime(message)}} mins ago</small>
+					<small class="text-muted pull-right"><span class="glyphicon glyphicon-time"></span>{{getElapsedTime(message)}}</small>
 					<strong class="pull-right primary-font">Moi</strong><br />
 				</div>
 				<div ng-switch on ="message.type">

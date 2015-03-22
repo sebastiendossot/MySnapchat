@@ -2,7 +2,7 @@ exports.config = {
   allScriptsTimeout: 20000,
 
   specs: [ 
-    'sendReceiveImage.js'
+    'chatting.js'
   ],
 
   capabilities: {
