@@ -73,7 +73,21 @@ angular.module('myApp.viewChat', ['ngRoute'])
 
 		$scope.getElapsedTime = function(message) {		
 			var diff = new Date() - new Date(message.dateEnvoi);
-			return Math.round(diff/60000);
+			var tmp = Math.round(diff/60000);
+			if(tmp > 1440){
+				var rstH = tmp % 1440;
+				var nDay = Math.floor(tmp/1440);
+				var rstM = rst % 60;
+				var nHours = Math.floor(rstH/60);
+				return nDay + " d " + nHours + " h " + rstM + " mins ago";
+			}else if(tmp > 60){
+				var rstM = tmp % 60;
+				var nHours = Math.floor(tmp/60);
+				return nHours + " h " + rstM + " mins ago";
+			}else{
+				return tmp + " mins ago";
+			}
+				
 		}
 
 		//Function that 
