@@ -21,7 +21,7 @@
       </ul> 
 
       <ul class="nav navbar-nav" ng-if="user.connected" ng-init="reload_notifications()" ng-click="reload_notifications()">
-        <li><a href="#/friendlist"><span class="glyphicon glyphicon-list"></span> Liste d'amis <span ng-if="notifications>0">(<b style="color : red;">{{notifications}}</b>)</span></a></li>
+        <li><a href="#/friendlist"><span class="glyphicon glyphicon-list"></span> Liste d'amis <span ng-if="notifications">(<b style="color : red;">{{notifications}}</b>)</span></a></li>
         <li><a href="#/addfriend"><span class="glyphicon glyphicon-plus"></span> Ajouter un ami</a></li>
 	<li><a href="#/settings"><span class="glyphicon glyphicon-cog"></span> Paramètres</a></li>
       </ul> 

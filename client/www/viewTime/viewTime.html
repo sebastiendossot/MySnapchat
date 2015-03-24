@@ -2,25 +2,25 @@
 <div style="color:#333" ng-controller="timeCtrl">
 
 <strong>Temps de visualisation des médias :</strong>
-<div class="dropdown-header">Temps compris entre 1 et 600 secondes</div>
+<div class="dropdown-header">Temps compris entre 1 et 30 secondes</div>
 
 <form name="time">
 
   <p>
     <label class="time" for="text">Texte </label>
-    <input type="number" id="text" min="1" max="600" ng-model="textTime"
+    <input type="number" id="text" min="1" max="30" ng-model="textTime"
 	   ng-required="true" onclick="event.stopPropagation()"></input>
   </p>
   
   <p>
     <label class="time" for="image">Image </label>
-    <input type="number" id="image" min="1" max="600" ng-model="imageTime"
+    <input type="number" id="image" min="1" max="30" ng-model="imageTime"
 	   ng-required="true" onclick="event.stopPropagation()"></input>
   </p>
 
   <p>
     <label class="time" for="video">Vidéo </label>
-    <input type="number" id="video" min="1" max="600" ng-model="videoTime"
+    <input type="number" id="video" min="1" max="30" ng-model="videoTime"
 	   ng-required="true" onclick="event.stopPropagation()"></input>
   </p>
   

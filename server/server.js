@@ -52,9 +52,9 @@ var User = new Schema({
     email: String,
     pwd: String,
     temps: {
-        texte: {type: Number, default:60},
-        image: {type: Number, default:60},
-        video: {type: Number, default:60}
+        texte: {type: Number, default:10},
+        image: {type: Number, default:10},
+        video: {type: Number, default:10}
     }
 });
 
@@ -337,7 +337,7 @@ app.get('/api/user/byId/:id', function(req, res, next) {
     })
 })
 
-//get les messages qui nous sont addressés
+//get des messages qui nous sont addressés
 app.get('/api/message/:idFriend', function(req, res, next) {
 	
     var id = authenticateSender(req.headers);
@@ -355,6 +355,26 @@ app.get('/api/message/:idFriend', function(req, res, next) {
         });
 
         res.send({list:privateMessages})
+    })
+})
+
+//get des messages non lus
+app.get('/api/unreadMessages', function(req, res, next) {
+	
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
+
+    MessageModel.find(function(e, result){
+        if (e) return next(e);
+
+        var unreadMessages = [];
+        result.forEach(function(entry) {
+            if(entry.destinataires[0].idDestinataire == id && entry.destinataires[0].lu == false) {
+                unreadMessages.push(entry)
+            }
+        });
+
+        res.send({list:unreadMessages})
     })
 })
 

@@ -10,8 +10,8 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 	});
 }])
 
-.controller('friendListCtrl', ['$scope', 'userWebService', 'User', '$location', 'socialWebService',
-	function($scope, userWebService, User, $location, socialWebService)  {
+.controller('friendListCtrl', ['$scope', 'userWebService', 'User', '$location', 'socialWebService', 'messageWebService',
+	function($scope, userWebService, User, $location, socialWebService, messageWebService)  {
 		$scope.friendList = [];
 		$scope.receivedRequestList = []
 		$scope.sentRequestList = []
@@ -21,6 +21,23 @@ angular.module('myApp.viewFriendList', ['ngRoute'])
 
 		var populateFriendList = function(data) {
 			$scope.friendList = data.list;
+			
+			var successMsg = function(unreadMsg) {
+				$scope.friendList.forEach(function(friend) {
+					friend.user.numberUnreadMessages = 0
+					unreadMsg.list.forEach(function(msg) {
+						if(friend.user._id == msg.idEnvoyeur){
+							friend.user.numberUnreadMessages ++
+						}
+					});
+				});
+			}
+			var errorMsg = function(data) {
+				console.error("erreur lors de la récupération du nombre de nouveau messages");
+			}
+			messageWebService.unreadMessages(null, successMsg, errorMsg)
+			
+			
 		}
 		var populateReceivedRequestList = function(data) {
 			$scope.receivedRequestList = data.list;

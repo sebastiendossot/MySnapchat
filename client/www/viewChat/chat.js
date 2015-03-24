@@ -77,7 +77,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			if(tmp > 1440){
 				var rstH = tmp % 1440;
 				var nDay = Math.floor(tmp/1440);
-				var rstM = rst % 60;
+				var rstM = tmp % 60;
 				var nHours = Math.floor(rstH/60);
 				return nDay + " d " + nHours + " h " + rstM + " mins ago";
 			}else if(tmp > 60){

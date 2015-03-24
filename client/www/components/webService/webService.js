@@ -31,9 +31,11 @@ angular.module('myApp.webService', ['ngResource'])
 
 .factory('messageWebService',
 	function($resource) {
-		return $resource(SERVER_URL+'/message/:data', {data:'@data'}, {
-			newMessage: {method: 'POST'},
-			deleteMessage:{method: 'DELETE'}
+		return $resource(SERVER_URL+'/:urlOption/:data', {data:'@data'}, {
+			get: {method: 'GET', params: {urlOption: "message"}},
+			unreadMessages: {method: 'GET', params: {urlOption: "unreadMessages"}},
+			newMessage: {method: 'POST', params: {urlOption: "message"}},
+			deleteMessage:{method: 'DELETE', params: {urlOption: "message"}}
 		})
 	})
 
