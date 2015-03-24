@@ -7,7 +7,7 @@ var onDeviceReady = function() {
 		'webcam',
 		'myApp.api',
 		'myApp.webService',
-	        'myApp.imagePreview',
+		'myApp.imagePreview',
 		'myApp.viewConnection',
 		'myApp.viewNavBar',		
 		'myApp.register',  

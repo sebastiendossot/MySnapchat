@@ -5,6 +5,7 @@
   "description": "server for MySnapChat",
   "dependencies": {
     "body-parser": "*",
+    "connect-multiparty": "^1.2.5",
     "crypto": "0.0.3",
     "express": "*",
     "jwt-simple": "*",

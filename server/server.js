@@ -5,7 +5,9 @@ var application_root = __dirname,
     bodyParser  = require('body-parser'),
     mongoose = require('mongoose'), //MongoDB integration
     crypto = require('crypto'), //to hash passwords
-    jwt = require('jwt-simple'); // Token authentication
+    jwt = require('jwt-simple'), // Token authentication
+    multiparty = require('connect-multiparty'),
+    multipartMiddleware = multiparty();
 
 
 //Create server
@@ -55,7 +57,8 @@ var User = new Schema({
         texte: {type: Number, default:10},
         image: {type: Number, default:10},
         video: {type: Number, default:10}
-    }
+    },
+    imgUrl: String
 });
 
 var Destinataire = new Schema({
@@ -180,8 +183,8 @@ app.post('/api/friend', function(req, res, next) {
 //Envoyer un message
 app.post('/api/message', function(req, res, next) {
     if(req.body) {
-        var match = /data:([^;]+);base64,(.*)/.exec(req.body.donnes);
-        if(match) {
+        //var match = /data:([^;]+);base64,(.*)/.exec(req.body.donnes);
+        if(req.body.type == 'image') {
 
             base64Data = req.body.donnes.replace(/^data:image\/png;base64,/,"");
             binaryData = new Buffer(base64Data, 'base64').toString('base64');
@@ -189,6 +192,10 @@ app.post('/api/message', function(req, res, next) {
             //res.setHeader('Content-Type', 'image/png');
             //res.setHeader('Content-Length', binaryData.length);
             req.body.donnes = binaryData;
+
+        } else if(req.body.type == 'video') {
+
+            console.log("donnes : "+req.body.donnes);
 
         }
         var newMessage = new MessageModel(req.body);
@@ -294,19 +301,16 @@ app.put('/api/user/password',  function(req, res, next) {
 
 app.put('/api/user/picture', function(req,res, next) {
     var id = authenticateSender(req.headers)
-    if(!id)
+    if(!id) {
         res.sendStatus(403)
+    }
     UserModel.findById(id, function(e, result) {
         if (e)
             return next(e)
         if (!result)
             res.sendStatus(404)
 
-	if (result.image != "pictures/default.png")
-	    fs.unlink(result.image, function (){
-		console.log(result.image + " deleted")
-	    })
-        result.image = req.body.picture
+        result.imgUrl = req.body.imgUrl
         result.save(function (err, req) {
             if (err) 
                 return next(err)

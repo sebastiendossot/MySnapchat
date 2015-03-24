@@ -15,3 +15,6 @@ server/data/
 server/.modulusignore
 server/node_modules/
 server/npm-debug.log
+server/mongod.sh
+server/mongo.sh
+server/npmStart.sh

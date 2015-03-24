@@ -8,6 +8,7 @@ angular.module('myApp.api', ['ngStorage'])
 	this.mail = $localStorage.user ? $localStorage.user.email : ""
 	this.description = $localStorage.user ? $localStorage.user.description : ""
 	this.time = $localStorage.user ? $localStorage.user.temps : ""
+	this.imgUrl = $localStorage.user ? $localStorage.user.imgUrl : null
 
 	this.login = function(data) {
 		$localStorage.token = data.token
@@ -19,6 +20,12 @@ angular.module('myApp.api', ['ngStorage'])
 		this.mail = data.user.email
 		this.description = data.user.description
 		this.time = data.user.temps
+		this.imgUrl = data.user.imgUrl;
+	}
+
+	this.update = function(key, value) {
+		this[key] = value;
+		$localStorage.user[key] = value;
 	}
 
 	this.logout = function() {
@@ -31,6 +38,7 @@ angular.module('myApp.api', ['ngStorage'])
 		this.mail = ""
 		this.description = ""
 		this.time = ""
+		this.imgUrl = null;
 	}
 
 })

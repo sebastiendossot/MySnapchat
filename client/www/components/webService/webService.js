@@ -11,7 +11,8 @@ angular.module('myApp.webService', ['ngResource'])
 			unsubscribe: {method: 'DELETE', params: {urlOption: 'unsubscribe'}},
 			putTimes: {method: 'PUT', params: {urlOption: "times"}},
 			putDescription: {method: 'PUT', params: {urlOption: "description"}},
-			putPassword: {method: 'PUT', params: {urlOption: "password"}}
+			putPassword: {method: 'PUT', params: {urlOption: "password"}},
+			putProfileImg: {method: 'PUT', params: {urlOption: "picture"}}
 		})
 	})
 
