@@ -20,7 +20,7 @@
 			<div class="list-group-item" ng-repeat="friend in friendList">
 			  <div class="row">
 			  <div class="col-sm-2" ng-show="friend.user.imgUrl">
-			    <img ng-src="{{friend.user.imgUrl}}" alt="" height="50px" width="50px" class="img-circle">
+			    <img ng-src="{{friend.user.imgUrl}}" alt="userAvatar" height="50px" width="50px" class="img-circle">
 			  </div>
 
 				<div ng-class="friend.user.imgUrl ? 'col-sm-10' : 'col-sm-12'">

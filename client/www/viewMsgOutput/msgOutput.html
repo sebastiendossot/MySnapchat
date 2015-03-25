@@ -3,7 +3,8 @@
 		<!--If this is a message sent TO me-->
 		<li ng-if="message.idEnvoyeur!==idUser" ng-mouseleave="showMsg(false, message)" ng-mouseup="showMsg(false, message)" ng-mousedown="showMsg(true, message);" class="left clearfix" style="padding-right : 80px;">
 			<span class="pull-left">
-				<img ng-src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+			  <img ng-show="pictureReceiver" ng-src="{{pictureReceiver}}" alt="User Avatar" height="50px" width="50px" class="img-circle">
+			  <img ng-show="!pictureReceiver" ng-src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
 			</span>
 			<div class="chat-body clearfix">
 				<div class="header">
@@ -20,7 +21,8 @@
 		<!--If this is a message sent BY me-->
 		<li ng-if="message.idEnvoyeur === idUser" class="right clearfix" style="padding-left : 80px;">
 			<span class="pull-right">
-				<img ng-src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+			  <img ng-show="userImgUrl" ng-src="{{userImgUrl}}" alt="User Avatar" height="50px" width="50px" class="img-circle">
+			  <img ng-show="!userImgUrl" ng-src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
 			</span>
 			<div class="chat-body clearfix">
 				<div class="header">

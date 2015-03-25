@@ -17,6 +17,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		$scope.messageList = []
 		$scope.msgOpened = {}
 		$scope.idReceiver = $routeParams.idReceiver;
+	        $scope.userImgUrl = User.imgUrl
 
 		$scope.mobilePreview = function(bool){
 			$scope.showPreview = bool;
@@ -25,7 +26,8 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		//Identify the user we are talking to
 		var whoIsIt = function() {
 			var success = function(data) {
-				$scope.pseudoReceiver = data.user.pseudo;
+				$scope.pseudoReceiver = data.user.pseudo
+			        $scope.pictureReceiver = data.user.imgUrl
 			}
 			var error = function(data) {
 				console.error("Erreur lors de la récupération du nom de l'ami");
