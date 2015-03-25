@@ -50,7 +50,6 @@ var Friend = new Schema({
 var User = new Schema({
     pseudo: {type: String, unique: true},
     description: {type: String, default:""},
-    image : {type: String, default:""},
     email: String,
     pwd: String,
     temps: {
@@ -456,14 +455,14 @@ app.get('/api/friends', function(req, res, next) {
             return res.send({list:[]})
         } else {
             var friends = []
-            //For each requester, we get its pseudo and description and store it in a list we'll send
+            //For each requester, we get the wanted fields and store it in a list we'll send
             var asyncLoop = function(i, callback) {
                 if( i < result.length ) {
                     var friendshipId = tmpFriends[i]._id
                     var requestSenderId = tmpFriends[i].idAmi1;
                     if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
 
-                    UserModel.findById(requestSenderId, 'pseudo description', function(e, user){
+                    UserModel.findById(requestSenderId, 'pseudo description imgUrl', function(e, user){
                         if (e) return next(e);
                         friends.push({user: user, friendshipId: friendshipId});
                         asyncLoop( i+1, callback );
@@ -515,10 +514,23 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
             console.log("Account "+result.pseudo+" removed")
         }
     })
-    FriendModel.findByIdAndRemove(id, function(e, result) {
+    FriendModel.find({$or: [{idAmi1 : id}, {idAmi2 : id}]}, function(e, result) {
         if (e) return res.sendStatus(404);
         if(result) {
-            console.log("friendlist of "+result.pseudo+" removed")
+	    result.forEach(function(friend) {
+		friend.remove()
+	    })
+            console.log("friendlist removed")
+        }
+    })
+    // should work for destinataires
+    MessageModel.find({$or: [ {idEnvoyeur : id}, {'destinataires.idDestinaire' : id} ]}, function(e, result) {
+        if (e) return res.sendStatus(404);
+        if(result) {
+	    result.forEach(function(message) {
+		message.remove()
+	    })
+            console.log("messages removed")
         }
     })
     res.sendStatus(200)
