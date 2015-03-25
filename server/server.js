@@ -50,7 +50,7 @@ var Friend = new Schema({
 var User = new Schema({
     pseudo: {type: String, unique: true},
     description: {type: String, default:""},
-    image : {type: String, default:"pictures/default.png"},
+    image : {type: String, default:""},
     email: String,
     pwd: String,
     temps: {
