@@ -41,11 +41,11 @@ describe('send and receive image', function () {
 	element(by.id('image-user1')).click();
 	expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
 	element(by.css('.btn.btn-lg.btn-primary')).click()
-	waits(5000)
-	browser.actions().mouseMove(element(by.partialButtonText('Prendre une photo'))).click().perform()
-	waits(5000)
-	browser.actions().mouseMove(element(by.partialButtonText('Envoyer'))).click().perform()
-	waits(5000)
+	waits(3000)
+
+	element(by.partialButtonText('Prendre une photo')).click()
+	element(by.partialButtonText('Envoyer')).click()
+	expect(element(by.id("imgSent")).isPresent()).toBe(true)
 	helper.logout('user2')
     })
 
@@ -54,12 +54,9 @@ describe('send and receive image', function () {
 	element(by.id('image-user2')).click()
 	expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/chat')
 	
-	expect(element(by.css(".img-thumbnail.pull-right"))).isPresent.toBe(true)
-	// erreur lié à l'envoyé
-	waits(5000)
+	waits(3000)
+	expect(element(by.id("imgReceived")).isPresent()).toBe(true)
 	helper.logout('user1')
-	expect(browser.getCurrentUrl()).toMatch('http://localhost:4711/#/login')
-
     })
 
     it('should end the test by unregistering user1 & user2', function() {

@@ -31,7 +31,7 @@
 				</div>
 				<div ng-switch on ="message.type">
 					<p ng-switch-when="text" class="pull-right">{{message.donnes}}</p>
-					<img ng-switch-when="image" ng-src="data:image/jpeg;base64,{{message.donnes}}" class="img-thumbnail pull-right" alt="img" width="100" height="90" />
+					<img ng-switch-when="image" ng-src="data:image/jpeg;base64,{{message.donnes}}" class="img-thumbnail pull-right" alt="imgSent" id="imgSent" width="100" height="90" />
 				</div>
 			</div>
 		</li>
@@ -43,7 +43,7 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div>
-					<img ng-copy="messageCopy(message)" ng-src="data:image/png;base64,{{mediaToShow}}" class="img-responsive" style="display: block;margin-left: auto;margin-right: auto;"/>
+					<img ng-copy="messageCopy(message)" ng-src="data:image/png;base64,{{mediaToShow}}" class="img-responsive" style="display: block;margin-left: auto;margin-right: auto;" alt="imgReceived" id="imgReceived"/>
 				</div>
 			</div>
 		</div>
