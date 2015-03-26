@@ -1,5 +1,5 @@
 var SERVER_URL = isMobile ? "http://test2-44045.onmodulus.net/api" : "/api";
-angular.module('myApp.webService', ['ngResource'])
+angular.module('myApp.webService', ['ngResource', 'angularFileUpload'])
 
 .factory('userWebService',
 	function($resource) {
@@ -38,5 +38,17 @@ angular.module('myApp.webService', ['ngResource'])
 			newMessage: {method: 'POST', params: {urlOption: "message"}},
 			deleteMessage:{method: 'DELETE', params: {urlOption: "message"}}
 		})
+	})
+.factory('msgVideoWebService',
+	function($upload) {
+		return {
+			post : function(datas, success, error, progress) {
+				$upload.upload({
+					url: SERVER_URL+'/message',
+					file: datas.file,
+					fields: datas.fields
+				}).progress(progress).error(error).success(success)
+			}
+		}
 	})
 

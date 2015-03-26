@@ -3,8 +3,8 @@
 		<!--If this is a message sent TO me-->
 		<li ng-if="message.idEnvoyeur!==idUser" ng-mouseleave="showMsg(false, message)" ng-mouseup="showMsg(false, message)" ng-mousedown="showMsg(true, message);" class="left clearfix" style="padding-right : 80px;">
 			<span class="pull-left">
-			  <img ng-show="pictureReceiver" ng-src="{{pictureReceiver}}" alt="User Avatar" height="50px" width="50px" class="img-circle">
-			  <img ng-show="!pictureReceiver" ng-src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+				<img ng-show="pictureReceiver" ng-src="{{pictureReceiver}}" alt="User Avatar" height="50px" width="50px" class="img-circle">
+				<img ng-show="!pictureReceiver" ng-src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
 			</span>
 			<div class="chat-body clearfix">
 				<div class="header">
@@ -14,6 +14,9 @@
 				<div ng-copy="messageCopy(message)" id="msg">
 					<div ng-switch on ="message.type">
 						<p ng-switch-when="text" ng-show="message.show">{{message.donnes}}</p>
+						<span ng-switch-when="text" ng-hide="message.show" class="glyphicon glyphicon-pencil"></span>
+						<span ng-switch-when="video" class="glyphicon glyphicon-facetime-video"></span>
+						<span ng-switch-when="image" class="glyphicon glyphicon-camera"></span>
 					</div>
 				</div>
 			</div>
@@ -21,8 +24,8 @@
 		<!--If this is a message sent BY me-->
 		<li ng-if="message.idEnvoyeur === idUser" class="right clearfix" style="padding-left : 80px;">
 			<span class="pull-right">
-			  <img ng-show="userImgUrl" ng-src="{{userImgUrl}}" alt="User Avatar" height="50px" width="50px" class="img-circle">
-			  <img ng-show="!userImgUrl" ng-src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+				<img ng-show="userImgUrl" ng-src="{{userImgUrl}}" alt="User Avatar" height="50px" width="50px" class="img-circle">
+				<img ng-show="!userImgUrl" ng-src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
 			</span>
 			<div class="chat-body clearfix">
 				<div class="header">
@@ -32,6 +35,7 @@
 				<div ng-switch on ="message.type">
 					<p ng-switch-when="text" class="pull-right">{{message.donnes}}</p>
 					<img ng-switch-when="image" ng-src="data:image/jpeg;base64,{{message.donnes}}" class="img-thumbnail pull-right" alt="imgSent" id="imgSent" width="100" height="90" />
+					<span ng-switch-when="video" class="glyphicon glyphicon-facetime-video pull-right"></span>
 				</div>
 			</div>
 		</li>
@@ -43,7 +47,8 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div>
-					<img ng-copy="messageCopy(message)" ng-src="data:image/png;base64,{{mediaToShow}}" class="img-responsive" style="display: block;margin-left: auto;margin-right: auto;" alt="imgReceived" id="imgReceived"/>
+					<img ng-if="message.type == 'image'" ng-copy="messageCopy(message)" ng-src="data:image/png;base64,{{mediaToShow}}" class="img-responsive" style="display: block;margin-left: auto;margin-right: auto;"/>
+					<video ng-if="message.type == 'video'" class="img-responsive" style="display: block;margin-left: auto;margin-right: auto;"  ng-copy="messageCopy(message)" ng-src="{{mediaToShow}}" autoplay loop></video>
 				</div>
 			</div>
 		</div>

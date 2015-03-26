@@ -7,7 +7,9 @@ var application_root = __dirname,
     crypto = require('crypto'), //to hash passwords
     jwt = require('jwt-simple'), // Token authentication
     multiparty = require('connect-multiparty'),
-    multipartMiddleware = multiparty();
+    multipartMiddleware = multiparty()
+    fs = require('fs'),
+    uploadDir = "./media";
 
 
 //Create server
@@ -20,6 +22,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 if(isLocal) {
     app.use(express.static(path.join(application_root ,'../client/www')));
+    app.use(express.static(path.join(application_root ,'media')));
 }
 app.set('jwtTokenSecret', 'PEDSnapSECRE7');
 //Show all errors in development
@@ -50,6 +53,7 @@ var Friend = new Schema({
 var User = new Schema({
     pseudo: {type: String, unique: true},
     description: {type: String, default:""},
+    image : {type: String, default:"pictures/default.png"},
     email: String,
     pwd: String,
     temps: {
@@ -102,6 +106,20 @@ var authenticateSender = function(headers) {
         }
     } else {
         return undefined;
+    }
+}
+
+var deleteIfVideo = function(message) {
+    if(message.type=="video") {
+        var filename = message._id+"."+message.donnes;
+        fs.exists(uploadDir+"/"+filename, function(exists) {
+            if (exists) {
+                console.log(uploadDir+"/"+filename+" exists !")
+                fs.unlink(uploadDir+"/"+filename, function (err) {
+                    if (err) throw err;
+                });
+            }
+        });
     }
 }
 
@@ -180,7 +198,7 @@ app.post('/api/friend', function(req, res, next) {
 });
 
 //Envoyer un message
-app.post('/api/message', function(req, res, next) {
+app.post('/api/message', multipartMiddleware, function(req, res, next) {
     if(req.body) {
         //var match = /data:([^;]+);base64,(.*)/.exec(req.body.donnes);
         if(req.body.type == 'image') {
@@ -192,14 +210,21 @@ app.post('/api/message', function(req, res, next) {
             //res.setHeader('Content-Length', binaryData.length);
             req.body.donnes = binaryData;
 
-        } else if(req.body.type == 'video') {
+        }
 
-            console.log("donnes : "+req.body.donnes);
-
+        if(req.body.type == 'video') {
+            //Cause of ng-file-upload
+            req.body.destinataires = JSON.parse(req.body.destinataires)
         }
         var newMessage = new MessageModel(req.body);
         newMessage.save(function(e, results){
             if (e) return next(e);
+            if(req.body.type == 'video') {
+                var writeStream = fs.createWriteStream(uploadDir+"/"+results._id+"."+req.files.file.type.split("/")[1])
+                writeStream.once('open', function(fd) {
+                    fs.createReadStream(req.files.file.path).pipe(writeStream);
+                })
+            }
             res.sendStatus(200);
         })
     }
@@ -517,9 +542,9 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
     FriendModel.find({$or: [{idAmi1 : id}, {idAmi2 : id}]}, function(e, result) {
         if (e) return res.sendStatus(404);
         if(result) {
-	    result.forEach(function(friend) {
-		friend.remove()
-	    })
+            result.forEach(function(friend) {
+                friend.remove()
+            })
             console.log("friendlist removed")
         }
     })
@@ -527,9 +552,9 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
     MessageModel.find({$or: [ {idEnvoyeur : id}, {'destinataires.idDestinaire' : id} ]}, function(e, result) {
         if (e) return res.sendStatus(404);
         if(result) {
-	    result.forEach(function(message) {
-		message.remove()
-	    })
+            result.forEach(function(message) {
+                message.remove()
+            })
             console.log("messages removed")
         }
     })
@@ -574,6 +599,7 @@ app.delete('/api/message/:id', function(req, res, next) {
                 }else{
                     result.remove(function (err, req) {
                         if (err) return next(err);
+                        deleteIfVideo(result)
                         res.sendStatus(200)
                     })
                 }

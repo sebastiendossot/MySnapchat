@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.settings', ['ngRoute', 'angularFileUpload'])
+angular.module('myApp.settings', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/settings', {

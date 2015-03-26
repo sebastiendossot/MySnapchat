@@ -68,8 +68,10 @@ angular.module('myApp.imageInput', ['ngRoute'])
 
 		if(dataUrl) {
 			var success = function() {
-				//$scope.ress = "data:image/png;base64,"+data.img;
-				window.location.reload()
+				$scope.getMessages();
+				$scope.webcamOn = false;
+				$scope.shotable = false;
+				$scope.hideStream = false;
 			}
 			var error = function(data) {
 				console.error("SUCCESS : " +data)

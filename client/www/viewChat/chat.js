@@ -17,7 +17,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		$scope.messageList = []
 		$scope.msgOpened = {}
 		$scope.idReceiver = $routeParams.idReceiver;
-	        $scope.userImgUrl = User.imgUrl
+		$scope.userImgUrl = User.imgUrl
 
 		$scope.mobilePreview = function(bool){
 			$scope.showPreview = bool;
@@ -27,7 +27,7 @@ angular.module('myApp.viewChat', ['ngRoute'])
 		var whoIsIt = function() {
 			var success = function(data) {
 				$scope.pseudoReceiver = data.user.pseudo
-			        $scope.pictureReceiver = data.user.imgUrl
+				$scope.pictureReceiver = data.user.imgUrl
 			}
 			var error = function(data) {
 				console.error("Erreur lors de la récupération du nom de l'ami");
@@ -89,12 +89,13 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			}else{
 				return tmp + " mins ago";
 			}
-				
+
 		}
 
 		//Function that 
 		$scope.showMsg = function(bool, message) {
 			//No need to spam the delete queue, just ask to delete te message only if it has not already been asked
+			$scope.message = message;
 			if(!$scope.msgOpened[message._id] && bool) {
 				$scope.msgOpened[message._id] = true;
 				$scope.deleteMessage(message);
@@ -102,6 +103,10 @@ angular.module('myApp.viewChat', ['ngRoute'])
 			message.show = bool;
 			if(message.type == 'image'){
 				$scope.mediaToShow = message.donnes
+				$('#mediaModal').modal(bool ? 'show' : 'hide')
+			}
+			if(message.type == 'video'){
+				$scope.mediaToShow = message._id+"."+message.donnes;
 				$('#mediaModal').modal(bool ? 'show' : 'hide')
 			}
 		}
