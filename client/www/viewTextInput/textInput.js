@@ -7,12 +7,12 @@ angular.module('myApp.textInput', ['ngRoute'])
 
 		$scope.text=""
 		$scope.error = false
-
+		
 		$scope.send = function() {
 
 			var success = function(data){
 				$scope.text=""
-				window.location.reload()
+				$scope.getMessages()
 		    	//messageWebService.receivedMessages(null, populateMessageList, error);
 		    }
 		    var error = function(data){
