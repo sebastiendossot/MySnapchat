@@ -15,9 +15,8 @@ var onDeviceReady = function() {
 		'myApp.viewFriendList',
 		'myApp.viewChat',       
 		'myApp.textInput',
-		'myApp.textOutput',
 		'myApp.imageInput',
-		'myApp.imageOutput',
+		'myApp.videoInput',
 		'myApp.viewTime',
 		])
 

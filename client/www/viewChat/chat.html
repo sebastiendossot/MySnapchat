@@ -1,93 +1,65 @@
-<span ng-controller="imageCtrl">
-
-	<div id="chatView" ng-hide="showPreview">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<span class="glyphicon glyphicon-comment"></span> Chat avec {{pseudoReceiver}}
-							<div class="btn-group pull-right">
-								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-									<span class="glyphicon glyphicon-chevron-down"></span>
-								</button>
-								<ul class="dropdown-menu slidedown">
-									<li class="container-fluid row-fluid" ng-include="'viewTime/viewTime.html'"></li>
-								</ul>
-							</div>
-						</div>
-						<div class="panel-body">
-							<ul class="chat" ng-repeat="message in messageList | orderBy : 'dateEnvoi'">
-								
-								<div ng-switch on ="message.type">
-									<!-- Changer le chemin pour inclure la vue pour les messages message.type==='text'-->
-									<div ng-switch-when="text" >
-										<div ng-include="'viewTextOutput/viewTextOutput.html'"></div>
-									</div>
-									
-									<!-- Changer le chemin pour inclure la vue pour les images -->
-									<div  ng-switch-when="image" >
-										<div ng-include="'viewImageOutput/viewImageOutput.html'"></div>
-									</div>
-									
-									<!-- Changer le chemin pour inclure la vue pour les vidéos -->
-									<div  ng-switch-when="video" >
-										<div ng-include="'Chemin/vers/viewVideo.html'"></div>
-									</div>
-								</div>
+<div id="chatView" ng-hide="showPreview">
+	<div class="container">
+		<div class="row">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<span class="glyphicon glyphicon-comment"></span> Chat avec {{pseudoReceiver}}
+						<div class="btn-group pull-right" id="btn-right">
+							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu slidedown">
+								<li class="container-fluid row-fluid" ng-include="'viewTime/viewTime.html'"></li>
 							</ul>
 						</div>
-						<div class="panel-footer">
+					</div>
+					<div class="panel-body" ng-include="'viewMsgOutput/msgOutput.html'">
+					</div>
+					<div class="panel-footer">
+						<div style="float : left; width : 20px;">
+							<a ng-click="mode = 'text'" class="btn btn-xs btn-info" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-envelope"></span></a>
+							<a ng-click="mode = 'image'" class="btn btn-xs btn-warning" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-picture"></span></a>
+							<a ng-click="mode = 'video'" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-film"></span></a>
+						</div>
 
-							<div style="float : left; width : 20px;">
-								<a ng-click="mode = 'text'" class="btn btn-xs btn-info" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-envelope"></span></a>
-								<a ng-click="mode = 'image'" class="btn btn-xs btn-warning" style="margin-bottom : 3px;"><span class="glyphicon glyphicon-picture"></span></a>
-								<a ng-click="mode = 'video'" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-film"></span></a>
-							</div>
-							
-							<div style="float : left; width : 90%;">
-								<div ng-switch on ="mode">
-									<div ng-switch-when="text">
-										<div ng-include="'viewTextInput/viewTextInput.html'"></div>
-									</div>
-									
-									<div ng-switch-when="image">
-										<div ng-include="'viewImageInput/viewImageInput.html'"></div>
-									</div>
-									
-									<div ng-switch-when="video">
-										<div ng-controller="videoCtrl" class="input-group"></div>
-									</div>
+						<div style="float : left; width : 90%;">
+							<div ng-switch on="mode">
+								<div ng-switch-when="text">
+									<div ng-include="'viewTextInput/viewTextInput.html'"></div>
+								</div>
+
+								<div ng-switch-when="image">
+									<div ng-include="'viewImageInput/viewImageInput.html'"></div>
+								</div>
+
+								<div ng-switch-when="video">
+									<div ng-include="'viewVideoInput/viewVideoInput.html'"></div>
 								</div>
 							</div>
-							
-							<div style="clear : both;"></div>
-							
 						</div>
+						<div style="clear : both;"></div>
 					</div>
 				</div>
-			</div>
 		</div>
+	</div>
+</div>
+<!--
+<div id="previewMobile" ng-show="showPreview">
+	<img id="smallImage" src="" style="margin-bottom : 10px;"/>
+	<div class="btn-group" role="group" aria-label="...">
+		<button type="button" class="btn btn-danger" ng-click="mobilePreview(false)">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Annuler
+		</button>
+		<button type="button" class="btn btn-default" ng-click="showMobilePhotoView()">
+			<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Nouvelle photo
+		</button>
+		<button type="button" class="btn btn-info pull" ng-click="send(dataUrl)">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Envoyer
+		</button>
 	</div>
 
-	<div id="previewMobile" ng-show="showPreview">
-		<img id="smallImage" src="" style="margin-bottom : 10px;"/>
-		<div class="btn-group" role="group" aria-label="...">
-			<button type="button" class="btn btn-danger" ng-click="mobilePreview(false)">
-				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Annuler
-			</button>
-			<button type="button" class="btn btn-default" ng-click="showMobilePhotoView()">
-				<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Nouvelle photo
-			</button>
-			<button type="button" class="btn btn-info pull" ng-click="send(dataUrl)">
-				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Envoyer
-			</button>
-		</div>
-		
-		<script>
-			$("#smallImage").css("width", ($(window).width())-30);
-			$("#smallImage").css("height", ($(window).height())-150);
-		</script>
-	</div>
-	
-</span>
+	<script>
+		$("#smallImage").css("width", ($(window).width())-30);
+		$("#smallImage").css("height", ($(window).height())-150);
+	</script>
+</div>-->

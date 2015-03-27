@@ -51,8 +51,6 @@ angular.module('myApp.register', ['ngRoute'])
             pseudo: $scope.pseudo,
             email: $scope.email,       
             pwd: $scope.pwd,
-	    description: "",
-	    temps: {texte: 60, image: 60, video: 60}
         }, success, error);
     }
 }])

@@ -1,4 +1,3 @@
-
 <div class="row container-fluid" ng-controller="textInputCtrl">
 	<form name="input">
 
@@ -7,7 +6,7 @@
 		</div>
 
 		<div class="col-sm-1">
-		
+			
 			<input type="button" value="Envoyer" class="btn btn-info" ng-disabled="input.$invalid" ng-click="send()"></input>
 			<label style="color:red" ng-if="error">Echec de l'envoi</label>
 			

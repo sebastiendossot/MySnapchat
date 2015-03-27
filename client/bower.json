@@ -13,6 +13,7 @@
     "angular-mocks": "*",
     "ngstorage": "*",
     "bootstrap": "3.3.x",
-    "webcam-directive": "*"
+    "webcam-directive": "*",
+    "ng-file-upload": "~3.2.4"
   }
 }

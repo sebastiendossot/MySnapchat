@@ -12,6 +12,7 @@ angular.module('myApp.settings', ['ngRoute'])
 
 .controller('SettingsCtrl', ['$scope', 'userWebService', 'User', '$location',
 	function($scope, userWebService, User, $location)  {
+		console.log(User)
 		$scope.User = User;
 		$scope.callback = {
 			title:'',
@@ -20,7 +21,7 @@ angular.module('myApp.settings', ['ngRoute'])
 
 		$scope.setErrorCallback = function() {
 			$scope.callback.title = "Erreur";
-			$scope.callback.content = "Un problème inattendu est survenu, veuillez réessayer plus tard";
+			$scope.callback.content = "Un problème inattendu est survenu, veuillez réessayer plus tard.";
 		}
 		
 		$scope.pressRemoveAccount = function() {
@@ -42,17 +43,73 @@ angular.module('myApp.settings', ['ngRoute'])
 			userWebService.unsubscribe({}, success, error);
 		}
 
-	    $scope.description = User.description
-
-	    $scope.updateDescription = function() {
-		User.description = $scope.description
-		var success = function() {
-		    console.log("description updated")
+		$scope.updateDescription = function() {
+			var success = function() {
+				$scope.User.description = $scope.newDescription
+				User.update("description", $scope.User.description)
+				console.log("description updated" + $scope.User.description)
+				$scope.newDescription=""
+			}
+			var error = function() {
+				console.log("description failed to update")
+			}
+			userWebService.putDescription({description: $scope.newDescription}, success, error)
 		}
-		var error = function() {
-		    console.log("description failed to update")
-		}
-		userWebService.putDescription({description: $scope.description}, success, error)
-	    }
 
+		$scope.oldPassword = ""
+		$scope.newPassword = ""
+		$scope.confirmPassword = ""
+
+		$scope.initPassword = function () {
+			$scope.oldPassword = ""
+			$scope.newPassword = ""
+			$scope.confirmPassword = ""
+		}
+
+		$scope.changePassword = function () {
+			$('#changePassword').modal('hide')
+			var success = function() {
+				$scope.initPassword()
+				$scope.callback.title = "Succès";
+				$scope.callback.content = "Votre nouveau mot de passe a été enregistré.";
+				$('#callbackDialog').modal('show')
+			}
+			var error = function() {
+				$scope.initPassword()
+				$scope.setErrorCallback()
+				$('#callbackDialog').modal('show')
+			}
+			userWebService.putPassword({oldPassword: $scope.oldPassword, newPassword: $scope.newPassword}, success, error)
+		}
+
+		$scope.$watch('file', function () {
+
+			//$scope.User.urlImg = User.img;
+			if($scope.file && $scope.file[0]) {
+				var reader  = new FileReader();
+
+				reader.onload = function(fileLoadedEvent) 
+				{	
+					$scope.User.imgUrl = fileLoadedEvent.target.result;
+					$scope.$apply();
+				};
+				reader.readAsDataURL($scope.file[0])
+			}
+		});
+
+		$scope.uploadImg = function (file) {
+			if ($scope.User.imgUrl) {
+				var error = function() {
+					$scope.setErrorCallback()
+					$('#callbackDialog').modal('show')
+				};
+				var success = function(data) {
+					User.update("imgUrl", $scope.User.imgUrl)
+					$scope.callback.title = "Succès";
+					$scope.callback.content = "Votre image de profil a bien été mise à jour";
+					$('#callbackDialog').modal('show')
+				}
+				userWebService.putProfileImg({imgUrl:$scope.User.imgUrl}, success, error)
+			}
+		};
 	}]);

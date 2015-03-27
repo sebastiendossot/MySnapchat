@@ -5,7 +5,11 @@ var application_root = __dirname,
     bodyParser  = require('body-parser'),
     mongoose = require('mongoose'), //MongoDB integration
     crypto = require('crypto'), //to hash passwords
-    jwt = require('jwt-simple'); // Token authentication
+    jwt = require('jwt-simple'), // Token authentication
+    multiparty = require('connect-multiparty'),
+    multipartMiddleware = multiparty()
+    fs = require('fs'),
+    uploadDir = "./media";
 
 
 //Create server
@@ -18,6 +22,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 if(isLocal) {
     app.use(express.static(path.join(application_root ,'../client/www')));
+    app.use(express.static(path.join(application_root ,'media')));
 }
 app.set('jwtTokenSecret', 'PEDSnapSECRE7');
 //Show all errors in development
@@ -47,15 +52,21 @@ var Friend = new Schema({
 
 var User = new Schema({
     pseudo: {type: String, unique: true},
-    description: String,
+    description: {type: String, default:""},
+    image : {type: String, default:"pictures/default.png"},
     email: String,
     pwd: String,
-    temps: {texte: Number, image: Number, video: Number}
+    temps: {
+        texte: {type: Number, default:10},
+        image: {type: Number, default:10},
+        video: {type: Number, default:10}
+    },
+    imgUrl: String
 });
 
 var Destinataire = new Schema({
     idDestinataire : Schema.ObjectId,
-    lu : Boolean
+    lu : {type: Boolean, default:false}
 });
 
 var Message = new Schema({
@@ -95,6 +106,20 @@ var authenticateSender = function(headers) {
         }
     } else {
         return undefined;
+    }
+}
+
+var deleteIfVideo = function(message) {
+    if(message.type=="video") {
+        var filename = message._id+"."+message.donnes;
+        fs.exists(uploadDir+"/"+filename, function(exists) {
+            if (exists) {
+                console.log(uploadDir+"/"+filename+" exists !")
+                fs.unlink(uploadDir+"/"+filename, function (err) {
+                    if (err) throw err;
+                });
+            }
+        });
     }
 }
 
@@ -173,10 +198,10 @@ app.post('/api/friend', function(req, res, next) {
 });
 
 //Envoyer un message
-app.post('/api/message', function(req, res, next) {
+app.post('/api/message', multipartMiddleware, function(req, res, next) {
     if(req.body) {
-        var match = /data:([^;]+);base64,(.*)/.exec(req.body.donnes);
-        if(match) {
+        //var match = /data:([^;]+);base64,(.*)/.exec(req.body.donnes);
+        if(req.body.type == 'image') {
 
             base64Data = req.body.donnes.replace(/^data:image\/png;base64,/,"");
             binaryData = new Buffer(base64Data, 'base64').toString('base64');
@@ -186,9 +211,20 @@ app.post('/api/message', function(req, res, next) {
             req.body.donnes = binaryData;
 
         }
+
+        if(req.body.type == 'video') {
+            //Cause of ng-file-upload
+            req.body.destinataires = JSON.parse(req.body.destinataires)
+        }
         var newMessage = new MessageModel(req.body);
         newMessage.save(function(e, results){
             if (e) return next(e);
+            if(req.body.type == 'video') {
+                var writeStream = fs.createWriteStream(uploadDir+"/"+results._id+"."+req.files.file.type.split("/")[1])
+                writeStream.once('open', function(fd) {
+                    fs.createReadStream(req.files.file.path).pipe(writeStream);
+                })
+            }
             res.sendStatus(200);
         })
     }
@@ -270,7 +306,7 @@ app.put('/api/user/password',  function(req, res, next) {
         var hash = crypto.createHash('sha256')
         hash.update(req.body.oldPassword)
         var oldPassword = hash.digest('hex')
-        if (oldPassword == result.password) {
+        if (oldPassword == result.pwd) {
             hash = crypto.createHash('sha256')
             hash.update(req.body.newPassword)
             var newPassword = hash.digest('hex')
@@ -281,12 +317,31 @@ app.put('/api/user/password',  function(req, res, next) {
                 res.sendStatus(200)
             })
         }
-        else
+        else {
             res.sendStatus(401)
+        }
     })
 })
 
+app.put('/api/user/picture', function(req,res, next) {
+    var id = authenticateSender(req.headers)
+    if(!id) {
+        res.sendStatus(403)
+    }
+    UserModel.findById(id, function(e, result) {
+        if (e)
+            return next(e)
+        if (!result)
+            res.sendStatus(404)
 
+        result.imgUrl = req.body.imgUrl
+        result.save(function (err, req) {
+            if (err) 
+                return next(err)
+            res.sendStatus(200)
+        })
+    })
+})
 
 /*************************************************************/
 /********************** GET REQUESTS *************************/
@@ -310,15 +365,44 @@ app.get('/api/user/byId/:id', function(req, res, next) {
     })
 })
 
-//get les messages qui nous sont addressés
-app.get('/api/message/', function(req, res, next) {
-    //MessageModel.find({destinataires : {idDestinataires:id, lu:'false'} }, function(e, result){
+//get des messages qui nous sont addressés
+app.get('/api/message/:idFriend', function(req, res, next) {
+	
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
 
-	// A faire : recupérer les message seulement si on est le destinataire
-	MessageModel.find( function(e, result){
+    MessageModel.find({ $or: [{idEnvoyeur : id},{idEnvoyeur : req.params.idFriend}]}, function(e, result){
         if (e) return next(e);
-		//console.log("messages = "+result)
-        res.send({list:result})
+
+        var privateMessages = [];
+
+        result.forEach(function(entry) {
+            if(entry.destinataires[0].idDestinataire == id || entry.destinataires[0].idDestinataire == req.params.idFriend) {
+                privateMessages.push(entry)
+            }
+        });
+
+        res.send({list:privateMessages})
+    })
+})
+
+//get des messages non lus
+app.get('/api/unreadMessages', function(req, res, next) {
+	
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
+
+    MessageModel.find(function(e, result){
+        if (e) return next(e);
+
+        var unreadMessages = [];
+        result.forEach(function(entry) {
+            if(entry.destinataires[0].idDestinataire == id && entry.destinataires[0].lu == false) {
+                unreadMessages.push(entry)
+            }
+        });
+
+        res.send({list:unreadMessages})
     })
 })
 
@@ -396,14 +480,14 @@ app.get('/api/friends', function(req, res, next) {
             return res.send({list:[]})
         } else {
             var friends = []
-            //For each requester, we get its pseudo and description and store it in a list we'll send
+            //For each requester, we get the wanted fields and store it in a list we'll send
             var asyncLoop = function(i, callback) {
                 if( i < result.length ) {
                     var friendshipId = tmpFriends[i]._id
                     var requestSenderId = tmpFriends[i].idAmi1;
                     if(requestSenderId.equals(id)) requestSenderId = tmpFriends[i].idAmi2;
 
-                    UserModel.findById(requestSenderId, 'pseudo description', function(e, user){
+                    UserModel.findById(requestSenderId, 'pseudo description imgUrl', function(e, user){
                         if (e) return next(e);
                         friends.push({user: user, friendshipId: friendshipId});
                         asyncLoop( i+1, callback );
@@ -415,6 +499,28 @@ app.get('/api/friends', function(req, res, next) {
             asyncLoop( 0, function() {
                 res.send({list:friends})
             });
+        }
+    });
+})
+
+// Demande existante
+app.get('/api/alreadyInserted/:idami', function(req, res, next) {
+	console.log("alreadyinserted = "+req.params.idami)
+    var id = authenticateSender(req.headers);
+    if (!id) return res.sendStatus(403);
+    var tmpFriends = [];
+    FriendModel.find(function(e, res) {
+        console.log(res);
+        console.log(id)
+    })
+
+    FriendModel.find({ $or: [ {idAmi1 : id, idAmi2 : req.params.idami }, {idAmi1 : req.params.idami, idAmi2 : id } ] }, function(e, result){
+        if (e) return next(e);
+        if (result) tmpFriends = tmpFriends.concat(result);
+        if (tmpFriends.length === 0) {
+            return res.send({exist:false})
+        } else {
+            return res.send({exist:true})
         }
     });
 })
@@ -433,10 +539,23 @@ app.delete('/api/user/unsubscribe', function(req, res, next) {
             console.log("Account "+result.pseudo+" removed")
         }
     })
-    FriendModel.findByIdAndRemove(id, function(e, result) {
+    FriendModel.find({$or: [{idAmi1 : id}, {idAmi2 : id}]}, function(e, result) {
         if (e) return res.sendStatus(404);
         if(result) {
-            console.log("friendlist of "+result.pseudo+" removed")
+            result.forEach(function(friend) {
+                friend.remove()
+            })
+            console.log("friendlist removed")
+        }
+    })
+    // should work for destinataires
+    MessageModel.find({$or: [ {idEnvoyeur : id}, {'destinataires.idDestinaire' : id} ]}, function(e, result) {
+        if (e) return res.sendStatus(404);
+        if(result) {
+            result.forEach(function(message) {
+                message.remove()
+            })
+            console.log("messages removed")
         }
     })
     res.sendStatus(200)
@@ -457,29 +576,37 @@ app.delete('/api/friend/:id', function(req, res, next) {
             res.sendStatus(200)
         })
     })
-
-
 });
 
 
 //suppression du message
 app.delete('/api/message/:id', function(req, res, next) {
-    var reqId = req.params.id;
-    console.log("Delete message - ID line = "+req.params.id);
     var id = authenticateSender(req.headers);
     if (!id) return res.sendStatus(403);
-    //If the user asking to delete is the one who received the request, Okay
+    var reqId = req.params.id;
+    //Find the message to know how much it'll last
     MessageModel.findById(reqId, function(e, result) {
-        if (e) return next(e);
+        if (e) return res.sendStatus(404);
         if (!result) {
-            console.log("Message supprimé")
-            //res.sendStatus(404);
+            res.sendStatus(404);
         }else{
-            result.remove(function (err, req) {
-                if (err) return next(err);
-                res.sendStatus(200)
+            //wait and then remove the message
+            setTimeout(function(){
+                MessageModel.findById(reqId, function(e, result) {
+                    if (e) return next(e);
+                    if (!result) {
+                    //console.log("Message déjà supprimé")
+                }else{
+                    result.remove(function (err, req) {
+                        if (err) return next(err);
+                        deleteIfVideo(result)
+                        res.sendStatus(200)
+                    })
+                }
             })
+            }, result.temps*1000);
         }
     })
+    //console.log("Delete message - ID line = "+req.params.id);
 
 });
